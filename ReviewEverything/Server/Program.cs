@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     });
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint(swaggerOptions.UIEndPoint, swaggerOptions.Description);
+        options.SwaggerEndpoint(swaggerOptions.UiEndPoint, swaggerOptions.Description);
     });
 }
 else

@@ -1,22 +1,44 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider IsDarkMode="IsDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
 
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" OnClick="DrawerToggle" Style="color: #fff" Edge="Edge.Start" />
-       
-        <MudText Typo="Typo.h5" Class="ml-3">Воробьёв Эмиль</MudText>
-
-        <MudSpacer />
+        <MudBreakpointProvider>
+            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerOpen = !DrawerOpen)" />
+                <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
+                <MudText Style="font-size: 18px;">Reviews of everything</MudText>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
+                <MudText Style="font-size: 24px;">Reviews of everything</MudText>
+                <MudSpacer />
+                <MudToggleIconButton Color="Color.Inherit" @bind-Toggled="IsDarkMode" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
+                <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="@(new EventCallback(null, () => NavigationManager.NavigateTo("account/sign-in")))">Sign in</MudButton>
+            </MudHidden>
+            <span class="mx-1"></span>
+        </MudBreakpointProvider>
     </MudAppBar>
 
-    <MudDrawer @bind-Open="@_drawerOpen" Elevation="1">
-        <NavMenu />
-    </MudDrawer>
+    <MudBreakpointProvider>
+        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+            <MudDrawer @bind-Open="DrawerOpen" Elevation="2">
+                <MudDrawerHeader Style="@("background: " + (IsDarkMode ? "#151521ff" : "#f5f5f5ff"))" Dense="true">
+                    <MudSpacer />
+                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" @bind-Toggled="IsDarkMode" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay"/>
+                </MudDrawerHeader>
+                <MudList Clickable="true">
+                    <MudListItem Text="Sign In" Href="./account/sign-in" />
+                    <MudDivider />
+                    <MudListItem Text="Рецензии пользователей" />
+                </MudList>
+            </MudDrawer>
+        </MudHidden>
+    </MudBreakpointProvider>
 
 
     <MudMainContent>
@@ -25,12 +47,3 @@
         </CascadingValue>
     </MudMainContent>
 </MudLayout>
-
-@code {
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-}
