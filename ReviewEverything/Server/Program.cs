@@ -1,23 +1,37 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.OpenApi.Models;
+using ReviewEverything.Server.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ReviewEverything API", Version = "v1" });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+
+    var swaggerOptions = new SwaggerOptions();
+    app.Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+    app.UseSwagger(options =>
+    {
+        options.RouteTemplate = swaggerOptions.JsonRoute;
+    });
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint(swaggerOptions.UIEndPoint, swaggerOptions.Description);
+    });
 }
 else
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
