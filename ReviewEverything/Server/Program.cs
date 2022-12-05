@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ReviewEverything.Server.Data;
+using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,10 +10,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "ReviewEverything API", Version = "v1" });
 });
+
+builder.Services.AddDbContext<AppDbContext>(opt => 
+    opt.UseNpgsql(builder.Configuration["ConnectionStrings:PostgreSQL"]));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

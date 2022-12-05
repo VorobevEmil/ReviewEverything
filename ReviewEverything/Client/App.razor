@@ -1,12 +1,38 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <AuthorizeView Context="authContext">
+                        <Authorized>
+                            <MudText Style="text-align: center; font-size: xx-large;" Color="Color.Warning">Недостаточно прав для просмотра содержимого</MudText>
+                        </Authorized>
+                        <NotAuthorized>
+                            @{
+                                NavigationManager.NavigateTo("");
+                            }
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <AuthorizeView Context="authContext">
+                <Authorized>
+                    <LayoutView Layout="@typeof(MainLayout)">
+                        <PageTitle>404 Not Found</PageTitle>
+                        <div style="display:flex; flex-direction: column; align-items: center;">
+                            <span style="font-size: 36px; color:#424242ff;">Not Found</span>
+                            <span style="font-size: 30px; color:#424242ff;">Извините, по этому адресу ничего не найдено.</span>
+                        </div>
+                    </LayoutView>
+                </Authorized>
+                <NotAuthorized>
+                    @{
+                        NavigationManager.NavigateTo("");
+                    }
+                </NotAuthorized>
+            </AuthorizeView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

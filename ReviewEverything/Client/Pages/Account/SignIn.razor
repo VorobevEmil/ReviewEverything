@@ -3,25 +3,31 @@
 <PageTitle>Log In - Reviews of everything</PageTitle>
 
 <div class="center-block">
-    <MudPaper Class="mx-3 px-5 py-3 text-center" Style="display: flex; flex-direction: column; align-items: center; width: 350px;">
-        <MudText Class="mt-2" Style="font-size: 21px;">LOG IN TO ACCOUNT</MudText>
-        <div class="mt-5">
-            <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true">Continue with Google</MudButton>
-            <div class="mt-2"></div>
-            <MudButton StartIcon="@Icons.Custom.Brands.Facebook" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">Continue with Facebook</MudButton>
-        </div>
-        <div class="mt-2" style="display: flex; align-items: center;">
-            <span style="display: inline-block; height: 3px; width: 50px; border-top: solid 1px #E3E3E3;"></span>
-            <MudText Class="mx-5" Style="font-size: 12px;">or</MudText>
-            <span style="display: inline-block; height: 3px; width: 50px; border-top: solid 1px #E3E3E3;"></span>
-        </div>
-        <div class="mt-3 w-100">
-            <MudTextField FullWidth="true" T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Email" InputType="InputType.Email"></MudTextField>
-            <span class="my-2"></span>
-            <MudTextField FullWidth="true" T="string" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Password" InputType="InputType.Password"></MudTextField>
-        </div>
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmitAsync">
+        <MudPaper Class="mx-3 px-5 py-3 text-center" Style="display: flex; flex-direction: column; align-items: center; width: 350px;">
+            <MudText Class="mt-2" Style="font-size: 21px;">LOG IN TO ACCOUNT</MudText>
+            <div class="mt-5">
+                <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true">Continue with Google</MudButton>
+                <div class="mt-2"></div>
+                <MudButton StartIcon="@Icons.Custom.Brands.Facebook" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">Continue with Facebook</MudButton>
+            </div>
+            <div class="mt-2" style="display: flex; align-items: center;">
+                <span style="display: inline-block; height: 3px; width: 50px; border-top: solid 1px #E3E3E3;"></span>
+                <MudText Class="mx-5" Style="font-size: 12px;">or</MudText>
+                <span style="display: inline-block; height: 3px; width: 50px; border-top: solid 1px #E3E3E3;"></span>
+            </div>
+            <div class="mt-3 w-100">
+                <MudTextField FullWidth="true" @bind-Value="_model.Email" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Email" InputType="InputType.Email"></MudTextField>
+                <span class="my-2"></span>
+                <MudTextField FullWidth="true" @bind-Value="_model.Password" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Password" InputType="InputType.Password"></MudTextField>
+            </div>
 
-        <MudButton Variant="Variant.Filled" Class="mt-5" FullWidth="true" Color="Color.Dark">Log In</MudButton>
-        <MudText Class="my-3" Style="font-size: 12px;">Not a member? <MudLink Style="font-size: 12px;" Href="./account/sign-up">Create an account</MudLink></MudText>
-    </MudPaper>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="mt-5" FullWidth="true" Color="Color.Dark">Log In</MudButton>
+            <MudText Class="my-3" Style="font-size: 12px;">Not a member? <MudLink Style="font-size: 12px;" Href="./account/sign-up">Create an account</MudLink></MudText>
+            
+            <MudOverlay Visible="_sendRequest" DarkBackground="true" Absolute="true">
+                <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+            </MudOverlay>
+        </MudPaper>
+    </EditForm>
 </div>

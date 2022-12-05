@@ -2,4 +2,11 @@
 
 <PageTitle>Рецензии пользователей</PageTitle>
 
-<MudText Style="font-size: 40px">Привет мир!</MudText>
+<AuthorizeView>
+    <Authorized>
+        <MudText Style="font-size: 40px">Вы авторизированы!</MudText>
+    </Authorized>
+    <NotAuthorized>
+        <MudText Style="font-size: 40px">Вы не авторизированы!</MudText>
+    </NotAuthorized>
+</AuthorizeView>

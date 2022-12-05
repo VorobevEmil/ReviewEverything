@@ -1,0 +1,8 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="LogoutAsync">Logout</MudButton>
+    </Authorized>
+    <NotAuthorized>
+        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="@(new EventCallback(null, () => NavigationManager.NavigateTo("./account/sign-in")))">Sign in</MudButton>
+    </NotAuthorized>
+</AuthorizeView>

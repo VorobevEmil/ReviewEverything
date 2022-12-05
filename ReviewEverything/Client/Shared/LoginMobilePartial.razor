@@ -1,0 +1,8 @@
+﻿@if (_isAuthenticated)
+{
+    <MudListItem Text="Logout" OnClick="LogoutAsync" />
+}
+else
+{
+    <MudListItem Text="Sign In" Href="./account/sign-in" />
+}
