@@ -58,6 +58,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
+app.UseAuthentication();
+
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
