@@ -17,7 +17,7 @@
                 <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
                 <MudText Style="font-size: 24px;">Reviews of everything</MudText>
                 <MudSpacer />
-                <MudToggleIconButton Color="Color.Inherit" @bind-Toggled="IsDarkMode" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
+                <MudToggleIconButton Color="Color.Inherit" Toggled="IsDarkMode" ToggledChanged="ChangeThemeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 <CascadingValue Value="this">
                     <LoginPartial />
                 </CascadingValue>
@@ -35,7 +35,7 @@
                 </MudDrawerHeader>
                 <MudList Clickable="true">
                     <CascadingValue Value="this">
-                        <LoginMobilePartial />
+                        <LoginPartial />
                     </CascadingValue>
                     <MudDivider/>
                     <MudListItem Text="Рецензии пользователей"/>

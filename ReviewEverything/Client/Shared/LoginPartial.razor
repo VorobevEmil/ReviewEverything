@@ -1,8 +1,18 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="LogoutAsync">Logout</MudButton>
+        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+            <MudListItem Text="Logout" OnClick="LogoutAsync" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="LogoutAsync">Logout</MudButton>
+        </MudHidden>
     </Authorized>
     <NotAuthorized>
-        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="@(new EventCallback(null, () => NavigationManager.NavigateTo("./account/sign-in")))">Sign in</MudButton>
+        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+            <MudListItem Text="Sign In" Href="./account/sign-in" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="@(new EventCallback(null, () => NavigationManager.NavigateTo("./account/sign-in")))">Sign in</MudButton>
+        </MudHidden>
     </NotAuthorized>
 </AuthorizeView>
