@@ -38,4 +38,9 @@ public partial class SignIn
 
         _sendRequest = false;
     }
+
+    private void SignInGoogle()
+    {
+        NavigationManager.NavigateTo("/api/Account/SignIn-Google", true);
+    }
 }

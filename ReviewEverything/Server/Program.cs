@@ -1,29 +1,18 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using ReviewEverything.Server.Data;
-using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Options;
+using ReviewEverything.Server.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.InstallServicesInAssembly();
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+builder.Services.AddAuthentication()
+    .AddGoogle(opt =>
+    {
+        opt.ClientId = "916919818119-ndfp1794mkuq4gghh9r1js73ntebfdmi.apps.googleusercontent.com";
+        opt.ClientSecret = "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";
+    });
 
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ReviewEverything API", Version = "v1" });
-});
-
-builder.Services.AddDbContext<AppDbContext>(opt => 
-    opt.UseNpgsql(builder.Configuration["ConnectionStrings:PostgreSQL"]));
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
-
-builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -51,7 +40,8 @@ else
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();

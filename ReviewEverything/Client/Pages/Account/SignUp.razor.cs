@@ -11,7 +11,7 @@ namespace ReviewEverything.Client.Pages.Account
     {
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
 
-        private SignUpModel _model = new();
+        private readonly SignUpModel _model = new();
         private bool _sendRequest = false;
         private async Task OnValidSubmitAsync(EditContext context)
         {
