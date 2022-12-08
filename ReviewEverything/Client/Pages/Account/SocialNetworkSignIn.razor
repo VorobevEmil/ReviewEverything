@@ -1,13 +1,7 @@
 ﻿<div class="mt-5">
-    <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true" OnClick="SignInGoogle">Continue with Google</MudButton>
+    <form method="post" action="/api/GoogleOAuth/SignIn">
+        <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">Continue with Google</MudButton>
+    </form>
     <div class="mt-2"></div>
     <MudButton StartIcon="@Icons.Custom.Brands.Facebook" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">Continue with Facebook</MudButton>
 </div>
-
-@code
-{
-    private void SignInGoogle()
-    {
-        NavigationManager.NavigateTo("/api/Account/SignIn-Google", true);
-    }
-}

@@ -1,14 +1,7 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Shared.Models.Account;
-using System.Threading;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Cors;
 
 namespace ReviewEverything.Server.Controllers
 {
@@ -91,46 +84,6 @@ namespace ReviewEverything.Server.Controllers
                 userInfo.Claims = User.Claims.Select(t => new ApiClaim(t.Type, t.Value)).ToList();
             }
             return Ok(userInfo);
-        }
-
-        [HttpGet("SignIn-Google")]
-        public IActionResult SignInGoogle()
-        {
-            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        }
-
-        [HttpGet("Google-Response")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-            if (result.Succeeded)
-            {
-                var email = result.Principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
-                if (email != null)
-                {
-                    var applicationUser = await _userManager.FindByEmailAsync(email);
-                    if (applicationUser != null)
-                    {
-                        await _signInManager.SignInAsync(applicationUser, false, null);
-                        return Redirect("/");
-                    }
-                    else
-                    {
-                        var user = new ApplicationUser()
-                        {
-                            Email = email
-                        };
-                        await _userManager.CreateAsync(user);
-                        await _signInManager.SignInAsync(user, false, null);
-
-                        return Redirect("/account/set-username");
-                    }
-                }
-            }
-
-            return BadRequest("Не удалось войти в систему");
         }
     }
 }

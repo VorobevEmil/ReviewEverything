@@ -9,10 +9,9 @@ builder.InstallServicesInAssembly();
 builder.Services.AddAuthentication()
     .AddGoogle(opt =>
     {
-        opt.ClientId = "916919818119-ndfp1794mkuq4gghh9r1js73ntebfdmi.apps.googleusercontent.com";
-        opt.ClientSecret = "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";
+        opt.ClientId = "751529687127-bba95tajqo5qm9qjf37mqmm1thttu5pj.apps.googleusercontent.com";
+        opt.ClientSecret = "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";
     });
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddAutoMapper(typeof(Program));
