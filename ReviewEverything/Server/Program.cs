@@ -12,7 +12,14 @@ builder.Services.AddAuthentication()
         opt.ClientId = "751529687127-bba95tajqo5qm9qjf37mqmm1thttu5pj.apps.googleusercontent.com";
         opt.ClientSecret = "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";
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(configure =>
+{
+    configure.AddPolicy("Admin", pb =>
+    {
+        pb.RequireAuthenticatedUser()
+            .RequireRole(new[] { "Admin" });
+    });
+});
 
 builder.Services.AddAutoMapper(typeof(Program));
 

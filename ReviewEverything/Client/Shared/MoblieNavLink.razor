@@ -1,0 +1,35 @@
+﻿@using System.Security.Claims
+@using ReviewEverything.Shared.Contracts.Responses
+<AuthorizeView Policy="Admin">
+    <Authorized>
+        <MudDivider />
+        <MudListItem Text="Панель управления">
+            <NestedList>
+                <MudListItem>Категории</MudListItem>
+            </NestedList>
+        </MudListItem>
+    </Authorized>
+</AuthorizeView>
+<MudDivider />
+<AuthorizeView>
+    <Authorized>
+        <MudListItem Text="Моя страница" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
+    </Authorized>
+</AuthorizeView>
+<MudDivider />
+<MudListItem Text="Категории" InitiallyExpanded="true">
+    <NestedList>
+        @if (Categories != null)
+        {
+            foreach (var category in Categories)
+            {
+                <MudListItem Text="@category.Title" />
+            }
+        }
+    </NestedList>
+</MudListItem>
+
+@code
+{
+    [CascadingParameter] private List<CategoryResponse> Categories { get; set; } = default!;
+}

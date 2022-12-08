@@ -1,0 +1,43 @@
+﻿@page "/Admin/Category"
+@attribute [Authorize("Admin")]
+
+<div class="container mt-5">
+    @if (Categories != null)
+    {
+        <MudTable Items="Categories">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Категории</MudText>
+                <MudSpacer />
+                <MudButton Variant="Variant.Filled" OnClick="CreateCategoryAsync">Добавить</MudButton>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Название</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Title">@context.Title</MudTd>
+                <MudTd DataLabel="Edit/Delete">
+                    <div>
+                        <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Info" />
+                        <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" />
+                    </div>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager RowsPerPageString="" />
+            </PagerContent>
+        </MudTable>
+    }
+</div>
+
+<MudMessageBox @ref="Mbox" Title="Создать категорию">
+    <MessageContent>
+        <MudTextField DebounceInterval="500" Style="width: 320px;" @bind-Value="_categoryRequest.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название категории" />
+    </MessageContent>
+    <YesButton>
+        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Primary">Создать</MudButton>
+    </YesButton>
+    <NoButton>
+        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Secondary">Отмена</MudButton>
+    </NoButton>
+</MudMessageBox>

@@ -32,6 +32,11 @@ namespace ReviewEverything.Server.Data.Configuration
             builder.HasMany(left => left.Tags)
                 .WithMany(right => right.Reviews)
                 .UsingEntity(entity => entity.ToTable("ReviewTags"));
+
+
+            builder.HasMany(left => left.LikeUsers)
+                .WithMany(right => right.LikeReviews)
+                .UsingEntity(entity => entity.ToTable("Likes"));
         }
     }
 }

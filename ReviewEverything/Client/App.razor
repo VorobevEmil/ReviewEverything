@@ -9,7 +9,7 @@
                         </Authorized>
                         <NotAuthorized>
                             @{
-                                NavigationManager.NavigateTo("");
+                                NavigationManager.NavigateTo("/account/sign-in");
                             }
                         </NotAuthorized>
                     </AuthorizeView>
@@ -29,7 +29,7 @@
                 </Authorized>
                 <NotAuthorized>
                     @{
-                        NavigationManager.NavigateTo("");
+                        NavigationManager.NavigateTo("/account/sign-in");
                     }
                 </NotAuthorized>
             </AuthorizeView>

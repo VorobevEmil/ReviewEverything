@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace ReviewEverything.Server.Installers
 {
@@ -6,7 +8,14 @@ namespace ReviewEverything.Server.Installers
     {
         public void InstallerServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.WriteIndented = true;
+                });
             builder.Services.AddRazorPages();
 
             builder.Services.AddSwaggerGen(options =>

@@ -19,4 +19,13 @@ builder.Services.AddScoped<HostAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<HostAuthenticationStateProvider>());
 builder.Services.AddBlazoredLocalStorage();
 
+builder.Services.AddAuthorizationCore(configure =>
+{
+    configure.AddPolicy("Admin", pb =>
+    {
+        pb.RequireAuthenticatedUser()
+            .RequireRole(new []{ "Admin" });
+    });
+});
+
 await builder.Build().RunAsync();

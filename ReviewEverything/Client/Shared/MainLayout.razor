@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Security.Claims
+@inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="IsDarkMode" />
 <MudDialogProvider />
@@ -9,13 +10,59 @@
     <MudAppBar Elevation="1">
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerOpen = !DrawerOpen)" />
-                <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
-                <MudText Style="font-size: 18px;">Reviews of everything</MudText>
+                <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerOpen = !DrawerOpen)" />
+                    <div style="display: flex; align-items: center;">
+                        <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
+                        <MudText Style="font-size: 18px;">Reviews of everything</MudText>
+                    </div>
+                    <MudIconButton Color="Color.Inherit" Icon="@Icons.Filled.Search" />
+                </div>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
-                <MudText Style="font-size: 24px;">Reviews of everything</MudText>
+                <div style="display: flex; align-items: center;">
+                    <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
+                    <MudText Style="font-size: 24px;">Reviews of everything</MudText>
+                    <span class="mx-3"></span>
+                    <AuthorizeView Policy="Admin">
+                        <Authorized>
+                            <MudMenu TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter" FullWidth="true">
+                                <ActivatorContent>
+                                    <MudButton StartIcon="@Icons.Material.Filled.Security" Variant="Variant.Outlined" Color="Color.Inherit">Панель управления</MudButton>
+                                </ActivatorContent>
+                                <ChildContent>
+                                    <MudMenuItem Href="/admin/category">Категории</MudMenuItem>
+                                </ChildContent>
+                            </MudMenu>
+                            <span class="mx-1"></span>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView>
+                        <Authorized>
+                            <MudMenu TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter">
+                                <ActivatorContent>
+                                    <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">Аккаунт</MudButton>
+                                </ActivatorContent>
+                                <ChildContent>
+                                    <MudMenuItem Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")">Моя страница</MudMenuItem>
+                                    <MudMenuItem>Настройки</MudMenuItem>
+                                </ChildContent>
+                            </MudMenu>
+                            <span class="mx-1"></span>
+                        </Authorized>
+                    </AuthorizeView>
+                    <MudMenu TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter" FullWidth="true">
+                        <ActivatorContent>
+                            <MudButton StartIcon="@Icons.Material.Filled.Category" Variant="Variant.Outlined" Color="Color.Inherit">Категории</MudButton>
+                        </ActivatorContent>
+                        <ChildContent>
+                            @foreach (var category in Categories)
+                            {
+                                <MudMenuItem>@category.Title</MudMenuItem>
+                            }
+                        </ChildContent>
+                    </MudMenu>
+                </div>
                 <MudSpacer />
                 <MudToggleIconButton Color="Color.Inherit" Toggled="IsDarkMode" ToggledChanged="ChangeThemeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 <CascadingValue Value="this">
@@ -31,14 +78,15 @@
             <MudDrawer @bind-Open="DrawerOpen" Elevation="2">
                 <MudDrawerHeader Style="@("background: " + (IsDarkMode ? "#151521ff" : "#f5f5f5ff"))" Dense="true">
                     <MudSpacer />
-                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" @bind-Toggled="IsDarkMode" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay"/>
+                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" @bind-Toggled="IsDarkMode" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 </MudDrawerHeader>
                 <MudList Clickable="true">
                     <CascadingValue Value="this">
                         <LoginPartial />
                     </CascadingValue>
-                    <MudDivider/>
-                    <MudListItem Text="Рецензии пользователей"/>
+                    <CascadingValue Value="Categories">
+                        <MoblieNavLink />
+                    </CascadingValue>
                 </MudList>
             </MudDrawer>
         </MudHidden>

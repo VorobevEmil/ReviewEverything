@@ -9,6 +9,7 @@ namespace ReviewEverything.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class GoogleOAuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -23,12 +24,12 @@ public class GoogleOAuthController : ControllerBase
     [HttpPost("SignIn")]
     public IActionResult SignIn()
     {
-        var properties = new AuthenticationProperties { RedirectUri = Url.Action("ReceiveEmail") };
+        var properties = new AuthenticationProperties { RedirectUri = Url.Action("ReceiveAccountGoogle") };
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }
 
-    [HttpGet("ReceiveEmail")]
-    public async Task<IActionResult> ReceiveEmail()
+    [HttpGet("ReceiveAccountGoogle")]
+    public async Task<IActionResult> ReceiveAccountGoogle()
     {
         var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
@@ -47,7 +48,7 @@ public class GoogleOAuthController : ControllerBase
                 {
                     var user = new ApplicationUser()
                     {
-                        UserName = email,
+                        UserName = email.Split('@').First(),
                         Email = email
                     };
                     await _userManager.CreateAsync(user);

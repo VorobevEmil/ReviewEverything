@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
+using ReviewEverything.Server.Services;
 
 namespace ReviewEverything.Server.Installers
 {
@@ -14,6 +15,10 @@ namespace ReviewEverything.Server.Installers
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
+
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
         }
     }
 }

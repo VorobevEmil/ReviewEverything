@@ -8,6 +8,5 @@
         public Review Review { get; set; } = default!; 
         public string UserId { get; set; } = default!;
         public ApplicationUser User { get; set; } = default!;
-        public List<ApplicationUser> LikeUsers { get; set; } = default!;
     }
 }

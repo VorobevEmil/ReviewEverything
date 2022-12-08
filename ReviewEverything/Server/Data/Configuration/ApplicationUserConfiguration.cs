@@ -16,7 +16,7 @@ namespace ReviewEverything.Server.Data.Configuration
                 .WithOne(right => right.User)
                 .HasForeignKey(right => right.UserId);
 
-            builder.HasMany(left => left.LikeComments)
+            builder.HasMany(left => left.LikeReviews)
                 .WithMany(right => right.LikeUsers)
                 .UsingEntity(entity => entity.ToTable("Likes"));
 

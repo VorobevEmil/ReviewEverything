@@ -16,5 +16,6 @@ namespace ReviewEverything.Server.Models
         public Composition Composition { get; set; } = default!;
         public List<Comment> Comments { get; set; } = default!;
         public List<Tag> Tags { get; set; } = default!;
+        public List<ApplicationUser> LikeUsers { get; set; } = default!;
     }
 }

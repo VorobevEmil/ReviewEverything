@@ -7,6 +7,6 @@ namespace ReviewEverything.Server.Models
         public List<UserScore> UserScores { get; set; } = default!;
         public List<Review> AuthorReviews { get; set; } = default!;
         public List<Comment> Comments { get; set; } = default!;
-        public List<Comment> LikeComments { get; set; } = default!;
+        public List<Review> LikeReviews { get; set; } = default!;
     }
 }

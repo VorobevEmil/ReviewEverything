@@ -1,0 +1,13 @@
+﻿@page "/user/{id}"
+@attribute [Authorize]
+
+<div class="container">
+
+    @if (UserResponse != null)
+    {
+        foreach (var rewiew in UserResponse.Reviews)
+        {
+
+        }
+    }
+</div>
