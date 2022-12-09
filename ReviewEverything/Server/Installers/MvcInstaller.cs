@@ -1,6 +1,10 @@
-﻿using System.Text.Json;
+﻿using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using ReviewEverything.Server.Filters;
 
 namespace ReviewEverything.Server.Installers
 {
@@ -8,7 +12,7 @@ namespace ReviewEverything.Server.Installers
     {
         public void InstallerServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
+            builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -17,6 +21,11 @@ namespace ReviewEverything.Server.Installers
                     options.JsonSerializerOptions.WriteIndented = true;
                 });
             builder.Services.AddRazorPages();
+            builder.Services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilter>();
+            });
+            builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
             builder.Services.AddSwaggerGen(options =>
             {

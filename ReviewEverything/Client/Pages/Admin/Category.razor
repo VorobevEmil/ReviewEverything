@@ -28,8 +28,17 @@
             </PagerContent>
         </MudTable>
     }
+    else
+    {
+        <MudOverlay Visible="true" DarkBackground="true" >
+            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+        </MudOverlay>
+    }
 </div>
 
+@{
+#pragma warning disable CS8625
+}
 <MudMessageBox @ref="MessageBox" Title="Создать категорию">
     <MessageContent>
         <MudTextField DebounceInterval="500" Style="width: 320px;" @bind-Value="CategoryRequest.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название категории" />
@@ -41,3 +50,6 @@
         <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Secondary">Отмена</MudButton>
     </NoButton>
 </MudMessageBox>
+@{
+#pragma warning restore CS8625
+}
