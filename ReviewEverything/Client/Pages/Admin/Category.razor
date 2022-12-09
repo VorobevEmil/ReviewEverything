@@ -4,22 +4,22 @@
 <div class="container mt-5">
     @if (Categories != null)
     {
-        <MudTable Items="Categories">
+        <MudTable Items="Categories" Dense="true">
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Категории</MudText>
                 <MudSpacer />
-                <MudButton Variant="Variant.Filled" OnClick="CreateCategoryAsync">Добавить</MudButton>
+                <MudButton Variant="Variant.Filled" OnClick="(async() => await CreateOrEditCategoryAsync())">Добавить</MudButton>
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>Название</MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Title">@context.Title</MudTd>
-                <MudTd DataLabel="Edit/Delete">
-                    <div>
-                        <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Info" />
-                        <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" />
+                <MudTd DataLabel="Название">@context.Title</MudTd>
+                <MudTd>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Edit" Color="Color.Info" OnClick="(async() => await CreateOrEditCategoryAsync(context.Id, context.Title))" />
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Delete" Color="Color.Error" OnClick="(async() => await DeleteCategoryAsync(context.Id))" />
                     </div>
                 </MudTd>
             </RowTemplate>
@@ -30,12 +30,12 @@
     }
 </div>
 
-<MudMessageBox @ref="Mbox" Title="Создать категорию">
+<MudMessageBox @ref="MessageBox" Title="Создать категорию">
     <MessageContent>
-        <MudTextField DebounceInterval="500" Style="width: 320px;" @bind-Value="_categoryRequest.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название категории" />
+        <MudTextField DebounceInterval="500" Style="width: 320px;" @bind-Value="CategoryRequest.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название категории" />
     </MessageContent>
     <YesButton>
-        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Primary">Создать</MudButton>
+        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Primary">Сохранить</MudButton>
     </YesButton>
     <NoButton>
         <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Secondary">Отмена</MudButton>

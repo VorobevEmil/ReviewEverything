@@ -60,6 +60,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

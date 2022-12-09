@@ -65,7 +65,7 @@ public class CategoryController : ControllerBase
         return Created(Url.Action($"GetById", new { id = category.Id })!, category);
     }
 
-    [HttpPut]
+    [HttpPut("{categoryId}")]
     [Authorize("Admin")]
     // Протестить с добавленными произведениями
     public async Task<IActionResult> Update([FromRoute] int categoryId, [FromBody] CategoryRequest request)
@@ -78,7 +78,7 @@ public class CategoryController : ControllerBase
 
         var updated = await _service.UpdateCategoryAsync(category);
         if (updated)
-            return Ok(categoryId);
+            return Ok(category);
 
         return NotFound();
     }
