@@ -11,6 +11,7 @@ namespace ReviewEverything.Client.Shared
         {
             await HttpClient.PostAsync("api/Account/Logout", null);
             Parent.RefreshState();
+            Parent.ChangeDrawerOpen();
         }
     }
 }

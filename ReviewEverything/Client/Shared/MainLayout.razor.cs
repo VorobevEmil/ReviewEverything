@@ -30,6 +30,11 @@ public partial class MainLayout
         await LocalStorage.SetItemAsync("isDarkMode", IsDarkMode);
     }
 
+    public void ChangeDrawerOpen()
+    {
+        DrawerOpen = !DrawerOpen;
+    }
+
     public void RefreshState()
     {
         HostAuthenticationStateProvider.RefreshState();

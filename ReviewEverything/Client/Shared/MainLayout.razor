@@ -11,7 +11,7 @@
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                 <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
-                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerOpen = !DrawerOpen)" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ChangeDrawerOpen" />
                     <div style="display: flex; align-items: center;">
                         <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
                         <MudText Style="font-size: 18px;">Reviews of everything</MudText>
@@ -85,7 +85,9 @@
                         <LoginPartial />
                     </CascadingValue>
                     <CascadingValue Value="Categories">
-                        <MoblieNavLink />
+                        <CascadingValue Value="this">
+                            <MoblieNavLink />
+                        </CascadingValue>
                     </CascadingValue>
                 </MudList>
             </MudDrawer>

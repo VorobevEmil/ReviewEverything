@@ -5,7 +5,7 @@
         <MudDivider />
         <MudListItem Text="Панель управления">
             <NestedList>
-                <MudListItem>Категории</MudListItem>
+                <MudListItem Href="./admin/category" OnClick="MainLayout.ChangeDrawerOpen">Категории</MudListItem>
             </NestedList>
         </MudListItem>
     </Authorized>
@@ -13,7 +13,12 @@
 <MudDivider />
 <AuthorizeView>
     <Authorized>
-        <MudListItem Text="Моя страница" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
+        <MudListItem Text="Аккаунт">
+            <NestedList>
+                <MudListItem Text="Моя страница" OnClick="MainLayout.ChangeDrawerOpen" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
+                <MudListItem Text="Настройки" OnClick="MainLayout.ChangeDrawerOpen" />
+            </NestedList>
+        </MudListItem>
     </Authorized>
 </AuthorizeView>
 <MudDivider />
@@ -23,7 +28,7 @@
         {
             foreach (var category in Categories)
             {
-                <MudListItem Text="@category.Title" />
+                <MudListItem OnClick="MainLayout.ChangeDrawerOpen" Text="@category.Title" />
             }
         }
     </NestedList>
@@ -32,4 +37,6 @@
 @code
 {
     [CascadingParameter] private List<CategoryResponse> Categories { get; set; } = default!;
+    [CascadingParameter] private MainLayout MainLayout { get; set; } = default!;
+
 }
