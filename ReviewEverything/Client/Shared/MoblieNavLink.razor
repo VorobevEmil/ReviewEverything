@@ -22,21 +22,8 @@
     </Authorized>
 </AuthorizeView>
 <MudDivider />
-<MudListItem Text="Категории" InitiallyExpanded="true">
-    <NestedList>
-        @if (Categories != null)
-        {
-            foreach (var category in Categories)
-            {
-                <MudListItem OnClick="MainLayout.ChangeDrawerOpen" Text="@category.Title" />
-            }
-        }
-    </NestedList>
-</MudListItem>
 
 @code
 {
-    [CascadingParameter] private List<CategoryResponse> Categories { get; set; } = default!;
     [CascadingParameter] private MainLayout MainLayout { get; set; } = default!;
-
 }

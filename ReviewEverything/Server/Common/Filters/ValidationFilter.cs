@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using ReviewEverything.Shared.Contracts.Responses;
 
-namespace ReviewEverything.Server.Filters
+namespace ReviewEverything.Server.Common.Filters
 {
     public class ValidationFilter : IAsyncActionFilter
     {

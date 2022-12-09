@@ -16,6 +16,7 @@ namespace ReviewEverything.Server.Data.Configuration
             builder.Property(x => x.Title).IsRequired();
             builder.Property(x => x.Body).IsRequired();
             builder.Property(x => x.AuthorScore).IsRequired();
+            builder.Property(x => x.CreationDate).IsRequired();
 
             builder.HasMany(left => left.CloudImages)
                 .WithOne(right => right.Review)

@@ -18,6 +18,8 @@ namespace ReviewEverything.Client.Pages.Admin
 
         protected override async Task OnInitializedAsync()
         {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+
             Categories = (await HttpClient.GetFromJsonAsync<List<CategoryResponse>>("api/Category"))!;
         }
 
@@ -46,9 +48,9 @@ namespace ReviewEverything.Client.Pages.Admin
 
         private bool CheckMinSymbolsCategoryTitle()
         {
-            if (CategoryRequest.Title.Length <= 4)
+            if (CategoryRequest.Title.Length <= 3)
             {
-                Snackbar.Add("Название категории должно быть больше 4 символов", Severity.Warning);
+                Snackbar.Add("Название категории должно не менее 3 символов", Severity.Warning);
                 return false;
             }
 

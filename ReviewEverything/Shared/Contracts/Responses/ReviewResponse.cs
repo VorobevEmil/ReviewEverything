@@ -1,10 +1,19 @@
-﻿namespace ReviewEverything.Shared.Contracts.Responses
+﻿using System.Xml.Linq;
+
+namespace ReviewEverything.Shared.Contracts.Responses
 {
     public class ReviewResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = default!;
+        public CloudImageResponse CloudImage { get; set; } = default!;
+        public int AuthorScore { get; set; }
+        public string AuthorId { get; set; } = default!;
+        public string Author { get; set; } = default!;
         public int CompositionId { get; set; }
-        public CompositionResponse Composition { get; set; } = default!;
+        public string Composition { get; set; } = default!;
+        public int CommentCount { get; set; } = default!;
+        public int LikeUsers { get; set; } = default!;
+        public DateTime CreationDate { get; set; }
     }
 }

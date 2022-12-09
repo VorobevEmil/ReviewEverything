@@ -18,6 +18,11 @@ public partial class SignIn
     private readonly SignInModel _model = new();
     private bool _sendRequest = false;
 
+    protected override void OnInitialized()
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
+    }
+
     private async Task OnValidSubmitAsync(EditContext context)
     {
         _sendRequest = true;
@@ -25,7 +30,8 @@ public partial class SignIn
         var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Account/SignIn", _model);
         if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
         {
-            Snackbar.Add("Пользователь успешно авторизован", Severity.Success);
+            Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Success);
+
             HostAuthenticationStateProvider.RefreshState();
             await OnInitializedAsync();
             Parent.RefreshState();
@@ -37,10 +43,5 @@ public partial class SignIn
         }
 
         _sendRequest = false;
-    }
-
-    private void SignInGoogle()
-    {
-        NavigationManager.NavigateTo("/api/Account/SignIn-Google", true);
     }
 }

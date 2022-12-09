@@ -1,12 +1,41 @@
 ﻿@page "/"
+<PageTitle>Обзоры пользователей</PageTitle>
 
-<PageTitle>Рецензии пользователей</PageTitle>
+<div class="container mt-5">
+    @if (_titleCategory != null)
+    {
+        <MudText Class="mt-3" Style="font-size: 2.125rem; font-weight: 900">@_titleCategory</MudText>
+    }
+    else
+    {
+        <MudSkeleton Height="40px" Width="90px" Animation="Animation.Wave" />
+    }
+    @if (Categories != null)
+    {
+        <MudTabs Class="my-3" Elevation="4" Rounded="true" AlwaysShowScrollButtons="true">
 
-<AuthorizeView>
-    <Authorized>
-        <MudText Style="font-size: 40px">Вы авторизированы!</MudText>
-    </Authorized>
-    <NotAuthorized>
-        <MudText Style="font-size: 40px">Вы не авторизированы!</MudText>
-    </NotAuthorized>
-</AuthorizeView>
+            <MudTabPanel Text="Все обзоры" OnClick="(() =>  SelectedCategoryAsync())" />
+            @foreach (var category in Categories)
+            {
+                <MudTabPanel Text="@category.Title" OnClick="(() => SelectedCategoryAsync(category.Id))" />
+            }
+        </MudTabs>
+
+        @if (Reviews != null)
+        {
+            @foreach (var review in Reviews)
+            {
+                <div class="my-3 d-flex">
+                    <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="200" />
+                    <div>
+
+                    </div>
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <MudSkeleton Height="80px" Animation="Animation.Wave" />
+    }
+</div>

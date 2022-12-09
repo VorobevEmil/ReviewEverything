@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
-using ReviewEverything.Server.Filters;
+using ReviewEverything.Server.Common.Filters;
 
 namespace ReviewEverything.Server.Installers
 {
@@ -25,12 +25,9 @@ namespace ReviewEverything.Server.Installers
             {
                 options.Filters.Add<ValidationFilter>();
             });
+#pragma warning disable CS0618 
             builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
-
-            builder.Services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ReviewEverything API", Version = "v1" });
-            });
+#pragma warning restore CS0618
         }
     }
 }

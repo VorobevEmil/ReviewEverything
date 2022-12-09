@@ -1,13 +1,13 @@
 ﻿@page "/user/{id}"
 @attribute [Authorize]
 
-<div class="container">
-
+<div class="container mt-5">
     @if (UserResponse != null)
     {
-        foreach (var rewiew in UserResponse.Reviews)
-        {
-
-        }
+        <MudText>@UserResponse.UserName</MudText>
+    }
+    else
+    {
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="110px" />
     }
 </div>

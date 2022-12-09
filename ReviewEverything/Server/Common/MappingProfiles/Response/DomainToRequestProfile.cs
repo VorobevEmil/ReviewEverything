@@ -2,7 +2,7 @@
 using ReviewEverything.Server.Models;
 using ReviewEverything.Shared.Contracts.Requests;
 
-namespace ReviewEverything.Server.MappingProfiles
+namespace ReviewEverything.Server.Common.MappingProfiles.Response
 {
     public class DomainToRequestProfile : Profile
     {

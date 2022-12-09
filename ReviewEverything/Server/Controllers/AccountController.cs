@@ -28,11 +28,6 @@ namespace ReviewEverything.Server.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(SignInModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Данные не валидны");
-            }
-
             var applicationUser = await _userManager.FindByEmailAsync(model.Email);
             if (applicationUser != null)
             {
@@ -48,11 +43,6 @@ namespace ReviewEverything.Server.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Данные не валидны");
-            }
-
             if (await _userManager.FindByEmailAsync(model.Email) != null || await _userManager.FindByNameAsync(model.Username) != null)
             {
                 return Conflict("Пользователь уже существует в системе");
