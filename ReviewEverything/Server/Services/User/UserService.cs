@@ -15,10 +15,7 @@ namespace ReviewEverything.Server.Services
 
         public async Task<ApplicationUser?> GetUserByIdAsync(string id)
         {
-            return await _context.Users
-                .Include(user => user.AuthorReviews)
-                .ThenInclude(review => review.Composition)
-                .ThenInclude(review => review.Category)
+            return await _context.Users 
                 .FirstOrDefaultAsync(user => user.Id == id);
         }
 

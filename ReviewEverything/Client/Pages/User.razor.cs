@@ -11,7 +11,9 @@ namespace ReviewEverything.Client.Pages
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
         [Parameter] public string Id { get; set; } = default!;
-        private UserResponse? UserResponse { get; set; } = default;
+        private UserResponse? UserResponse { get; set; }
+        private List<ReviewResponse> Reviews { get; set; } = default!;
+        private bool _editor;
 
         protected override async Task OnInitializedAsync()
         {
@@ -19,13 +21,22 @@ namespace ReviewEverything.Client.Pages
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 UserResponse = (await httpResponseMessage.Content.ReadFromJsonAsync<UserResponse>())!;
-                UserResponse.Reviews.AddRange(new[]
-                    {
-                        new ReviewResponse() {Id = 1, Title = "Îáçîð ¹1"},
-                        new ReviewResponse(){Id = 2, Title = "Îáçîð ¹2"},
-                        new ReviewResponse(){Id = 2, Title = "Îáçîð ¹2"},
-                    });
             }
+
+            var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+            if (user.Identity!.IsAuthenticated && UserResponse != null)
+            {
+                if (user.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value == UserResponse.Id || user.IsInRole("Admin"))
+                {
+                    _editor = true;
+                }
+            }
+        }
+
+        private async Task GetReviewsFromApiAsync(int? categoryId)
+        {
+            Reviews = null!;
+            await Task.CompletedTask;
         }
     }
 }

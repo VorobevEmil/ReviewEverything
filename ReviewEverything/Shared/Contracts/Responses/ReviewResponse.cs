@@ -1,11 +1,10 @@
-﻿using System.Xml.Linq;
-
-namespace ReviewEverything.Shared.Contracts.Responses
+﻿namespace ReviewEverything.Shared.Contracts.Responses
 {
     public class ReviewResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = default!;
+        public string Subtitle { get; set; } = default!;
         public CloudImageResponse CloudImage { get; set; } = default!;
         public int AuthorScore { get; set; }
         public string AuthorId { get; set; } = default!;

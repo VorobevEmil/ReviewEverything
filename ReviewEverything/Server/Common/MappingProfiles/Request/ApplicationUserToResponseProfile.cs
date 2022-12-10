@@ -12,9 +12,7 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Request
                 .ForMember(dest => dest.Id, opt =>
                     opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.UserName, opt =>
-                    opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Reviews, opt =>
-                    opt.MapFrom(src => src.AuthorReviews));
+                    opt.MapFrom(src => src.UserName));
         }
     }
 }

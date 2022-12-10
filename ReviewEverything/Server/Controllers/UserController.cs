@@ -1,7 +1,5 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services;
 using ReviewEverything.Shared.Contracts.Responses;
 

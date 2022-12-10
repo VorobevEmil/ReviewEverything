@@ -13,6 +13,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Request
                     opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Title, opt =>
                     opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Subtitle, opt =>
+                    opt.MapFrom(src => src.Subtitle))
                 .ForMember(dest => dest.CloudImage, opt =>
                     opt.MapFrom(src => src.CloudImages[0]))
                 .ForMember(dest => dest.CompositionId, opt =>
