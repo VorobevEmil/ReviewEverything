@@ -12,14 +12,14 @@ namespace ReviewEverything.Client.Components
             new ReviewResponse()
             {
                 Id = 1,
-                Title = "Tommy ìàòü åãî Shelby!",
-                Subtitle = "Âû òàêîãî åù¸ íå âèäåëè, îí ñàìûé îñòðûé èç âñåõ êîçûðüêîâ",
+                Title = "Tommy Ð¼Ð°Ñ‚ÑŒ ÐµÐ³Ð¾ Shelby!",
+                Subtitle = "Ð’Ñ‹ Ñ‚Ð°ÐºÐ¾Ð³Ð¾ ÐµÑ‰Ñ‘ Ð½Ðµ Ð²Ð¸Ð´ÐµÐ»Ð¸, Ð¾Ð½ ÑÐ°Ð¼Ñ‹Ð¹ Ð¾ÑÑ‚Ñ€Ñ‹Ð¹ Ð¸Ð· Ð²ÑÐµÑ… ÐºÐ¾Ð·Ñ‹Ñ€ÑŒÐºÐ¾Ð²",
                 CloudImage = new CloudImageResponse()
                 {
                     Url = "https://sun9-22.userapi.com/impg/XruCHrOaxqOtKzhlmd-k4LRu-MXbq8x9_k6jbw/dJisNJWwwZ0.jpg?size=1271x714&quality=96&sign=c86a1744a378dcebc671671969ef7f3c&type=album"
                 },
                 Composition = "Tommy Shelby",
-                Author = "Äæîí Øåëáè",
+                Author = "Ð”Ð¶Ð¾Ð½ Ð¨ÐµÐ»Ð±Ð¸",
                 AuthorId = Guid.NewGuid().ToString(),
                 CompositionId = 1,
                 AuthorScore = 10,
@@ -31,13 +31,13 @@ namespace ReviewEverything.Client.Components
             {
                 Id = 1,
                 Title = "Tommy Shelby 2",
-                Subtitle = "Âû òàêîãî åù¸ íå âèäåëè",
+                Subtitle = "Ð’Ñ‹ Ñ‚Ð°ÐºÐ¾Ð³Ð¾ ÐµÑ‰Ñ‘ Ð½Ðµ Ð²Ð¸Ð´ÐµÐ»Ð¸",
                 CloudImage = new CloudImageResponse()
                 {
                     Url = "https://sun9-81.userapi.com/impg/SCRM6JtSlApwazwsE7VoOE7E6tFg5GlmMVMJZw/CejAXCIm258.jpg?size=1072x711&quality=96&sign=2ba6ca2aa0d5aaef9fe3ad933cbcc15f&type=album"
                 },
                 Composition = "Tommy Shelby",
-                Author = "Àðòóð Øåëáè",
+                Author = "ÐÑ€Ñ‚ÑƒÑ€ Ð¨ÐµÐ»Ð±Ð¸",
                 AuthorId = Guid.NewGuid().ToString(),
                 CompositionId = 1,
                 AuthorScore = 10,
@@ -48,14 +48,14 @@ namespace ReviewEverything.Client.Components
             new ReviewResponse()
             {
                 Id = 2,
-                Title = "Òîìàñ ìàòü åãî Øåëáè",
-                Subtitle = "Òàêîãî Òîìàñà Øåëáè âû åù¸ íå âèäåëè",
+                Title = "Ð¢Ð¾Ð¼Ð°Ñ Ð¼Ð°Ñ‚ÑŒ ÐµÐ³Ð¾ Ð¨ÐµÐ»Ð±Ð¸",
+                Subtitle = "Ð¢Ð°ÐºÐ¾Ð³Ð¾ Ð¢Ð¾Ð¼Ð°ÑÐ° Ð¨ÐµÐ»Ð±Ð¸ Ð²Ñ‹ ÐµÑ‰Ñ‘ Ð½Ðµ Ð²Ð¸Ð´ÐµÐ»Ð¸",
                 CloudImage = new CloudImageResponse()
                 {
                     Url = "https://sun9-75.userapi.com/impg/nxiRwgXrFZblfv3cYqyNGnxVhbYdKVfXxf9qqA/cqc_SqAXTPo.jpg?size=715x714&quality=96&sign=d8e5262b3af3cdcfa09a3faaee5e83d7&type=album"
                 },
                 Composition = "Tommy Shelby",
-                Author = "Òîìàñ Øåëáè",
+                Author = "Ð¢Ð¾Ð¼Ð°Ñ Ð¨ÐµÐ»Ð±Ð¸",
                 AuthorId = Guid.NewGuid().ToString(),
                 CompositionId = 1,
                 AuthorScore = 10,
@@ -66,14 +66,14 @@ namespace ReviewEverything.Client.Components
             new ReviewResponse()
             {
                 Id = 3,
-                Title = "Òîìàñ Øåëáè è áåáðà",
-                Subtitle = "Òîìàñ øåëáè ìîùíî çàíþõíóë áåáðî÷êó",
+                Title = "Ð¢Ð¾Ð¼Ð°Ñ Ð¨ÐµÐ»Ð±Ð¸ Ð¸ Ð±ÐµÐ±Ñ€Ð°",
+                Subtitle = "Ð¢Ð¾Ð¼Ð°Ñ ÑˆÐµÐ»Ð±Ð¸ Ð¼Ð¾Ñ‰Ð½Ð¾ Ð·Ð°Ð½ÑŽÑ…Ð½ÑƒÐ» Ð±ÐµÐ±Ñ€Ð¾Ñ‡ÐºÑƒ",
                 CloudImage = new CloudImageResponse()
                 {
                     Url = "https://sun7-14.userapi.com/impg/AJTfPbV1fn9-CYpO-0SagM2HGSg9MNd3kMWMKw/xUaWZ45QAlM.jpg?size=714x711&quality=96&sign=9540d6bba726d4aee47ee35ef3398a70&type=album"
                 },
-                Composition = "Òîìàñ ìàòü åãî øåëáè!",
-                Author = "Òîìàñ Áåáðà ìëàäøèé",
+                Composition = "Ð¢Ð¾Ð¼Ð°Ñ Ð¼Ð°Ñ‚ÑŒ ÐµÐ³Ð¾ ÑˆÐµÐ»Ð±Ð¸!",
+                Author = "Ð¢Ð¾Ð¼Ð°Ñ Ð‘ÐµÐ±Ñ€Ð° Ð¼Ð»Ð°Ð´ÑˆÐ¸Ð¹",
                 AuthorId = Guid.NewGuid().ToString(),
                 CompositionId = 1,
                 AuthorScore = 10,
@@ -96,7 +96,7 @@ namespace ReviewEverything.Client.Components
 
         private async Task SelectedCategoryAsync(int? categoryId = null)
         {
-            _titleCategory = categoryId == null ? "Âñå Îáçîðû" : $"Îáçîðû íà {Categories.First(x => x.Id == categoryId.Value).Title}";
+            _titleCategory = categoryId == null ? "Ð’ÑÐµ ÐžÐ±Ð·Ð¾Ñ€Ñ‹" : $"ÐžÐ±Ð·Ð¾Ñ€Ñ‹ Ð½Ð° {Categories.First(x => x.Id == categoryId.Value).Title}";
 
             await GetReviewsFromApiAsync.InvokeAsync(categoryId);
         }
