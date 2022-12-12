@@ -36,7 +36,46 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.LikeUsers, opt =>
                     opt.MapFrom(src => src.LikeUsers.Count))
                 .ForMember(dest => dest.CreationDate, opt =>
-                    opt.MapFrom(src => src.CreationDate));
+                    opt.MapFrom(src => src.CreationDate))
+                .ForMember(dest => dest.UpdationDate, opt =>
+                    opt.MapFrom(src => src.UpdationDate));
+
+
+            CreateMap<Review, ArticleReviewResponse>()
+                .ForMember(dest => dest.Id, opt =>
+                    opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Title, opt =>
+                    opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Subtitle, opt =>
+                    opt.MapFrom(src => src.Subtitle))
+                .ForMember(dest => dest.Body, opt =>
+                    opt.MapFrom(src => src.Body))
+                .ForMember(dest => dest.CloudImages, opt =>
+                    opt.MapFrom(src => src.CloudImages))
+                .ForMember(dest => dest.CompositionId, opt =>
+                    opt.MapFrom(src => src.CompositionId))
+                .ForMember(dest => dest.Composition, opt =>
+                    opt.MapFrom(src => src.Composition.Title))
+                .ForMember(dest => dest.CategoryId, opt =>
+                    opt.MapFrom(src => src.Composition.CategoryId))
+                .ForMember(dest => dest.Category, opt =>
+                    opt.MapFrom(src => src.Composition.Category.Title))
+                .ForMember(dest => dest.Author, opt =>
+                    opt.MapFrom(src => src.Author.UserName))
+                .ForMember(dest => dest.AuthorId, opt =>
+                    opt.MapFrom(src => src.AuthorId))
+                .ForMember(dest => dest.AuthorScore, opt =>
+                    opt.MapFrom(src => src.AuthorScore))
+                .ForMember(dest => dest.Comments, opt =>
+                    opt.MapFrom(src => src.Comments))
+                .ForMember(dest => dest.Tags, opt =>
+                    opt.MapFrom(src => src.Tags))
+                .ForMember(dest => dest.LikeUsers, opt =>
+                    opt.MapFrom(src => src.LikeUsers.Select(x => x.Id).ToList()))
+                .ForMember(dest => dest.CreationDate, opt =>
+                    opt.MapFrom(src => src.CreationDate))
+                .ForMember(dest => dest.UpdationDate, opt =>
+                    opt.MapFrom(src => src.UpdationDate));
         }
     }
 }

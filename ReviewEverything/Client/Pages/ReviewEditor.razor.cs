@@ -24,7 +24,7 @@ namespace ReviewEverything.Client.Pages
         {
             if (Id != null)
             {
-                var httpResponseMessage = await HttpClient.GetAsync($"api/Review/{Id}?edit=true");
+                var httpResponseMessage = await HttpClient.GetAsync($"api/Review/{Id}?typeReview=2");
                 if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
                 {
                     _review = (await httpResponseMessage.Content.ReadFromJsonAsync<ReviewRequest>())!;

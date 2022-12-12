@@ -62,6 +62,7 @@ namespace ReviewEverything.Server.Services.ReviewService
             if (oldReview == null)
                 return false;
 
+            oldReview.UpdationDate = DateTime.UtcNow;
             oldReview.Title = review.Title;
             oldReview.Subtitle = review.Subtitle;
             oldReview.Body = review.Body;

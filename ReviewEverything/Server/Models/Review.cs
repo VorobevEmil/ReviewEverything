@@ -17,6 +17,7 @@ namespace ReviewEverything.Server.Models
         public List<Comment> Comments { get; set; } = default!;
         public List<Tag> Tags { get; set; } = default!;
         public List<ApplicationUser> LikeUsers { get; set; } = default!;
-        public DateTime CreationDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreationDate { get; set; }
+        public DateTime? UpdationDate { get; set; } = default!;
     }
 }

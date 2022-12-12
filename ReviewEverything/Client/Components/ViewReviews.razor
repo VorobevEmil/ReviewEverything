@@ -42,80 +42,82 @@
         {
             foreach (var review in Reviews)
             {
-                <MudBreakpointProvider>
-                    <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                        <div class="d-flex" style="align-items: center;">
-                            <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="100" />
-                            <div class="mx-2 w-100">
-                                @if (Editor)
-                                {
-                                    <div class="d-flex justify-content-end">
-                                        <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
-                                        <span class="mx-1"></span>
-                                        <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
-                                    </div>
-                                }
-                                <MudText Style="font-size: 12px;">@review.CreationDate.ToShortDateString()</MudText>
-                                <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
-                            </div>
-                        </div>
-                        <div class="d-flex my-2" style="align-items: center;">
-                            <div class="d-flex">
-                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
-                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
-                            </div>
-                            <div class="d-flex">
-                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
-                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
-                            </div>
-                            <div class="d-flex mx-2">
-                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
-                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
-                            </div>
-                            <div class="d-flex mx-2">
-                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
-                                <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
-                            </div>
-                        </div>
-                    </MudHidden>
-                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                        <div class="d-flex" style="align-items: center;">
-                            <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="200" />
-                            <div class="mx-2 w-100">
-                                <div class="d-flex" style="justify-content: space-between;">
-                                    <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                <div @onclick="@(new EventCallback(null, () => NavigationManager.NavigateTo($"./article/{review.Id}")))" style="cursor: pointer;">
+                    <MudBreakpointProvider>
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            <div class="d-flex" style="align-items: center;">
+                                <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="100" />
+                                <div class="mx-2 w-100">
                                     @if (Editor)
                                     {
-                                        <div class="d-flex">
+                                        <div class="d-flex justify-content-end">
                                             <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
                                             <span class="mx-1"></span>
                                             <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
                                         </div>
                                     }
+                                    <MudText Style="font-size: 12px;">@review.CreationDate.ToShortDateString()</MudText>
+                                    <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
                                 </div>
-                                <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.ToShortDateString() - @review.Subtitle</MudText>
-                                <div class="d-flex mt-1" style="align-items: center;">
-                                    <div class="d-flex">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                            </div>
+                            <div class="d-flex my-2" style="align-items: center;">
+                                <div class="d-flex">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                </div>
+                                <div class="d-flex">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
+                                </div>
+                                <div class="d-flex mx-2">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
+                                    <MudLink Class="mx-1" Style="font-size: 11px;">@review.Author</MudLink>
+                                </div>
+                                <div class="d-flex mx-2">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
+                                </div>
+                            </div>
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                            <div class="d-flex" style="align-items: center;">
+                                <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="200" />
+                                <div class="mx-2 w-100">
+                                    <div class="d-flex" style="justify-content: space-between;">
+                                        <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                                        @if (Editor)
+                                        {
+                                            <div class="d-flex">
+                                                <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
+                                                <span class="mx-1"></span>
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
+                                            </div>
+                                        }
                                     </div>
-                                    <div class="d-flex mx-2">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
-                                    </div>
-                                    <div class="d-flex mx-2">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
-                                    </div>
-                                    <div class="d-flex mx-2">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
+                                    <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.ToShortDateString() - @review.Subtitle</MudText>
+                                    <div class="d-flex mt-1" style="align-items: center;">
+                                        <div class="d-flex">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                        </div>
+                                        <div class="d-flex mx-2">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
+                                        </div>
+                                        <div class="d-flex mx-2">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
+                                        </div>
+                                        <div class="d-flex mx-2">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </MudHidden>
-                </MudBreakpointProvider>
+                        </MudHidden>
+                    </MudBreakpointProvider>
+                </div>
                 <MudDivider Light="true" Class="my-3" />
             }
         }

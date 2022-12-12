@@ -5,6 +5,7 @@ using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
+using ReviewEverything.Shared.Models.Enums;
 
 namespace ReviewEverything.Server.Controllers
 {
@@ -35,19 +36,23 @@ namespace ReviewEverything.Server.Controllers
             }
         }
 
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id, bool edit)
+        public async Task<IActionResult> GetById([FromRoute] int id, TypeReviewResponse typeReview = TypeReviewResponse.Views)
         {
-                var review = await _service.GetReviewByIdAsync(id);
-                if (review == null)
-                {
-                    return NotFound();
-                }
-                if (!edit)
-                    return Ok(_mapper.Map<ReviewResponse>(review));
-                else
-                    return Ok(_mapper.Map<ReviewRequest>(review));
-            
+            var review = await _service.GetReviewByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return typeReview switch
+            {
+                TypeReviewResponse.Edit => Ok(_mapper.Map<ReviewRequest>(review)),
+                TypeReviewResponse.Article => Ok(_mapper.Map<ArticleReviewResponse>(review)),
+                _ => Ok(_mapper.Map<ReviewResponse>(review))
+
+            };
         }
 
         [HttpPost]
