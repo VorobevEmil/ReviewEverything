@@ -11,6 +11,8 @@
         public string Author { get; set; } = default!;
         public int CompositionId { get; set; }
         public string Composition { get; set; } = default!;
+        public int CategoryId { get; set; }
+        public string Category { get; set; } = default!;
         public int CommentCount { get; set; } = default!;
         public int LikeUsers { get; set; } = default!;
         public DateTime CreationDate { get; set; }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Models;
-using ReviewEverything.Server.Services;
+using ReviewEverything.Server.Services.CategoryService;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
 
@@ -36,7 +36,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<CategoryResponse>>> GetById([FromRoute] int id)
+    public async Task<ActionResult<CategoryResponse>> GetById([FromRoute] int id)
     {
         try
         {
@@ -67,14 +67,11 @@ public class CategoryController : ControllerBase
 
     [HttpPut("{categoryId}")]
     [Authorize("Admin")]
-    // Протестить с добавленными произведениями
+    //TODO: Протестить с добавленными произведениями
     public async Task<IActionResult> Update([FromRoute] int categoryId, [FromBody] CategoryRequest request)
     {
-        var category = new Category()
-        {
-            Id = categoryId,
-            Title = request.Title,
-        };
+        var category = _mapper.Map<Category>(request);
+        category.Id = categoryId;
 
         var updated = await _service.UpdateCategoryAsync(category);
         if (updated)

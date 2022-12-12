@@ -11,10 +11,9 @@ namespace ReviewEverything.Server.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Id);
 
-            builder.HasAlternateKey(x => new { x.CompositionId, x.AuthorId });
-
             builder.Property(x => x.Title).IsRequired();
             builder.Property(x => x.Body).IsRequired();
+            builder.Property(x => x.Subtitle).IsRequired();
             builder.Property(x => x.AuthorScore).IsRequired();
             builder.Property(x => x.CreationDate).IsRequired();
 

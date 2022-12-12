@@ -1,0 +1,35 @@
+﻿@using ReviewEverything.Shared.Contracts.Requests
+@using ReviewEverything.Shared.Contracts.Responses
+@if (Review.Composition == null)
+{
+    <div class="mt-3" style="display: flex; align-items: center;">
+        <MudAutocomplete T="CompositionResponse"
+                     SearchFunc="@SearchCompositionAsync"
+                     ToStringFunc="@(e => e.Title)"
+                     Value="_selectedComposition"
+                     ValueChanged="(x) => {Review.CompositionId = x.Id; _selectedComposition = x; }"
+                     Margin="Margin.Dense"
+                     Adornment="Adornment.Start"
+                     SelectValueOnTab="true"
+                     Placeholder="Произведение"
+                     AdornmentIcon="@Icons.Material.Filled.Reviews" AdornmentColor="Color.Default" Variant="Variant.Outlined" InputMode="InputMode.search" />
+        <span class="mx-1"></span>
+        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="() => { Review.Composition = new CompositionRequest(); Review.CompositionId = 0; }">Добавить</MudButton>
+    </div>
+}
+else
+{
+    <MudPaper Class="mt-3 px-2 py-3">
+        @if (Categories != null)
+        {
+            <MudSelect @bind-Value="Review.Composition.CategoryId" Label="Категория" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-3" AnchorOrigin="Origin.BottomCenter">
+                @foreach (var category in Categories!)
+                {
+                    <MudSelectItem Value="category.Id">@category.Title</MudSelectItem>
+                }
+            </MudSelect>
+        }
+        <MudTextField Class="mt-2" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название произведения" @bind-Value="Review.Composition.Title" For="@(() => Review.Composition.Title)" />
+        <MudButton Class="mt-2" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="() => { Review.Composition = null;Review.CompositionId = null; }">Отмена</MudButton>
+    </MudPaper>
+}

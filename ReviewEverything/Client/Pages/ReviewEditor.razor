@@ -1,1 +1,38 @@
 ﻿@page "/review-editor/{id:int?}"
+
+<div class="container mt-5">
+    <MudPaper Class="px-4 py-5">
+        @if (_review != null)
+        {
+            <EditForm Model="@_review" OnValidSubmit="OnValidSubmitAsync">
+                <DataAnnotationsValidator />
+                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название" @bind-Value="_review.Title" For="@(() => _review.Title)" />
+                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Подзаголовок" @bind-Value="_review.Subtitle" For="@(() => _review.Subtitle)" />
+                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Оценка автора" @bind-Value="_review.AuthorScore" For="@(() => _review.AuthorScore)" />
+
+                <SelectOrCreateComposition Review="_review" @ref="_composition" />
+                <SelectOrCreateTags Review="_review" />
+
+                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Тело" @bind-Value="_review.Body" Lines="5" />
+
+                <div class="mt-5 text-end">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" ButtonType="ButtonType.Submit">Сохранить</MudButton>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <MudSkeleton Height="60px" Style="margin:-10px 0" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" Class="mt-2" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" Width="100px" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" Class="mt-3" />
+            <MudSkeleton Height="60px" Style="margin:-10px 0" />
+            <MudSkeleton Height="250px" Style="margin:-10px 0" Class="mt-3" />
+
+
+        }
+    </MudPaper>
+</div>

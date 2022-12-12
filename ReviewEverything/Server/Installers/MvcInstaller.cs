@@ -25,9 +25,6 @@ namespace ReviewEverything.Server.Installers
             {
                 options.Filters.Add<ValidationFilter>();
             });
-#pragma warning disable CS0618 
-            builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
-#pragma warning restore CS0618
         }
     }
 }

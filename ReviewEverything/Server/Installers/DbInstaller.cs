@@ -2,7 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
-using ReviewEverything.Server.Services;
+using ReviewEverything.Server.Services.CategoryService;
+using ReviewEverything.Server.Services.CompositionService;
+using ReviewEverything.Server.Services.ReviewService;
+using ReviewEverything.Server.Services.TagService;
+using ReviewEverything.Server.Services.UserService;
 
 namespace ReviewEverything.Server.Installers
 {
@@ -18,7 +22,9 @@ namespace ReviewEverything.Server.Installers
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-
+            builder.Services.AddScoped<ICompositionService, CompositionService>();
+            builder.Services.AddScoped<ITagService, TagService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
         }
     }
 }

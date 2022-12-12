@@ -2,7 +2,7 @@
 using ReviewEverything.Server.Models;
 using ReviewEverything.Shared.Contracts.Responses;
 
-namespace ReviewEverything.Server.Common.MappingProfiles.Request
+namespace ReviewEverything.Server.Common.MappingProfiles.Response
 {
     public class ReviewToResponseProfile : Profile
     {
@@ -21,6 +21,10 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Request
                     opt.MapFrom(src => src.CompositionId))
                 .ForMember(dest => dest.Composition, opt =>
                     opt.MapFrom(src => src.Composition.Title))
+                .ForMember(dest => dest.CategoryId, opt =>
+                    opt.MapFrom(src => src.Composition.CategoryId))
+                .ForMember(dest => dest.Category, opt =>
+                    opt.MapFrom(src => src.Composition.Category.Title))
                 .ForMember(dest => dest.Author, opt =>
                     opt.MapFrom(src => src.Author.UserName))
                 .ForMember(dest => dest.AuthorId, opt =>

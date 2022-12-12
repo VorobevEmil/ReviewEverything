@@ -2,7 +2,7 @@
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
-namespace ReviewEverything.Server.Services
+namespace ReviewEverything.Server.Services.CategoryService
 {
     public class CategoryService : ICategoryService
     {

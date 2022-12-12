@@ -36,7 +36,12 @@ namespace ReviewEverything.Client.Pages
         private async Task GetReviewsFromApiAsync(int? categoryId)
         {
             Reviews = null!;
-            await Task.CompletedTask;
+
+            var httpResponseMessage = await HttpClient.GetAsync($"api/Review");
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                Reviews = (await httpResponseMessage.Content.ReadFromJsonAsync<List<ReviewResponse>>())!;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@
                 }
                 @if (Editor)
                 {
-                    <MudButton Color="Color.Primary" Variant="Variant.Outlined">Создать обзор</MudButton>
+                    <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">Создать обзор</MudButton>
                 }
             </div>
         </MudHidden>
@@ -50,7 +50,7 @@
                                 @if (Editor)
                                 {
                                     <div class="d-flex justify-content-end">
-                                        <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" Color="Color.Info" />
+                                        <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
                                         <span class="mx-1"></span>
                                         <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
                                     </div>
@@ -60,6 +60,10 @@
                             </div>
                         </div>
                         <div class="d-flex my-2" style="align-items: center;">
+                            <div class="d-flex">
+                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
+                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                            </div>
                             <div class="d-flex">
                                 <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
                                 <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
@@ -78,18 +82,24 @@
                         <div class="d-flex" style="align-items: center;">
                             <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="200" />
                             <div class="mx-2 w-100">
-                                @if (Editor)
-                                {
-                                    <div class="d-flex justify-content-end">
-                                        <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" Color="Color.Info" />
-                                        <span class="mx-1"></span>
-                                        <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
-                                    </div>
-                                }
-                                <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                                <div class="d-flex" style="justify-content: space-between;">
+                                    <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                                    @if (Editor)
+                                    {
+                                        <div class="d-flex">
+                                            <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
+                                            <span class="mx-1"></span>
+                                            <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
+                                        </div>
+                                    }
+                                </div>
                                 <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.ToShortDateString() - @review.Subtitle</MudText>
                                 <div class="d-flex mt-1" style="align-items: center;">
                                     <div class="d-flex">
+                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
+                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                    </div>
+                                    <div class="d-flex mx-2">
                                         <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
                                         <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
                                     </div>
@@ -114,7 +124,7 @@
             <MudSkeleton Height="80px" Animation="Animation.Wave" />
             @for (int i = 0; i < 5; i++)
             {
-                <MudSkeleton Height="150px" Style="margin: -30px 0;" Animation="Animation.Wave" />
+                <MudSkeleton Height="200px" Style="margin: -30px 0;" Animation="Animation.Wave" />
                 <MudDivider Light="true" Class="my-3" />
             }
         }
@@ -124,7 +134,7 @@
         <MudSkeleton Height="80px" Animation="Animation.Wave" />
         @for (int i = 0; i < 5; i++)
         {
-            <MudSkeleton Height="150px" Style="margin: -30px 0;" Animation="Animation.Wave" />
+            <MudSkeleton Height="200px" Style="margin: -30px 0;" Animation="Animation.Wave" />
             <MudDivider Light="true" Class="my-3" />
         }
     }

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
-namespace ReviewEverything.Server.Services
+namespace ReviewEverything.Server.Services.UserService
 {
     public class UserService : IUserService
     {

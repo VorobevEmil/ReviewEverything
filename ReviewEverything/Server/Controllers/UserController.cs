@@ -1,6 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ReviewEverything.Server.Services;
+using ReviewEverything.Server.Services.UserService;
 using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Server.Controllers

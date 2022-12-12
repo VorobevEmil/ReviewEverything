@@ -2,7 +2,7 @@
 using ReviewEverything.Server.Models;
 using ReviewEverything.Shared.Contracts.Responses;
 
-namespace ReviewEverything.Server.Common.MappingProfiles.Request
+namespace ReviewEverything.Server.Common.MappingProfiles.Response
 {
     public class CategoryToResponseProfile : Profile
     {

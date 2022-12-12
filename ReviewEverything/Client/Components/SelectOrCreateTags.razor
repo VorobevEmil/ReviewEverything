@@ -1,0 +1,29 @@
+﻿@using ReviewEverything.Shared.Contracts.Requests
+@using ReviewEverything.Shared.Contracts.Responses
+
+<MudPaper Class="mt-3 px-2 py-3">
+    <MudAutocomplete T="TagResponse"
+                     Class="mt-3"
+                     SearchFunc="@SearchTagsAsync"
+                     ToStringFunc="@(e => e.Title)"
+                     Value="new TagResponse()"
+                     ValueChanged="AddTagInTagsList"
+                     Margin="Margin.Dense"
+                     Adornment="Adornment.Start"
+                     SelectValueOnTab="true"
+                     Placeholder="Теги"
+                     AdornmentIcon="@Icons.Material.Filled.Tag" AdornmentColor="Color.Default" Variant="Variant.Outlined" InputMode="InputMode.search" />
+
+    <div class="mt-3" style="display: flex; align-items: center;">
+        <MudTextField Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Создать тег" @bind-Value="_tag.Title" />
+        <span class="mx-1"></span>
+        <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="CreateTagAsync">Добавить</MudButton>
+    </div>
+    
+    <div class="mt-3">
+        @foreach (var tag in Review.Tags)
+        {
+            <MudChip Color="Color.Error" Variant="Variant.Outlined" OnClose="() => RemoveTagFromList(tag)">@tag.Title</MudChip>
+        }
+    </div>
+</MudPaper>

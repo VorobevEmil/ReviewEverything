@@ -1,6 +1,6 @@
 using ReviewEverything.Server.Models;
 
-namespace ReviewEverything.Server.Services
+namespace ReviewEverything.Server.Services.UserService
 {
     public interface IUserService
     {
