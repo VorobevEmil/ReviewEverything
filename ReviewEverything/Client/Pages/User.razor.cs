@@ -12,7 +12,7 @@ namespace ReviewEverything.Client.Pages
 
         [Parameter] public string Id { get; set; } = default!;
         private UserResponse? UserResponse { get; set; }
-        private List<ReviewResponse> Reviews { get; set; } = default!;
+        
         private bool _editor;
 
         protected override async Task OnInitializedAsync()
@@ -30,17 +30,6 @@ namespace ReviewEverything.Client.Pages
                 {
                     _editor = true;
                 }
-            }
-        }
-
-        private async Task GetReviewsFromApiAsync(int? categoryId)
-        {
-            Reviews = null!;
-
-            var httpResponseMessage = await HttpClient.GetAsync($"api/Review");
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                Reviews = (await httpResponseMessage.Content.ReadFromJsonAsync<List<ReviewResponse>>())!;
             }
         }
     }

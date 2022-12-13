@@ -1,6 +1,32 @@
 ﻿@using ReviewEverything.Shared.Contracts.Responses
 
 <div class="mt-5">
+    <MudPaper Class="py-2 px-4" Width="100%">
+        <MudText Style="font-weight: bold; font-size: 28px;">Теги</MudText>
+        <MudTextField Class="my-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Поиск" T="string" Value="_tagSearch" ValueChanged="GetTagsFromApiAsync" />
+        <div class="my-2">
+            @foreach (var tag in SelectedTags)
+            {
+                <MudChip Size="Size.Small" Variant="Variant.Filled" Color="Color.Error" OnClose="async() => await RemoveTagAsync(tag)">@tag.Title</MudChip>
+            }
+        </div>
+        @if (Tags != null)
+        {
+            foreach (var tag in Tags)
+            {
+                <MudChip Size="Size.Small" Variant="@(SelectedTags.Select(x => x.Id).Contains(tag.Id) ? Variant.Filled : Variant.Outlined)" Color="Color.Info" Disabled="SelectedTags.Select(x => x.Id).Contains(tag.Id)" OnClick="(async () => await AddTagAsync(tag))">@tag.Title</MudChip>
+            }
+        }
+        else
+        {
+            <div class="d-flex" style="flex-flow: row wrap;">
+                @for (int i = 0; i < 10; i++)
+                {
+                    <MudSkeleton Class="mx-1" Height="40px" Width="100px" />
+                }
+            </div>
+        }
+    </MudPaper>
     <MudBreakpointProvider>
         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
             @if (Editor)
@@ -30,10 +56,10 @@
     {
         <MudTabs Class="my-3" Elevation="4" Rounded="true" AlwaysShowScrollButtons="true">
 
-            <MudTabPanel Text="Все обзоры" OnClick="(() => SelectedCategoryAsync())" />
+            <MudTabPanel Text="Все обзоры" OnClick="(async() => await SelectedCategoryAsync())" />
             @foreach (var category in Categories)
             {
-                <MudTabPanel Text="@category.Title" OnClick="(() => SelectedCategoryAsync(category.Id))" />
+                <MudTabPanel Text="@category.Title" OnClick="(async() => await SelectedCategoryAsync(category.Id))" />
             }
         </MudTabs>
 
@@ -46,7 +72,10 @@
                     <MudBreakpointProvider>
                         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                             <div class="d-flex" style="align-items: center;">
-                                <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="100" />
+                                <div style="position: relative">
+                                    <MudImage Src="@review.CloudImage.Url" Alt="@review.CloudImage.Title" Class="rounded-lg" Width="100" />
+                                    <MudAvatar Style="width: 35px; height: 35px; font-size: 18px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
+                                </div>
                                 <div class="mx-2 w-100">
                                     @if (Editor)
                                     {
@@ -81,7 +110,10 @@
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                             <div class="d-flex" style="align-items: center;">
-                                <MudImage Src="@review.CloudImage.Url" Class="rounded-lg" Width="200" />
+                                <div style="position: relative">
+                                    <MudImage Src="@review.CloudImage.Url" Alt="@review.CloudImage.Title" Class="rounded-lg" Width="200" />
+                                    <MudAvatar Style="font-size:21px; width: 50px; height: 50px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
+                                </div>
                                 <div class="mx-2 w-100">
                                     <div class="d-flex" style="justify-content: space-between;">
                                         <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>

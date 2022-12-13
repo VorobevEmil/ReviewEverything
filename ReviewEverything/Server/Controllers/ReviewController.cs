@@ -23,11 +23,21 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ReviewResponse>>> GetAll()
+        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int? categoryId, string? userId, string? idTags)
         {
             try
             {
-                var reviews = await _service.GetReviewsAsync();
+                List<int> tags = null!;
+                if (idTags is { Length: > 1 })
+                {
+                    tags = idTags.Split('.').Select(int.Parse).ToList();
+                }
+                else if (idTags is { Length: 1 })
+                {
+                    tags = new List<int>() { int.Parse(idTags) };
+                }
+
+                var reviews = await _service.GetReviewsAsync(categoryId, userId, tags);
                 return Ok(_mapper.Map<List<ReviewResponse>>(reviews));
             }
             catch

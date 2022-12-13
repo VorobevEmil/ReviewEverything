@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
+using System.Linq;
 
 namespace ReviewEverything.Server.Services.ReviewService
 {
@@ -14,7 +15,7 @@ namespace ReviewEverything.Server.Services.ReviewService
             _context = context;
         }
 
-        private IIncludableQueryable<Review, Category> GetReviewIncludeAll()
+        private IQueryable<Review> GetReviewIncludeAll()
         {
             return _context.Reviews
                 .Include(x => x.Author)
@@ -23,7 +24,8 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .Include(x => x.Comments)
                 .Include(x => x.LikeUsers)
                 .Include(x => x.Composition)
-                .ThenInclude(x => x.Category);
+                .ThenInclude(x => x.Category)
+                .AsQueryable();
         }
 
         public async Task<Review?> GetReviewByIdAsync(int id)
@@ -32,10 +34,36 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetReviewsAsync()
+        public async Task<List<Review>> GetReviewsAsync(int? categoryId, string? userId, List<int>? tags)
         {
-            return await GetReviewIncludeAll()
-                .ToListAsync();
+            var reviews = GetReviewIncludeAll();
+
+            if (userId != null)
+            {
+                reviews = reviews
+                    .Where(x => x.AuthorId == userId);
+            }
+
+            if (categoryId != null)
+            {
+                reviews = reviews
+                    .Where(x => x.Composition.CategoryId == categoryId);
+            }
+
+            if (tags != null)
+            {
+                var tagList = await reviews
+                    .SelectMany(x => x.Tags)
+                    .Where(x => tags.Contains(x.Id))
+                    .ToListAsync();
+                var result = (await reviews.ToListAsync())
+                    .Where(x => tagList
+                        .All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
+                    .ToList();
+                return result;
+            }
+
+            return await reviews.ToListAsync();
 
             //return await _context.Reviews
             //    .Where(p => search != null! && EF.Functions.Like(p.Title.ToLower(), $"%{search.ToLower()}%"))

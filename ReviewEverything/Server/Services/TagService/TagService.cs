@@ -21,9 +21,15 @@ namespace ReviewEverything.Server.Services.TagService
 
         public async Task<List<Tag>> GetTagsAsync(string? search)
         {
-            return await _context.Tags
-                .Where(p => search != null && EF.Functions.Like(p.Title.ToLower(), $"%{search.ToLower()}%"))
-                .ToListAsync();
+            var tags = _context.Tags.AsQueryable();
+
+            if (search != null)
+            {
+                tags = tags
+                    .Where(p => EF.Functions.Like(p.Title.ToLower(), $"%{search.ToLower()}%"));
+            }
+
+            return await tags.ToListAsync();
         }
 
         public async Task<bool> CreateTagAsync(Tag tag)

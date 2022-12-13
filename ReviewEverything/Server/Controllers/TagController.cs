@@ -22,7 +22,7 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TagResponse>>> GetAll(string? search)
+        public async Task<ActionResult<List<TagResponse>>> GetAll(string? search = default)
         {
             try
             {
