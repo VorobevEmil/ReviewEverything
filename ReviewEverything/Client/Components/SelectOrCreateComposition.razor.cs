@@ -15,6 +15,12 @@ namespace ReviewEverything.Client.Components
 
         protected override async Task OnInitializedAsync()
         {
+            if (Review.CompositionId != default)
+            {
+                _selectedComposition.Id = Review.CompositionId!.Value;
+                _selectedComposition.Title = Review.Composition!.Title;
+            }
+
             await GetCategoriesAsync();
         }
 
@@ -44,7 +50,6 @@ namespace ReviewEverything.Client.Components
                 {
                     Snackbar.Add("Не удалось создать произведение, повторите попытку", Severity.Error);
                 }
-
             }
         }
     }

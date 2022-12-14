@@ -70,6 +70,7 @@ namespace ReviewEverything.Server.Controllers
         {
             var review = _mapper.Map<Review>(request);
             review.AuthorId = User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+            review.CreationDate = DateTime.UtcNow;
 
             var result = await _service.CreateReviewAsync(review);
             return Created(Url.Action($"GetById", new { id = review.Id })!, review);

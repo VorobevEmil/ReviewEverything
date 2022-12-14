@@ -90,11 +90,12 @@ namespace ReviewEverything.Server.Services.ReviewService
             if (oldReview == null)
                 return false;
 
-            oldReview.UpdationDate = DateTime.UtcNow;
+            oldReview.UpdateDate = DateTime.UtcNow;
             oldReview.Title = review.Title;
             oldReview.Subtitle = review.Subtitle;
             oldReview.Body = review.Body;
             oldReview.CompositionId = review.CompositionId;
+
             var newTags = review.Tags.Where(x => !oldReview.Tags.Select(x => x.Id).Contains(x.Id)).ToList();
             oldReview.Tags.RemoveAll(x => !review.Tags.Select(x => x.Id).Contains(x.Id));
             oldReview.Tags.AddRange(newTags);

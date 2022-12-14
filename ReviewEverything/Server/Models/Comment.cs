@@ -8,5 +8,6 @@
         public Review Review { get; set; } = default!; 
         public string UserId { get; set; } = default!;
         public ApplicationUser User { get; set; } = default!;
+        public DateTime CreationDate { get; set; }
     }
 }

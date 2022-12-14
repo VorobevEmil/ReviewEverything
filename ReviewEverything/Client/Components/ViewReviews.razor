@@ -1,4 +1,5 @@
 ﻿@using ReviewEverything.Shared.Contracts.Responses
+@using ReviewEverything.Client.Helpers
 
 <div class="mt-5">
     <MudPaper Class="py-2 px-4" Width="100%">
@@ -82,10 +83,10 @@
                                         <div class="d-flex justify-content-end">
                                             <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
                                             <span class="mx-1"></span>
-                                            <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
+                                            <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async() => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
                                         </div>
                                     }
-                                    <MudText Style="font-size: 12px;">@review.CreationDate.ToShortDateString()</MudText>
+                                    <MudText Style="font-size: 12px;">@review.CreationDate.CalculateRelativeTime()</MudText>
                                     <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
                                 </div>
                             </div>
@@ -100,7 +101,7 @@
                                 </div>
                                 <div class="d-flex mx-2">
                                     <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
-                                    <MudLink Class="mx-1" Style="font-size: 11px;">@review.Author</MudLink>
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
                                 </div>
                                 <div class="d-flex mx-2">
                                     <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
@@ -122,11 +123,11 @@
                                             <div class="d-flex">
                                                 <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
                                                 <span class="mx-1"></span>
-                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" Color="Color.Error" />
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async() => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
                                             </div>
                                         }
                                     </div>
-                                    <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.ToShortDateString() - @review.Subtitle</MudText>
+                                    <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() - @review.Subtitle</MudText>
                                     <div class="d-flex mt-1" style="align-items: center;">
                                         <div class="d-flex">
                                             <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />

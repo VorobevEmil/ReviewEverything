@@ -18,6 +18,6 @@ namespace ReviewEverything.Server.Models
         public List<Tag> Tags { get; set; } = default!;
         public List<ApplicationUser> LikeUsers { get; set; } = default!;
         public DateTime CreationDate { get; set; }
-        public DateTime? UpdationDate { get; set; } = default!;
+        public DateTime? UpdateDate { get; set; } = default!;
     }
 }

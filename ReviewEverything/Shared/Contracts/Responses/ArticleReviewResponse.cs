@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace ReviewEverything.Shared.Contracts.Responses
+﻿namespace ReviewEverything.Shared.Contracts.Responses
 {
     public class ArticleReviewResponse
     {
@@ -20,6 +18,6 @@ namespace ReviewEverything.Shared.Contracts.Responses
         public List<TagResponse> Tags { get; set; } = default!;
         public List<string> LikeUsers { get; set; } = default!;
         public DateTime CreationDate { get; set; }
-        public DateTime? UpdationDate { get; set; } = default!;
+        public DateTime? UpdateDate { get; set; } = default!;
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.CategoryService;
+using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Server.Services.CompositionService;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Server.Services.TagService;
@@ -25,6 +26,7 @@ namespace ReviewEverything.Server.Installers
             builder.Services.AddScoped<ICompositionService, CompositionService>();
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
         }
     }
 }

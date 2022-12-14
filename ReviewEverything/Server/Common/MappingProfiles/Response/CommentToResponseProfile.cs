@@ -16,7 +16,9 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.UserId, opt =>
                     opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.User, opt =>
-                    opt.MapFrom(src => src.User.UserName));
+                    opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.CreationDate, opt =>
+                    opt.MapFrom(src => src.CreationDate));
         }
     }
 }

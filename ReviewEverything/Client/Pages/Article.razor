@@ -1,4 +1,5 @@
 ﻿@page "/article/{Id:int}"
+@using ReviewEverything.Client.Helpers
 
 <div class="container mt-5">
     @if (ArticleReview != null)
@@ -18,19 +19,19 @@
                         <span class="mx-1"></span>
                         <MudLink Style="font-size:20px;" Underline="Underline.Always" Href="@("./User/" + ArticleReview.AuthorId)" Color="Color.Default">@ArticleReview.Author</MudLink>
                     </div>
-                    @if (ArticleReview.UpdationDate != null)
+                    @if (ArticleReview.UpdateDate != null)
                     {
                         <div class="d-flex mt-2">
                             <MudIcon Icon="@Icons.Filled.CheckCircleOutline" />
                             <span class="mx-1"></span>
-                            <MudText Style="font-size:16px;">Дата изменения: @ArticleReview.UpdationDate.Value.ToShortDateString()</MudText>
+                            <MudText Style="font-size:16px;">Дата изменения: @ArticleReview.UpdateDate.Value.ToShortDateString() @ArticleReview.UpdateDate.Value.ToShortTimeString()</MudText>
                         </div>
 
                     }
                     <div class="d-flex mt-2">
                         <MudIcon Icon="@Icons.Filled.StickyNote2" />
                         <span class="mx-1"></span>
-                        <MudText Style="font-size:16px;">Дата создания: @ArticleReview.CreationDate.ToShortDateString()</MudText>
+                        <MudText Style="font-size:16px;">Дата создания: @ArticleReview.CreationDate.ToShortDateString() @ArticleReview.CreationDate.ToShortTimeString()</MudText>
                     </div>
                 </div>
             </MudHidden>
@@ -44,22 +45,68 @@
                     <span class="mx-1"></span>
                     <MudLink Style="font-size:16px;" Underline="Underline.Always" Href="@("./User/" + ArticleReview.AuthorId)" Color="Color.Default">@ArticleReview.Author</MudLink>
                     <span class="mx-3"></span>
-                    @if (ArticleReview.UpdationDate != null)
+                    @if (ArticleReview.UpdateDate != null)
                     {
                         <MudIcon Icon="@Icons.Filled.CheckCircleOutline" />
                         <span class="mx-1"></span>
-                        <MudText Style="font-size:16px;">Дата изменения: @ArticleReview.UpdationDate.Value.ToShortDateString()</MudText>
+                        <MudText Style="font-size:16px;">Дата изменения: @ArticleReview.UpdateDate.Value.ToShortDateString() @ArticleReview.UpdateDate.Value.ToShortTimeString()</MudText>
                         <span class="mx-3"></span>
                     }
 
                     <MudIcon Icon="@Icons.Filled.StickyNote2" />
                     <span class="mx-1"></span>
-                    <MudText Style="font-size:16px;">Дата создания: @ArticleReview.CreationDate.ToShortDateString()</MudText>
+                    <MudText Style="font-size:16px;">Дата создания: @ArticleReview.CreationDate.ToShortDateString() @ArticleReview.CreationDate.ToShortTimeString()</MudText>
                 </div>
             </MudHidden>
         </MudBreakpointProvider>
         <MudDivider Class="mt-2" />
-        <MudText Class="mt-4" Style="font-weight:600">@ArticleReview.Body</MudText>
+        <MudText Class="mt-4">@ArticleReview.Body</MudText>
+        <MudDivider Class="mt-2" />
+        <div class="d-flex" style="align-items: center; justify-content: space-between;">
+            <MudText Style="font-size:36px;">Комментарии</MudText>
+            <div class="d-flex" style="align-items: center">
+                <MudIcon Style="height: 20px; width: 20px;" Icon="@Icons.Filled.Comment" />
+                <MudText Style="font-size:20px;">@ArticleReview.Comments.Count</MudText>
+            </div>
+        </div>
+        <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Что ты думаешь об этом?" Lines="3" @bind-Value="_bodyComment" />
+        <AuthorizeView>
+            <Authorized>
+                <div class="text-end mt-3">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">Отправить</MudButton>
+
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <div style="display: flex; align-items: center; justify-content: flex-end;">
+                    <MudText>*Войдите чтобы оставить комментарий</MudText>
+                    <span class="mx-1"></span>
+                    <MudButton Disabled="true" Variant="Variant.Filled">Отправить</MudButton>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+
+        <div class="mt-5">
+            <MudDivider />
+            @if (ArticleReview.Comments.Count != default)
+            {
+                foreach (var comment in ArticleReview.Comments)
+                {
+                    <div class="my-5 d-flex">
+                        <MudAvatar Class="mx-2" Variant="Variant.Outlined">@ArticleReview.Author[0]</MudAvatar>
+                        <div>
+                            <MudLink Style="font-size:20px;" Underline="Underline.Always" Href="@("./User/" + comment.UserId)" Color="Color.Default">@comment.User</MudLink>
+                            <MudText Style="font-size: 11px;">@comment.CreationDate.CalculateRelativeTime()</MudText>
+                            <MudText Class="mt-3">@comment.Body</MudText>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+
+            }
+        </div>
     }
     else
     {

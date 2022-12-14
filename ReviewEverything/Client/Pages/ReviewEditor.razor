@@ -8,7 +8,7 @@
                 <DataAnnotationsValidator />
                 <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название" @bind-Value="_review.Title" For="@(() => _review.Title)" />
                 <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Подзаголовок" @bind-Value="_review.Subtitle" For="@(() => _review.Subtitle)" />
-                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Оценка автора" @bind-Value="_review.AuthorScore" For="@(() => _review.AuthorScore)" />
+                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Оценка автора по 10-б шкале" @bind-Value="_review.AuthorScore" For="@(() => _review.AuthorScore)" />
 
                 <SelectOrCreateComposition Review="_review" @ref="_composition" />
                 <SelectOrCreateTags Review="_review" />
@@ -31,8 +31,6 @@
             <MudSkeleton Height="60px" Style="margin:-10px 0" Class="mt-3" />
             <MudSkeleton Height="60px" Style="margin:-10px 0" />
             <MudSkeleton Height="250px" Style="margin:-10px 0" Class="mt-3" />
-
-
         }
     </MudPaper>
 </div>

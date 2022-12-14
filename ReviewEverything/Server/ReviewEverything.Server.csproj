@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Options\" />
+    <Folder Include="Services\CommentService\" />
   </ItemGroup>
 
 

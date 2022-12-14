@@ -16,6 +16,6 @@
         public int CommentCount { get; set; } = default!;
         public int LikeUsers { get; set; } = default!;
         public DateTime CreationDate { get; set; }
-        public DateTime? UpdationDate { get; set; } = default!;
+        public DateTime? UpdateDate { get; set; } = default!;
     }
 }

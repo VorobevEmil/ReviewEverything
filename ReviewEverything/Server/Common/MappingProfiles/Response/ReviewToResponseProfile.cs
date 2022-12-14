@@ -37,8 +37,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                     opt.MapFrom(src => src.LikeUsers.Count))
                 .ForMember(dest => dest.CreationDate, opt =>
                     opt.MapFrom(src => src.CreationDate))
-                .ForMember(dest => dest.UpdationDate, opt =>
-                    opt.MapFrom(src => src.UpdationDate));
+                .ForMember(dest => dest.UpdateDate, opt =>
+                    opt.MapFrom(src => src.UpdateDate));
 
 
             CreateMap<Review, ArticleReviewResponse>()
@@ -74,8 +74,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                     opt.MapFrom(src => src.LikeUsers.Select(x => x.Id).ToList()))
                 .ForMember(dest => dest.CreationDate, opt =>
                     opt.MapFrom(src => src.CreationDate))
-                .ForMember(dest => dest.UpdationDate, opt =>
-                    opt.MapFrom(src => src.UpdationDate));
+                .ForMember(dest => dest.UpdateDate, opt =>
+                    opt.MapFrom(src => src.UpdateDate));
         }
     }
 }

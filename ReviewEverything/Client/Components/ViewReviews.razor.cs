@@ -1,11 +1,13 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Components
 {
     public partial class ViewReviews
     {
+        [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Parameter] public bool Editor { get; set; }
         [Parameter] public string? UserId { get; set; }
 
@@ -77,6 +79,15 @@ namespace ReviewEverything.Client.Components
         private void NavigateToReviewEditor(int? reviewId = null)
         {
             NavigationManager.NavigateTo($"review-editor/{reviewId}");
+        }
+
+        private async Task DeleteReviewAsync(int reviewId)
+        {
+            if (await DisplayHelper.ShowDeleteMessageBoxAsync() != true)
+                return;
+
+            await HttpClient.DeleteAsync($"api/Review/{reviewId}");
+            Reviews.RemoveAll(x => x.Id == reviewId);
         }
     }
 }

@@ -11,8 +11,6 @@ namespace ReviewEverything.Server.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Id);
 
-            builder.HasAlternateKey(x => new { x.ReviewId, x.UserId });
-
             builder.Property(x => x.Body).IsRequired();
 
             builder.HasOne(left => left.Review)

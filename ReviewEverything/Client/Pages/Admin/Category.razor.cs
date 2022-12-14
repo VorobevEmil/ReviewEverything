@@ -11,7 +11,7 @@ namespace ReviewEverything.Client.Pages.Admin
     public partial class Category
     {
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
-        [Inject] private IDialogService DialogService { get; set; } = default!;
+        [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         private MudMessageBox MessageBox { get; set; } = default!;
         private List<CategoryResponse> Categories { get; set; } = default!;
         private CategoryRequest CategoryRequest { get; set; } = new();
@@ -79,7 +79,7 @@ namespace ReviewEverything.Client.Pages.Admin
 
         private async Task DeleteCategoryAsync(int categoryId)
         {
-            if (await ShowDeleteCategoryMessageBoxAsync() != true)
+            if (await DisplayHelper.ShowDeleteMessageBoxAsync() != true)
                 return;
 
             var httpResponseMessage = await HttpClient.DeleteAsync($"api/Category/{categoryId}");
@@ -96,14 +96,6 @@ namespace ReviewEverything.Client.Pages.Admin
                     Snackbar.Add("Во время удаления произошла ошибка", Severity.Error);
                     break;
             }
-        }
-
-        private async Task<bool?> ShowDeleteCategoryMessageBoxAsync()
-        {
-            return await DialogService.ShowMessageBox(
-                "Внимание",
-                "Удаление не может быть отменено!",
-                yesText: "Удалить!", cancelText: "Отмена");
         }
     }
 }

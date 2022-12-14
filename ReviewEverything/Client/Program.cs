@@ -18,13 +18,14 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<HostAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<HostAuthenticationStateProvider>());
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<DisplayHelper>();
 
 builder.Services.AddAuthorizationCore(configure =>
 {
     configure.AddPolicy("Admin", pb =>
     {
         pb.RequireAuthenticatedUser()
-            .RequireRole(new []{ "Admin" });
+            .RequireRole(new[] { "Admin" });
     });
 });
 

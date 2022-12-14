@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ReviewEverything.Server.Data;
@@ -11,9 +12,11 @@ using ReviewEverything.Server.Data;
 namespace ReviewEverything.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213210053_Added_CreationDate_Comment")]
+    partial class AddedCreationDateComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,9 +307,9 @@ namespace ReviewEverything.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasAlternateKey("ReviewId", "UserId");
 
-                    b.HasIndex("ReviewId");
+                    b.HasIndex("Id");
 
                     b.HasIndex("UserId");
 
@@ -370,7 +373,7 @@ namespace ReviewEverything.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("UpdateDate")
+                    b.Property<DateTime?>("UpdationDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
