@@ -7,6 +7,7 @@ using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Server.Services.CompositionService;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Server.Services.TagService;
+using ReviewEverything.Server.Services.UserScoreService;
 using ReviewEverything.Server.Services.UserService;
 
 namespace ReviewEverything.Server.Installers
@@ -27,6 +28,7 @@ namespace ReviewEverything.Server.Installers
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddScoped<IUserScoreService, UserScoreService>();
         }
     }
 }

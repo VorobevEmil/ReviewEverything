@@ -4,8 +4,22 @@
 <div class="container mt-5">
     @if (ArticleReview != null)
     {
-        <MudLink Style="font-weight:600; font-size:1.3em;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudLink>
-        <MudText Style="font-weight:900; font-size:2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
+        <AuthorizeView>
+            <Authorized>
+                <MudPaper Class="my-3 px-1 py-4">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <MudText Style="font-size: 24px;">Как бы вы оценили данное произведение?</MudText>
+                        <MudRating Size="Size.Large" SelectedValue="_userRatingComposition" SelectedValueChanged="SetUserRatingAsync" />
+                    </div>
+                </MudPaper>
+            </Authorized>
+        </AuthorizeView>
+        <div class="mb-1 d-flex">
+            <MudRating SelectedValue="(ArticleReview.UserScores.Count == default ? default :  (int)Math.Round( ArticleReview.UserScores.Sum(t => t.Score) / (double)ArticleReview.UserScores.Count, 0, MidpointRounding.AwayFromZero))" DisableRipple="true" ReadOnly="true" />
+            <MudText Style="font-size:16px;">@ArticleReview.UserScores.Count @DisplayHelper.DeclinationEndingUserScope(ArticleReview.UserScores.Count)</MudText>
+        </div>
+        <MudLink Style="font-size:1.3em;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudLink>
+        <MudText Style="font-size:2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
         <MudText Style="font-size:1.75em;" Class="mt-1">@ArticleReview.Subtitle</MudText>
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">

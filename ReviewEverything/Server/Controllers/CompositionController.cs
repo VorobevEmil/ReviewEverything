@@ -62,7 +62,7 @@ public class CompositionController : ControllerBase
 
         var result = await _service.CreateCompositionAsync(composition);
 
-        return Created(Url.Action($"GetById", new { id = composition.Id })!, composition);
+        return Created(Url.Action($"GetById", new { id = composition.Id })!, _mapper.Map<CompositionResponse>(composition));
     }
 
     [HttpPut("{compositionId}")]

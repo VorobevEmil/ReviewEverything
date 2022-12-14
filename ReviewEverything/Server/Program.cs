@@ -22,6 +22,7 @@ builder.Services.AddAuthorization(configure =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

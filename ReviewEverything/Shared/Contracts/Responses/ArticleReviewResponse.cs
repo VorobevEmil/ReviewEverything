@@ -16,6 +16,7 @@
         public string Category { get; set; } = default!;
         public List<CommentResponse> Comments { get; set; } = default!;
         public List<TagResponse> Tags { get; set; } = default!;
+        public List<UserScoreResponse> UserScores { get; set; } = default!;
         public List<string> LikeUsers { get; set; } = default!;
         public DateTime CreationDate { get; set; }
         public DateTime? UpdateDate { get; set; } = default!;

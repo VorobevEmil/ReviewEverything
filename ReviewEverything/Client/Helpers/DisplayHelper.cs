@@ -16,4 +16,11 @@ public class DisplayHelper
             "Óäàëåíèå íå ìîæåò áûòü îòìåíåíî!",
             yesText: "Óäàëèòü!", cancelText: "Îòìåíà");
     }
+
+    public static string DeclinationEndingUserScope(int count)
+    {
+        if ((count % 100 > 10 && count % 100 < 20) || (count % 10 >= 5 && count % 10 <= 9) || count % 10 == 0) return "Îòçûâîâ";
+        else if (count % 10 == 1) return "Îòçûâ";
+        return "Îòçûâà";
+    }
 }

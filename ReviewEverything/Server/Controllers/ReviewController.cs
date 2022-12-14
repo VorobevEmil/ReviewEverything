@@ -48,7 +48,7 @@ namespace ReviewEverything.Server.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id, TypeReviewResponse typeReview = TypeReviewResponse.Views)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var review = await _service.GetReviewByIdAsync(id);
             if (review == null)
@@ -56,13 +56,19 @@ namespace ReviewEverything.Server.Controllers
                 return NotFound();
             }
 
-            return typeReview switch
-            {
-                TypeReviewResponse.Edit => Ok(_mapper.Map<ReviewRequest>(review)),
-                TypeReviewResponse.Article => Ok(_mapper.Map<ArticleReviewResponse>(review)),
-                _ => Ok(_mapper.Map<ReviewResponse>(review))
+            return Ok(_mapper.Map<ArticleReviewResponse>(review));
+        }
 
-            };
+        [HttpGet("Edit/{id}")]
+        public async Task<IActionResult> GetEditById([FromRoute] int id)
+        {
+            var review = await _service.GetReviewByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<ReviewRequest>(review));
         }
 
         [HttpPost]
@@ -73,7 +79,7 @@ namespace ReviewEverything.Server.Controllers
             review.CreationDate = DateTime.UtcNow;
 
             var result = await _service.CreateReviewAsync(review);
-            return Created(Url.Action($"GetById", new { id = review.Id })!, review);
+            return Created(Url.Action($"GetById", new { id = review.Id })!, _mapper.Map<ReviewResponse>(review));
         }
 
         [HttpPut("{reviewId}")]

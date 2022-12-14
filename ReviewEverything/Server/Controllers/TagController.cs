@@ -61,7 +61,7 @@ namespace ReviewEverything.Server.Controllers
 
             var result = await _service.CreateTagAsync(tag);
 
-            return Created(Url.Action($"GetById", new { id = tag.Id })!, tag);
+            return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
         }
 
         [HttpPut("{tagId}")]

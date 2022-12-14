@@ -6,6 +6,7 @@
         public string Title { get; set; } = default!;
         public string Subtitle { get; set; } = default!;
         public CloudImageResponse CloudImage { get; set; } = default!;
+        public List<UserScoreResponse> UserScores { get; set; } = default!;
         public int AuthorScore { get; set; }
         public string AuthorId { get; set; } = default!;
         public string Author { get; set; } = default!;

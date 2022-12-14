@@ -62,7 +62,7 @@ public class CategoryController : ControllerBase
 
         var result = await _service.CreateCategoryAsync(category);
 
-        return Created(Url.Action($"GetById", new { id = category.Id })!, category);
+        return Created(Url.Action($"GetById", new { id = category.Id })!, _mapper.Map<CategoryResponse>(category));
     }
 
     [HttpPut("{categoryId}")]

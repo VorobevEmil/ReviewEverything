@@ -17,6 +17,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                     opt.MapFrom(src => src.Subtitle))
                 .ForMember(dest => dest.CloudImage, opt =>
                     opt.MapFrom(src => src.CloudImages[0]))
+                .ForMember(dest => dest.UserScores, opt =>
+                    opt.MapFrom(src => src.Composition.UserScores))
                 .ForMember(dest => dest.CompositionId, opt =>
                     opt.MapFrom(src => src.CompositionId))
                 .ForMember(dest => dest.Composition, opt =>
@@ -70,6 +72,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                     opt.MapFrom(src => src.Comments))
                 .ForMember(dest => dest.Tags, opt =>
                     opt.MapFrom(src => src.Tags))
+                .ForMember(dest => dest.UserScores, opt =>
+                    opt.MapFrom(src => src.Composition.UserScores))
                 .ForMember(dest => dest.LikeUsers, opt =>
                     opt.MapFrom(src => src.LikeUsers.Select(x => x.Id).ToList()))
                 .ForMember(dest => dest.CreationDate, opt =>

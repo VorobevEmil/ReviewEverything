@@ -86,6 +86,10 @@
                                             <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async() => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
                                         </div>
                                     }
+                                    <div class="mb-1 d-flex">
+                                        <MudRating Size="Size.Small" SelectedValue="(review.UserScores.Count == default ? default :  (int)Math.Round( review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 0, MidpointRounding.AwayFromZero))" DisableRipple="true" ReadOnly="true" />
+                                        <MudText Style="font-size:14px;">@review.UserScores.Count @DisplayHelper.DeclinationEndingUserScope(review.UserScores.Count)</MudText>
+                                    </div>
                                     <MudText Style="font-size: 12px;">@review.CreationDate.CalculateRelativeTime()</MudText>
                                     <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
                                 </div>
@@ -117,16 +121,20 @@
                                 </div>
                                 <div class="mx-2 w-100">
                                     <div class="d-flex" style="justify-content: space-between;">
-                                        <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                                        <div class="mb-1 d-flex">
+                                            <MudRating SelectedValue="(review.UserScores.Count == default ? default :  (int)Math.Round( review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 0, MidpointRounding.AwayFromZero))" DisableRipple="true" ReadOnly="true" />
+                                            <MudText Style="font-size:16px;">@review.UserScores.Count @DisplayHelper.DeclinationEndingUserScope(review.UserScores.Count)</MudText>
+                                        </div>
                                         @if (Editor)
                                         {
                                             <div class="d-flex">
                                                 <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
                                                 <span class="mx-1"></span>
-                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async() => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async () => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
                                             </div>
                                         }
                                     </div>
+                                    <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
                                     <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() - @review.Subtitle</MudText>
                                     <div class="d-flex mt-1" style="align-items: center;">
                                         <div class="d-flex">

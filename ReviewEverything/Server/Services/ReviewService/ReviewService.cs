@@ -25,6 +25,8 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .Include(x => x.LikeUsers)
                 .Include(x => x.Composition)
                 .ThenInclude(x => x.Category)
+                .Include(x => x.Composition)
+                .ThenInclude(x => x.UserScores)
                 .AsQueryable();
         }
 

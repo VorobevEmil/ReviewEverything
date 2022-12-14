@@ -19,7 +19,6 @@ namespace ReviewEverything.Server.Data.Configuration
             builder.HasOne(left => left.User)
                 .WithMany(right => right.UserScores)
                 .HasForeignKey(left => left.UserId);
-
         }
     }
 }
