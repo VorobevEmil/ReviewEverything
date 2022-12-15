@@ -30,8 +30,6 @@ public partial class SignIn
         var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Account/SignIn", _model);
         if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
         {
-            Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Success);
-
             HostAuthenticationStateProvider.RefreshState();
             await OnInitializedAsync();
             Parent.RefreshState();

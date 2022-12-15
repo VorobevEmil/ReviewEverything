@@ -26,7 +26,6 @@ namespace ReviewEverything.Client.Pages.Account
             var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Account/SignUp", _model);
             if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
             {
-                Snackbar.Add("Пользователь успешно зарегистрирован", Severity.Success);
                 NavigationManager.NavigateTo("/Account/SingIn");
             }
             else

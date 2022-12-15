@@ -1,26 +1,22 @@
-using MudBlazor;
+Ôªøusing MudBlazor;
 
-public class DisplayHelper
+namespace ReviewEverything.Client.Helpers
 {
-    private readonly IDialogService _dialogService;
-
-    public DisplayHelper(IDialogService dialogService)
+    public class DisplayHelper
     {
-        _dialogService = dialogService;
-    }
+        private readonly IDialogService _dialogService;
 
-    public async Task<bool?> ShowDeleteMessageBoxAsync()
-    {
-        return await _dialogService.ShowMessageBox(
-            "¬ÌËÏ‡ÌËÂ",
-            "”‰‡ÎÂÌËÂ ÌÂ ÏÓÊÂÚ ·˚Ú¸ ÓÚÏÂÌÂÌÓ!",
-            yesText: "”‰‡ÎËÚ¸!", cancelText: "ŒÚÏÂÌ‡");
-    }
+        public DisplayHelper(IDialogService dialogService)
+        {
+            _dialogService = dialogService;
+        }
 
-    public static string DeclinationEndingUserScope(int count)
-    {
-        if ((count % 100 > 10 && count % 100 < 20) || (count % 10 >= 5 && count % 10 <= 9) || count % 10 == 0) return "ŒÚÁ˚‚Ó‚";
-        else if (count % 10 == 1) return "ŒÚÁ˚‚";
-        return "ŒÚÁ˚‚‡";
+        public async Task<bool?> ShowDeleteMessageBoxAsync()
+        {
+            return await _dialogService.ShowMessageBox(
+                "–í–Ω–∏–º–∞–Ω–∏–µ",
+                "–£–¥–∞–ª–µ–Ω–∏–µ –Ω–µ –º–æ–∂–µ—Ç –±—ã—Ç—å –æ—Ç–º–µ–Ω–µ–Ω–æ!",
+                yesText: "–£–¥–∞–ª–∏—Ç—å!", cancelText: "–û—Ç–º–µ–Ω–∞");
+        }
     }
 }

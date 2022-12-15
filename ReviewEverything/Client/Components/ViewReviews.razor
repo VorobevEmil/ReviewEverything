@@ -23,36 +23,23 @@
             <div class="d-flex" style="flex-flow: row wrap;">
                 @for (int i = 0; i < 10; i++)
                 {
-                    <MudSkeleton Class="mx-1" Height="40px" Width="100px" />
+                    <MudSkeleton Class="mx-1" Height="40px" Width="90px" />
                 }
             </div>
         }
     </MudPaper>
-    <MudBreakpointProvider>
-        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-            @if (Editor)
-            {
-                <MudButton Color="Color.Primary" Variant="Variant.Outlined">Создать обзор</MudButton>
-            }
-            <MudText Class="mt-3" Style="font-size: 2.125rem; font-weight: 900">@_titleCategory</MudText>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <div class="d-flex" style="justify-content: space-between; align-items: center;">
-                @if (_titleCategory != null)
-                {
-                    <MudText Class="mt-3" Style="font-size: 2.125rem; font-weight: 900">@_titleCategory</MudText>
-                }
-                else
-                {
-                    <MudSkeleton Height="70px" Width="150px" Animation="Animation.Wave" />
-                }
-                @if (Editor)
-                {
-                    <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">Создать обзор</MudButton>
-                }
-            </div>
-        </MudHidden>
-    </MudBreakpointProvider>
+    @if (Editor)
+    {
+        <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined">Создать обзор</MudButton>
+    }
+    @if (_titleCategory != null)
+    {
+        <MudText Style="font-size: 2.125rem; font-weight: 900">@_titleCategory</MudText>
+    }
+    else
+    {
+        <MudSkeleton Height="70px" Width="150px" Animation="Animation.Wave" />
+    }
     @if (Categories != null)
     {
         <MudTabs Class="my-3" Elevation="4" Rounded="true" AlwaysShowScrollButtons="true">
@@ -78,17 +65,19 @@
                                     <MudAvatar Style="width: 35px; height: 35px; font-size: 18px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
                                 </div>
                                 <div class="mx-2 w-100">
-                                    @if (Editor)
-                                    {
-                                        <div class="d-flex justify-content-end">
-                                            <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
-                                            <span class="mx-1"></span>
-                                            <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async() => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
+                                    <div class="d-flex justify-content-between">
+                                        <div class="mb-1 d-flex" style="align-items: center;">
+                                            <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height:24px; width:24px;" />
+                                            <span Style="font-size: 17px; line-height: normal;">@(review.UserScores.Count == default ? default : Math.Round(review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 1))<span style="font-size:10px;">/5</span></span>
                                         </div>
-                                    }
-                                    <div class="mb-1 d-flex">
-                                        <MudRating Size="Size.Small" SelectedValue="(review.UserScores.Count == default ? default :  (int)Math.Round( review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 0, MidpointRounding.AwayFromZero))" DisableRipple="true" ReadOnly="true" />
-                                        <MudText Style="font-size:14px;">@review.UserScores.Count @DisplayHelper.DeclinationEndingUserScope(review.UserScores.Count)</MudText>
+                                        @if (Editor)
+                                        {
+                                            <div class="d-flex justify-content-end">
+                                                <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
+                                                <span class="mx-1"></span>
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async() => await DeleteReviewAsync(review.Id)" Color="Color.Error" />
+                                            </div>
+                                        }
                                     </div>
                                     <MudText Style="font-size: 12px;">@review.CreationDate.CalculateRelativeTime()</MudText>
                                     <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
@@ -122,8 +111,10 @@
                                 <div class="mx-2 w-100">
                                     <div class="d-flex" style="justify-content: space-between;">
                                         <div class="mb-1 d-flex">
-                                            <MudRating SelectedValue="(review.UserScores.Count == default ? default :  (int)Math.Round( review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 0, MidpointRounding.AwayFromZero))" DisableRipple="true" ReadOnly="true" />
-                                            <MudText Style="font-size:16px;">@review.UserScores.Count @DisplayHelper.DeclinationEndingUserScope(review.UserScores.Count)</MudText>
+                                            <div class="mb-1 d-flex" style="align-items: center;">
+                                                <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height:30px; width:30px;" />
+                                                <span Style="font-size: 20px; line-height: normal;">@(review.UserScores.Count == default ? default : Math.Round(review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 1))<span style="font-size:10px;">/5</span></span>
+                                            </div>
                                         </div>
                                         @if (Editor)
                                         {

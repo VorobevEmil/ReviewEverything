@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using ReviewEverything.Client;
+using ReviewEverything.Client.Helpers;
 using ReviewEverything.Client.Services.Authorization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

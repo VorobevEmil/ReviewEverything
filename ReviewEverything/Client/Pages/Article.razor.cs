@@ -4,8 +4,8 @@ using ReviewEverything.Shared.Contracts.Responses;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
+using ReviewEverything.Client.Helpers;
 using ReviewEverything.Shared.Contracts.Requests;
-using static MudBlazor.CategoryTypes;
 
 namespace ReviewEverything.Client.Pages
 {
@@ -19,17 +19,18 @@ namespace ReviewEverything.Client.Pages
         public ArticleReviewResponse ArticleReview { get; set; } = default!;
         private string _bodyComment = default!;
         private int _userRatingComposition = default!;
+        private bool _userLike = default!;
         protected override async Task OnInitializedAsync()
         {
             await GetUserAsync();
             await GetArticleAsync();
+            _userLike = CheckUserSetLike();
         }
 
         private async Task GetUserAsync()
         {
             User = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
             _userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? default;
-
         }
 
         private async Task GetArticleAsync()
@@ -40,6 +41,12 @@ namespace ReviewEverything.Client.Pages
                 ArticleReview = (await httpResponseMessage.Content.ReadFromJsonAsync<ArticleReviewResponse>())!;
                 GetUserRating();
             }
+        }
+
+        private bool CheckUserSetLike()
+        {
+            return User.Identity!.IsAuthenticated 
+                   && ArticleReview.LikeUsers.Contains(GetUserId());
         }
 
         private void GetUserRating()
@@ -90,6 +97,31 @@ namespace ReviewEverything.Client.Pages
                 if (userScore != null) ArticleReview.UserScores.Remove(userScore);
             }
         }
+
+
+        private async Task SetUserLikeAsync(bool like)
+        {
+            if (!User.Identity!.IsAuthenticated)
+                return;
+
+            _userLike = like;
+            if (like)
+            {
+                ArticleReview.LikeUsers.Add(GetUserId());
+                await HttpClient.PostAsJsonAsync("api/UserLike", ArticleReview.Id);
+            }
+            else
+            {
+                ArticleReview.LikeUsers.Remove(GetUserId());
+                await HttpClient.DeleteAsync($"api/UserLike/{ArticleReview.Id}");
+            }
+        }
+
+        private string GetUserId()
+        {
+            return User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+        }
+
 
         private async Task SendCommentAsync()
         {

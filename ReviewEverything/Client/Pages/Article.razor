@@ -4,21 +4,23 @@
 <div class="container mt-5">
     @if (ArticleReview != null)
     {
-        <AuthorizeView>
-            <Authorized>
-                <MudPaper Class="my-3 px-1 py-4">
-                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <MudText Style="font-size: 24px;">Как бы вы оценили данное произведение?</MudText>
-                        <MudRating Size="Size.Large" SelectedValue="_userRatingComposition" SelectedValueChanged="SetUserRatingAsync" />
-                    </div>
-                </MudPaper>
-            </Authorized>
-        </AuthorizeView>
-        <div class="mb-1 d-flex">
-            <MudRating SelectedValue="(ArticleReview.UserScores.Count == default ? default :  (int)Math.Round( ArticleReview.UserScores.Sum(t => t.Score) / (double)ArticleReview.UserScores.Count, 0, MidpointRounding.AwayFromZero))" DisableRipple="true" ReadOnly="true" />
-            <MudText Style="font-size:16px;">@ArticleReview.UserScores.Count @DisplayHelper.DeclinationEndingUserScope(ArticleReview.UserScores.Count)</MudText>
+        <div class="mb-1 d-flex" style="align-items: center;">
+            <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height:40px; width:40px;" />
+            <div style="display: flex; flex-direction: column;">
+                <span Style="font-size: 24px; line-height: normal;">@(ArticleReview.UserScores.Count == default ? default : Math.Round(ArticleReview.UserScores.Sum(t => t.Score) / (double)ArticleReview.UserScores.Count, 1))<span style="font-size:10px;">/5</span></span>
+                <span Style="font-size: 10px; line-height: normal;">@ArticleReview.UserScores.Count</span>
+            </div>
+            <MudDivider Class="mx-3" Style="height: 50px" Vertical="true" />
+            <AuthorizeView>
+                <Authorized>
+                    <MudRating Size="Size.Large" SelectedValue="_userRatingComposition" SelectedValueChanged="SetUserRatingAsync" />
+                </Authorized>
+                <NotAuthorized>
+                    <MudText>Для того, чтобы оценить произведение необходима авторизация</MudText>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
-        <MudLink Style="font-size:1.3em;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudLink>
+        <MudLink Style="font-size:24px;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudLink>
         <MudText Style="font-size:2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
         <MudText Style="font-size:1.75em;" Class="mt-1">@ArticleReview.Subtitle</MudText>
         <MudBreakpointProvider>
@@ -75,6 +77,11 @@
         </MudBreakpointProvider>
         <MudDivider Class="mt-2" />
         <MudText Class="mt-4">@ArticleReview.Body</MudText>
+        <div class="mt-2 d-flex" style="align-items: center;">
+            <MudCheckBox Dense="true" ReadOnly="!User.Identity!.IsAuthenticated" T="bool" Checked="_userLike" CheckedChanged="SetUserLikeAsync" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" />
+            <span class="mx-1"></span>
+            <MudText>@ArticleReview.LikeUsers.Count()</MudText>
+        </div>
         <MudDivider Class="mt-2" />
         <div class="d-flex" style="align-items: center; justify-content: space-between;">
             <MudText Style="font-size:36px;">Комментарии</MudText>
@@ -99,7 +106,6 @@
                 </div>
             </NotAuthorized>
         </AuthorizeView>
-
         <div class="mt-5">
             <MudDivider />
             @if (ArticleReview.Comments.Count != default)
