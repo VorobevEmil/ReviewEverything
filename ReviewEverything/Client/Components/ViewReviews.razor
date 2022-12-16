@@ -30,7 +30,7 @@
     </MudPaper>
     @if (Editor)
     {
-        <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined">Создать обзор</MudButton>
+        <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">Создать обзор</MudButton>
     }
     @if (_titleCategory != null)
     {

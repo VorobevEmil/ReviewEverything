@@ -14,7 +14,7 @@ public partial class MainLayout
     private bool IsDarkMode { get; set; } = default!;
     private bool DrawerOpen { get; set; } = default!;
 
-    private MudAutocomplete<ReviewSearchResponse> _searchAutocomplete;
+    private MudAutocomplete<ReviewSearchResponse> _searchAutocomplete = default!;
 
     private bool _searchDialogOpen;
     private void OpenSearchDialog() => _searchDialogOpen = true;
@@ -47,10 +47,10 @@ public partial class MainLayout
         return (await HttpClient.GetFromJsonAsync<IEnumerable<ReviewSearchResponse>>($"api/Review/Search/{search}"))!;
     }
 
-    private async void OnSearchResult(ReviewSearchResponse entry)
+    private async Task OnSearchResult(ReviewSearchResponse entry)
     {
+        NavigationManager.NavigateTo($"/");
         NavigationManager.NavigateTo($"/Article/{entry.Id}");
-        await Task.Delay(1000);
         await _searchAutocomplete.Clear();
     }
 }
