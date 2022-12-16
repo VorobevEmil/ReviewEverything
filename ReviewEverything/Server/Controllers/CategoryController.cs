@@ -67,7 +67,6 @@ public class CategoryController : ControllerBase
 
     [HttpPut("{categoryId}")]
     [Authorize("Admin")]
-    //TODO: Протестить с добавленными произведениями
     public async Task<IActionResult> Update([FromRoute] int categoryId, [FromBody] CategoryRequest request)
     {
         var category = _mapper.Map<Category>(request);

@@ -6,6 +6,7 @@ namespace ReviewEverything.Server.Services.ReviewService
     {
         Task<Review?> GetReviewByIdAsync(int id);
         Task<List<Review>> GetReviewsAsync(int? categoryId, string? userId, List<int>? tags);
+        Task<List<Review>> SearchReviewsAsync(string search);
         Task<bool> CreateReviewAsync(Review review);
         Task<bool> UpdateReviewAsync(Review review);
         Task<bool> DeleteReviewAsync(int id);

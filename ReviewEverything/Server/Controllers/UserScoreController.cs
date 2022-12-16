@@ -24,7 +24,6 @@ namespace ReviewEverything.Server.Controllers
 
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateOrUpdate([FromBody] UserScoreRequest request)
         {
             try
@@ -39,7 +38,6 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpDelete("{compositionId}")]
-        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int compositionId)
         {
             try

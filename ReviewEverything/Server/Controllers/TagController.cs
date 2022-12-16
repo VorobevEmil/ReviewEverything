@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.CompositionService;
@@ -54,6 +55,7 @@ namespace ReviewEverything.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TagRequest request)
         {
@@ -62,29 +64,6 @@ namespace ReviewEverything.Server.Controllers
             var result = await _service.CreateTagAsync(tag);
 
             return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
-        }
-
-        [HttpPut("{tagId}")]
-        public async Task<IActionResult> Update([FromRoute] int tagId, [FromBody] TagRequest request)
-        {
-            var tag = _mapper.Map<Tag>(request);
-            tag.Id = tagId;
-
-            var updated = await _service.UpdateTagAsync(tag);
-            if (updated)
-                return Ok(tag);
-
-            return NotFound();
-        }
-
-        [HttpDelete("{tagId}")]
-        public async Task<IActionResult> Delete([FromRoute] int tagId)
-        {
-            var deleted = await _service.DeleteTagAsync(tagId);
-            if (deleted)
-                return NoContent();
-
-            return NotFound();
         }
     }
 }

@@ -4,6 +4,7 @@ using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Shared.Contracts.Responses;
 
@@ -21,20 +22,6 @@ namespace ReviewEverything.Server.Controllers
             _service = service;
             _mapper = mapper;
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult<List<CommentResponse>>> GetAll()
-        //{
-        //    try
-        //    {
-        //        var comments = await _service.GetCommentsAsync();
-        //        return Ok(_mapper.Map<List<CommentResponse>>(comments));
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentResponse>> GetById([FromRoute] int id)
@@ -56,6 +43,7 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CommentRequest request)
         {
             var comment = _mapper.Map<Comment>(request);
@@ -65,28 +53,5 @@ namespace ReviewEverything.Server.Controllers
             var result = await _service.CreateCommentAsync(comment);
             return Created(Url.Action($"GetById", new { id = comment.Id })!, _mapper.Map<CommentResponse>(comment));
         }
-
-        //[HttpPut("{commentId}")]
-        //public async Task<IActionResult> Update([FromRoute] int commentId, [FromBody] CommentRequest request)
-        //{
-        //    var comments = _mapper.Map<Comment>(request);
-        //    comments.Id = commentId;
-
-        //    var updated = await _service.UpdateCommentAsync(comments);
-        //    if (updated)
-        //        return Ok(comments);
-
-        //    return NotFound();
-        //}
-
-        //[HttpDelete("{commentId}")]
-        //public async Task<IActionResult> Delete([FromRoute] int commentId)
-        //{
-        //    var deleted = await _service.DeleteCommentAsync(commentId);
-        //    if (deleted)
-        //        return NoContent();
-
-        //    return NotFound();
-        //}
     }
 }

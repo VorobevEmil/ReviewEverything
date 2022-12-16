@@ -66,10 +66,6 @@ namespace ReviewEverything.Server.Services.ReviewService
             }
 
             return await reviews.ToListAsync();
-
-            //return await _context.Reviews
-            //    .Where(p => search != null! && EF.Functions.Like(p.Title.ToLower(), $"%{search.ToLower()}%"))
-            //    .ToListAsync();
         }
 
         public async Task<bool> CreateReviewAsync(Review review)
@@ -116,6 +112,25 @@ namespace ReviewEverything.Server.Services.ReviewService
             var deleted = await _context.SaveChangesAsync();
 
             return deleted > 0;
+        }
+
+        public async Task<List<Review>> SearchReviewsAsync(string search)
+        {
+            var reviews = await _context.Reviews
+                            .Where(p => EF.Functions.Like(p.Title.ToLower(), $"%{search.ToLower()}%"))
+                            .ToListAsync();
+
+            var comments = await _context.Comments
+                            .Include(x => x.Review)
+                            .Where(x => EF.Functions.Like(x.Body.ToLower(), $"%{search.ToLower()}%"))
+                            .Where(x => !reviews.Select(x => x.Id).Contains(x.ReviewId))
+                            .GroupBy(x => x.ReviewId)
+                            .Select(x => x.First())
+                            .ToListAsync();
+
+            reviews.AddRange(comments.Select(x => x.Review).ToList());
+
+            return reviews;
         }
     }
 }

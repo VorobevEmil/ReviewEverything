@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+@using ReviewEverything.Shared.Contracts.Responses;
 @inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="IsDarkMode" />
@@ -16,7 +17,7 @@
                         <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
                         <MudText Style="font-size: 18px;">Reviews of everything</MudText>
                     </MudLink>
-                    <MudIconButton Color="Color.Inherit" Icon="@Icons.Filled.Search" />
+                    <MudIconButton OnClick="OpenSearchDialog" Color="Color.Inherit" Icon="@Icons.Filled.Search" />
                 </div>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
@@ -55,6 +56,7 @@
                     </AuthorizeView>
                 </div>
                 <MudSpacer />
+                <MudIconButton OnClick="OpenSearchDialog" Color="Color.Inherit" Icon="@Icons.Filled.Search" />
                 <MudToggleIconButton Color="Color.Inherit" Toggled="IsDarkMode" ToggledChanged="ChangeThemeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 <CascadingValue Value="this">
                     <LoginPartial />
@@ -83,6 +85,18 @@
         </MudHidden>
     </MudBreakpointProvider>
 
+    <MudDialog @bind-IsVisible="_searchDialogOpen" Options="_dialogOptions" Class="docs-gray-bg" ClassContent="docs-mobile-dialog-search">
+        <DialogContent>
+            <MudAutocomplete @ref="_searchAutocomplete" T="ReviewSearchResponse" PopoverClass="docs-mobile-dialog-search-popover" Placeholder="Search review" SearchFunc="Search" ValueChanged="OnSearchResult" Clearable="true" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
+                <ItemTemplate Context="result">
+                    <MudText>@result.Title</MudText>
+                </ItemTemplate>
+            </MudAutocomplete>
+            <div class="d-flex justify-center align-center mud-height-full pb-16" style="width:300px; height:30vh;">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Nothing found, do a search</MudText>
+            </div>
+        </DialogContent>
+    </MudDialog>
 
     <MudMainContent>
         <CascadingValue Value="this">

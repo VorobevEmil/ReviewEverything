@@ -1,11 +1,15 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReviewEverything.Client.Pages.Admin;
+using ReviewEverything.Client.Pages;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
 using ReviewEverything.Shared.Models.Enums;
+using static MudBlazor.CategoryTypes;
 
 namespace ReviewEverything.Server.Controllers
 {
@@ -46,6 +50,13 @@ namespace ReviewEverything.Server.Controllers
             }
         }
 
+        [HttpGet("search/{search}")]
+        public async Task<ActionResult<List<ReviewResponse>>> Search(string search)
+        {
+            var reviews = await _service.SearchReviewsAsync(search);
+            return Ok(_mapper.Map<List<ReviewSearchResponse>>(reviews));
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
@@ -59,6 +70,7 @@ namespace ReviewEverything.Server.Controllers
             return Ok(_mapper.Map<ArticleReviewResponse>(review));
         }
 
+        [Authorize]
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> GetEditById([FromRoute] int id)
         {
@@ -71,6 +83,7 @@ namespace ReviewEverything.Server.Controllers
             return Ok(_mapper.Map<ReviewRequest>(review));
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ReviewRequest request)
         {
@@ -82,6 +95,7 @@ namespace ReviewEverything.Server.Controllers
             return Created(Url.Action($"GetById", new { id = review.Id })!, _mapper.Map<ReviewResponse>(review));
         }
 
+        [Authorize]
         [HttpPut("{reviewId}")]
         public async Task<IActionResult> Update([FromRoute] int reviewId, [FromBody] ReviewRequest request)
         {
@@ -95,6 +109,7 @@ namespace ReviewEverything.Server.Controllers
             return NotFound();
         }
 
+        [Authorize]
         [HttpDelete("{reviewId}")]
         public async Task<IActionResult> Delete([FromRoute] int reviewId)
         {

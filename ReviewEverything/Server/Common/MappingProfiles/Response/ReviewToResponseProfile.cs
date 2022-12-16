@@ -80,6 +80,12 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                     opt.MapFrom(src => src.CreationDate))
                 .ForMember(dest => dest.UpdateDate, opt =>
                     opt.MapFrom(src => src.UpdateDate));
+
+            CreateMap<Review, ReviewSearchResponse>()
+                .ForMember(dest => dest.Id, opt =>
+                    opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Title, opt =>
+                    opt.MapFrom(src => src.Title));
         }
     }
 }
