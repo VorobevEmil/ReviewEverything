@@ -21,7 +21,7 @@
             </AuthorizeView>
         </div>
         <div style="display:flex; align-items:center;">
-            <MudIcon Color="Color.Warning" Icon="@Icons.Filled.Star" Style="height:30px; width:30px;"/>
+            <MudIcon Color="Color.Warning" Icon="@Icons.Filled.Star" Style="height:30px; width:30px;" />
             <span class="mx-1"></span>
             <span style="font-size:18px;">Оценка автора: @ArticleReview.AuthorScore/10</span>
         </div>
@@ -81,6 +81,11 @@
             </MudHidden>
         </MudBreakpointProvider>
         <MudDivider Class="mt-2" />
+        <style>
+            img {
+                max-width: 100%;
+            }
+        </style>
         <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
         <div class="mt-2 d-flex" style="align-items: center;">
             <MudCheckBox Dense="true" ReadOnly="!User.Identity!.IsAuthenticated" T="bool" Checked="_userLike" CheckedChanged="SetUserLikeAsync" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" />

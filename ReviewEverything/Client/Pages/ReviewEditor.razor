@@ -1,19 +1,6 @@
 ﻿@page "/review-editor/{id:int?}"
 @attribute [Authorize]
 
-<style>
-    .CodeMirror.cm-s-easymde.CodeMirror-wrap {
-        background: none;
-        color: var(--mud-palette-text-primary);
-        font-size: 1rem;
-        box-sizing: border-box;
-        align-items: center;
-        font-weight: 400;
-        line-height: 1.1876em;
-        letter-spacing: .00938em;
-    }
-</style>
-
 <div class="container mt-5">
     <MudPaper Class="px-4 py-5">
         @if (_review != null)
@@ -28,9 +15,33 @@
                 <SelectOrCreateTags Review="_review" />
 
                 <div class="mt-3">
+                    <style>
+                        .CodeMirror.cm-s-easymde.CodeMirror-wrap {
+                            background-color: var(--mud-palette-surface);
+                            color: var(--mud-palette-text-primary);
+                            font-size: 1rem;
+                            box-sizing: border-box;
+                            align-items: center;
+                            font-weight: 400;
+                            line-height: 1.1876em;
+                            letter-spacing: .00938em;
+                        }
+
+                        .editor-preview-full.editor-preview.editor-preview-active {
+                            color: var(--mud-palette-text-primary);
+                            background-color: var(--mud-palette-surface);
+                        }
+
+                        .preview.no-disable.active {
+                            background: var(--mud-palette-surface);
+                        }
+
+                        .editor-toolbar > button {
+                            background: var(--mud-palette-surface) !important;
+                        }
+                    </style>
                     <MarkdownEditor @bind-Value="@_review.Body" SpellChecker="false" />
                 </div>
-
 
                 <div class="mt-5 text-end">
                     <MudButton Variant="Variant.Outlined" Color="Color.Inherit" ButtonType="ButtonType.Submit">Сохранить</MudButton>
