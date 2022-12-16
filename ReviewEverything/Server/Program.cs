@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using ReviewEverything.Server.Options;
 using ReviewEverything.Server.Installers;
+using ReviewEverything.Server.Common.Policies;
+using ReviewEverything.Server.Services.ReviewService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,13 @@ builder.Services.AddAuthorization(configure =>
     {
         pb.RequireAuthenticatedUser()
             .RequireRole(new[] { "Admin" });
+    });
+
+    configure.AddPolicy("ChangingArticle", pb =>
+    {
+        var serviceProvider = builder.Services!.BuildServiceProvider()!;
+        pb.RequireAuthenticatedUser()
+            .AddRequirements(new PossibilityChangingArticleHandler(serviceProvider.GetService<IReviewService>()!, serviceProvider.GetService<IHttpContextAccessor>()!));
     });
 });
 

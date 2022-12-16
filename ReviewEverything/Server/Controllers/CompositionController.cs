@@ -67,7 +67,7 @@ public class CompositionController : ControllerBase
     }
 
     [HttpPut("{compositionId}")]
-    [Authorize]
+    [Authorize("Admin")]
     public async Task<IActionResult> Update([FromRoute] int compositionId, [FromBody] CompositionRequest request)
     {
         var composition = _mapper.Map<Composition>(request);
@@ -81,7 +81,7 @@ public class CompositionController : ControllerBase
     }
 
     [HttpDelete("{compositionId}")]
-    [Authorize]
+    [Authorize("Admin")]
     public async Task<IActionResult> Delete([FromRoute] int compositionId)
     {
         var deleted = await _service.DeleteCompositionAsync(compositionId);

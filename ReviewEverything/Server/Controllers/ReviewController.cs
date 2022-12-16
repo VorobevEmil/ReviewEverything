@@ -70,7 +70,7 @@ namespace ReviewEverything.Server.Controllers
             return Ok(_mapper.Map<ArticleReviewResponse>(review));
         }
 
-        [Authorize]
+        [Authorize("ChangingArticle")]
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> GetEditById([FromRoute] int id)
         {
@@ -95,12 +95,12 @@ namespace ReviewEverything.Server.Controllers
             return Created(Url.Action($"GetById", new { id = review.Id })!, _mapper.Map<ReviewResponse>(review));
         }
 
-        [Authorize]
-        [HttpPut("{reviewId}")]
-        public async Task<IActionResult> Update([FromRoute] int reviewId, [FromBody] ReviewRequest request)
+        [Authorize("ChangingArticle")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] ReviewRequest request)
         {
             var review = _mapper.Map<Review>(request);
-            review.Id = reviewId;
+            review.Id = id;
 
             var updated = await _service.UpdateReviewAsync(review);
             if (updated)
