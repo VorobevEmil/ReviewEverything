@@ -92,14 +92,18 @@
             <span class="mx-1"></span>
             <MudText>@ArticleReview.LikeUsers.Count()</MudText>
         </div>
-        <MudDivider Class="mt-2" />
-        <div class="d-flex" style="align-items: center; justify-content: space-between;">
-            <MudText Style="font-size:36px;">Комментарии</MudText>
-            <div class="d-flex" style="align-items: center">
-                <MudIcon Style="height: 20px; width: 20px;" Icon="@Icons.Filled.Comment" />
-                <MudText Style="font-size:20px;">@ArticleReview.Comments.Count</MudText>
+        @if (Comments != null)
+        {
+            <MudDivider Class="mt-2" />
+            <div class="d-flex" style="align-items: center; justify-content: space-between;">
+                <MudText Style="font-size:36px;">Комментарии</MudText>
+                <div class="d-flex" style="align-items: center">
+                    <MudIcon Style="height: 20px; width: 20px;" Icon="@Icons.Filled.Comment" />
+                    <MudText Style="font-size:20px;">@Comments.Count</MudText>
+                </div>
             </div>
-        </div>
+        }
+
         <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Что ты думаешь об этом?" Lines="3" @bind-Value="_bodyComment" />
         <AuthorizeView>
             <Authorized>
@@ -118,12 +122,12 @@
         </AuthorizeView>
         <div class="mt-5">
             <MudDivider />
-            @if (ArticleReview.Comments.Count != default)
+            @if (Comments != null && Comments.Count != default)
             {
-                foreach (var comment in ArticleReview.Comments)
+                foreach (var comment in Comments)
                 {
                     <div class="my-5 d-flex">
-                        <MudAvatar Class="mx-2" Variant="Variant.Outlined">@ArticleReview.Author[0]</MudAvatar>
+                        <MudAvatar Class="mx-2" Variant="Variant.Outlined">@comment.User[0]</MudAvatar>
                         <div>
                             <MudLink Style="font-size:20px;" Underline="Underline.Always" Href="@("./User/" + comment.UserId)" Color="Color.Default">@comment.User</MudLink>
                             <MudText Style="font-size: 11px;">@comment.CreationDate.CalculateRelativeTime()</MudText>

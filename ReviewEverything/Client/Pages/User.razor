@@ -6,7 +6,7 @@
             <div class="col-sm-12 col-md-3" style="display: flex; align-items: center; flex-direction: column;">
                 @if (UserResponse != null)
                 {
-                    <MudAvatar Style="height: 200px; width: 200px; font-size: 10rem;" Variant="Variant.Outlined" Color="Color.Inherit">@UserResponse.UserName[0]</MudAvatar>
+                    <MudAvatar Style="height: 200px; width: 200px; font-size: 10rem;" Variant="Variant.Outlined" Color="Color.Inherit">@UserResponse.FullName[0]</MudAvatar>
                     <MudText Class="mt-2" Style="word-break: break-all; font-size: 2rem; font-weight: 600">@UserResponse.UserName</MudText>
                 }
                 else
@@ -18,7 +18,7 @@
             <div class="col-sm-12 col-md-9">
                 @if (UserResponse != null)
                 {
-                    <MudText Style="word-break: break-all; font-size: 3rem; font-weight: 900">@UserResponse.UserName</MudText>
+                    <MudText Style="word-break: break-all; font-size: 3rem; font-weight: 900">@UserResponse.FullName</MudText>
                 }
                 else
                 {

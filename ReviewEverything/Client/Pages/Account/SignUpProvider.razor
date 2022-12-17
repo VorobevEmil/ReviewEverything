@@ -1,0 +1,27 @@
+﻿@page "/account/sign-up-provider/{provider}"
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Register - Reviews of everything</PageTitle>
+
+<div class="center-block">
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmitAsync">
+        <DataAnnotationsValidator />
+
+        <MudPaper Class="mx-3 px-5 py-3 text-center" Style="display: flex; flex-direction: column; align-items: center; width: 350px;">
+            <MudText Class="mt-2" Style="font-size: 21px;">CREATE AN ACCOUNT</MudText>
+            <div class="mt-3 w-100">
+                <MudTextField FullWidth="true" @bind-Value="_model.FullName" For="@(() => _model.FullName)" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="FullName"></MudTextField>
+                <span class="my-2"></span>
+                <MudTextField FullWidth="true" @bind-Value="_model.UserName" For="@(() => _model.UserName)" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="UserName"></MudTextField>
+                <span class="my-2"></span>
+                <MudTextField FullWidth="true" @bind-Value="_model.Email" For="@(() => _model.Email)" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Email" InputType="InputType.Email"></MudTextField>
+            </div>
+
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="my-5" FullWidth="true" Color="Color.Dark">Create Account</MudButton>
+
+            <MudOverlay Visible="_sendRequest" DarkBackground="true" Absolute="true">
+                <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+            </MudOverlay>
+        </MudPaper>
+    </EditForm>
+</div>

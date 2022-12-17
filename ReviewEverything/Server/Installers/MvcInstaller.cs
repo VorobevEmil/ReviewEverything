@@ -1,9 +1,5 @@
-﻿using System.Reflection;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.OpenApi.Models;
 using ReviewEverything.Server.Common.Filters;
 
 namespace ReviewEverything.Server.Installers
@@ -25,6 +21,10 @@ namespace ReviewEverything.Server.Installers
             {
                 options.Filters.Add<ValidationFilter>();
             });
+
+
+            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddHttpContextAccessor();
         }
     }
 }

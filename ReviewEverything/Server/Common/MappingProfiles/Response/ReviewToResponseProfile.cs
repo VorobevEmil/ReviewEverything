@@ -28,7 +28,7 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.Category, opt =>
                     opt.MapFrom(src => src.Composition.Category.Title))
                 .ForMember(dest => dest.Author, opt =>
-                    opt.MapFrom(src => src.Author.UserName))
+                    opt.MapFrom(src => src.Author.FullName))
                 .ForMember(dest => dest.AuthorId, opt =>
                     opt.MapFrom(src => src.AuthorId))
                 .ForMember(dest => dest.AuthorScore, opt =>
@@ -63,13 +63,11 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.Category, opt =>
                     opt.MapFrom(src => src.Composition.Category.Title))
                 .ForMember(dest => dest.Author, opt =>
-                    opt.MapFrom(src => src.Author.UserName))
+                    opt.MapFrom(src => src.Author.FullName))
                 .ForMember(dest => dest.AuthorId, opt =>
                     opt.MapFrom(src => src.AuthorId))
                 .ForMember(dest => dest.AuthorScore, opt =>
                     opt.MapFrom(src => src.AuthorScore))
-                .ForMember(dest => dest.Comments, opt =>
-                    opt.MapFrom(src => src.Comments))
                 .ForMember(dest => dest.Tags, opt =>
                     opt.MapFrom(src => src.Tags))
                 .ForMember(dest => dest.UserScores, opt =>

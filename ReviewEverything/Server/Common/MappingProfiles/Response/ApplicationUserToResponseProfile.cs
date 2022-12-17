@@ -11,6 +11,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
             CreateMap<ApplicationUser, UserResponse>()
                 .ForMember(dest => dest.Id, opt =>
                     opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FullName, opt =>
+                    opt.MapFrom(src => src.FullName))
                 .ForMember(dest => dest.UserName, opt =>
                     opt.MapFrom(src => src.UserName));
         }

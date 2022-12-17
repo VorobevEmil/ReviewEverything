@@ -28,13 +28,28 @@ namespace ReviewEverything.Server.Controllers
         {
             try
             {
-                var comments = await _service.GetCommentByIdAsync(id);
-                if (comments == null)
+                var comment = await _service.GetCommentByIdAsync(id);
+                if (comment == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<CommentResponse>(comments));
+                return Ok(_mapper.Map<CommentResponse>(comment));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetByReviewId/{reviewId}")]
+        public async Task<ActionResult<List<CommentResponse>>> GetCommentsByReviewId(int reviewId)
+        {
+            try
+            {
+                var comments = await _service.GetCommentsByReviewIdAsync(reviewId);
+
+                return Ok(_mapper.Map<List<CommentResponse>>(comments));
             }
             catch
             {

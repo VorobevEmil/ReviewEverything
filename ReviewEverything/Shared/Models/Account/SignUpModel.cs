@@ -18,7 +18,7 @@ namespace ReviewEverything.Shared.Models.Account
         public string Email { get; set; } = default!;
 
         [Required]
-        [StringLength(30, ErrorMessage = "Длина пароля должна составлять не менее 1 символов", MinimumLength = 1)]
+        [StringLength(30, ErrorMessage = "Длина пароля должна составлять не менее 8 символов", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; } = default!;

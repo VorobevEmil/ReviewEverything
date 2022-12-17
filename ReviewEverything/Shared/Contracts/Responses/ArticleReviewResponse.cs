@@ -14,7 +14,6 @@
         public string Composition { get; set; } = default!;
         public int CategoryId { get; set; }
         public string Category { get; set; } = default!;
-        public List<CommentResponse> Comments { get; set; } = default!;
         public List<TagResponse> Tags { get; set; } = default!;
         public List<UserScoreResponse> UserScores { get; set; } = default!;
         public List<string> LikeUsers { get; set; } = default!;

@@ -12,11 +12,13 @@ namespace ReviewEverything.Client.Pages
     public partial class Article
     {
         [Parameter] public int Id { get; set; }
-        [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
+        //[Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         private ClaimsPrincipal User { get; set; } = default!;
         private string? _userId = default!;
-        public ArticleReviewResponse ArticleReview { get; set; } = default!;
+        private ArticleReviewResponse ArticleReview { get; set; } = default!;
+        private List<CommentResponse> Comments { get; set; } = default!;
+
         private string _bodyComment = default!;
         private int _userRatingComposition = default!;
         private bool _userLike = default!;
@@ -24,6 +26,7 @@ namespace ReviewEverything.Client.Pages
         {
             await GetUserAsync();
             await GetArticleAsync();
+            await GetCommentsAsync();
             _userLike = CheckUserSetLike();
         }
 
@@ -40,6 +43,15 @@ namespace ReviewEverything.Client.Pages
             {
                 ArticleReview = (await httpResponseMessage.Content.ReadFromJsonAsync<ArticleReviewResponse>())!;
                 GetUserRating();
+            }
+        }
+
+        private async Task GetCommentsAsync()
+        {
+            var httpResponseMessage = await HttpClient.GetAsync($"api/Comment/GetByReviewId/{Id}");
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                Comments = (await httpResponseMessage.Content.ReadFromJsonAsync<List<CommentResponse>>())!;
             }
         }
 
@@ -127,7 +139,7 @@ namespace ReviewEverything.Client.Pages
         {
             if (User.Identity!.IsAuthenticated)
             {
-                CommentRequest newComment = new CommentRequest()
+                CommentRequest newComment = new()
                 {
                     Body = _bodyComment,
                     ReviewId = Id
@@ -135,7 +147,7 @@ namespace ReviewEverything.Client.Pages
                 var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Comment", newComment);
                 if (httpResponseMessage.StatusCode == HttpStatusCode.Created)
                 {
-                    ArticleReview.Comments.Add((await httpResponseMessage.Content.ReadFromJsonAsync<CommentResponse>())!);
+                    Comments.Add((await httpResponseMessage.Content.ReadFromJsonAsync<CommentResponse>())!);
                 }
 
                 _bodyComment = default!;

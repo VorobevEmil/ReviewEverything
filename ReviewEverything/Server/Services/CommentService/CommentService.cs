@@ -20,9 +20,13 @@ namespace ReviewEverything.Server.Services.CommentService
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public  async Task<List<Comment>> GetCommentsAsync()
+        public async Task<List<Comment>> GetCommentsByReviewIdAsync(int reviewId)
         {
-            return await _context.Comments.ToListAsync();
+            return await _context.Comments
+                .Include(x => x.User)
+                .Where(x => x.ReviewId == reviewId)
+                .OrderByDescending(x => x.CreationDate)
+                .ToListAsync();
         }
 
         public async Task<bool> CreateCommentAsync(Comment comment)
