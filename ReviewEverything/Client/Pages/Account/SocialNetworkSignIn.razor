@@ -1,7 +1,10 @@
-﻿<div class="mt-5">
-    <form method="post" action="/api/GoogleOAuth/SignIn">
+﻿@using ReviewEverything.Client.Theme
+<div class="mt-5">
+    <form method="post" action="/api/Account/SignIn-Google">
         <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">Continue with Google</MudButton>
     </form>
     <div class="mt-2"></div>
-    <MudButton StartIcon="@Icons.Custom.Brands.Facebook" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true">Continue with Facebook</MudButton>
+    <form method="post" action="/api/Account/SignIn-Vkontakte">
+        <MudButton StartIcon="@CustomIcons.LogoVk" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">Continue with Vk</MudButton>
+    </form>
 </div>

@@ -1,34 +1,24 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using ReviewEverything.Server.Options;
 using ReviewEverything.Server.Installers;
-using ReviewEverything.Server.Common.Policies;
-using ReviewEverything.Server.Services.ReviewService;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.InstallServicesInAssembly();
 
 builder.Services.AddAuthentication()
     .AddGoogle(opt =>
     {
-        opt.ClientId = "751529687127-bba95tajqo5qm9qjf37mqmm1thttu5pj.apps.googleusercontent.com";
-        opt.ClientSecret = "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";
-    });
-builder.Services.AddAuthorization(configure =>
-{
-    configure.AddPolicy("Admin", pb =>
+        opt.ClientId = configuration["Authentication:Google:ClientId"]!;
+        opt.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
+    })
+    .AddVkontakte(opt =>
     {
-        pb.RequireAuthenticatedUser()
-            .RequireRole(new[] { "Admin" });
+        opt.ClientId = configuration["Authentication:Vkontakte:ClientId"]!;
+        opt.ClientSecret = configuration["Authentication:Vkontakte:ClientSecret"]!;
     });
-
-    configure.AddPolicy("ChangingArticle", pb =>
-    {
-        var serviceProvider = builder.Services!.BuildServiceProvider()!;
-        pb.RequireAuthenticatedUser()
-            .AddRequirements(new PossibilityChangingArticleHandler(serviceProvider.GetService<IReviewService>()!, serviceProvider.GetService<IHttpContextAccessor>()!));
-    });
-});
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddHttpContextAccessor();

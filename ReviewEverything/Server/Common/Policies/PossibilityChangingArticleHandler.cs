@@ -25,7 +25,7 @@ namespace ReviewEverything.Server.Common.Policies
             }
             else
             {
-                int reviewId = int.Parse(_httpContextAccessor.HttpContext!.GetRouteValue("id")!.ToString());
+                int reviewId = int.Parse(_httpContextAccessor.HttpContext!.GetRouteValue("id")!.ToString()!);
 
                 var userId = (await _service.GetReviewByIdAsync(reviewId))!.AuthorId;
 

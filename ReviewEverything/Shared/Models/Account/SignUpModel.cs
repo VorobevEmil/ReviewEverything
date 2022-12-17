@@ -5,8 +5,12 @@ namespace ReviewEverything.Shared.Models.Account
     public class SignUpModel
     {
         [Required]
+        [Display(Name = "Полное имя")]
+        public string FullName { get; set; } = default!;
+
+        [Required]
         [Display(Name = "Имя пользователя")]
-        public string Username { get; set; } = default!;
+        public string UserName { get; set; } = default!;
 
         [Required]
         [Display(Name = "Email")]
