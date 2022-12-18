@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.ResponseCompression;
 using ReviewEverything.Server.Common.Filters;
 
 namespace ReviewEverything.Server.Installers
@@ -25,6 +26,12 @@ namespace ReviewEverything.Server.Installers
 
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddSignalR();
+            builder.Services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
         }
     }
 }

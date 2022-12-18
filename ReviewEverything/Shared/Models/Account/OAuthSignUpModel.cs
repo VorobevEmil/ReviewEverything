@@ -11,10 +11,5 @@ namespace ReviewEverything.Shared.Models.Account
         [Required]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; } = default!;
-
-        [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; } = default!;
     }
 }

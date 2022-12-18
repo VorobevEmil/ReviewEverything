@@ -5,6 +5,8 @@ using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using ReviewEverything.Server.Hubs;
 using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Shared.Contracts.Responses;
 
@@ -16,30 +18,13 @@ namespace ReviewEverything.Server.Controllers
     {
         private readonly ICommentService _service;
         private readonly IMapper _mapper;
+        private readonly IHubContext<CommentHub> _hubContext;
 
-        public CommentController(ICommentService service, IMapper mapper)
+        public CommentController(ICommentService service, IMapper mapper, IHubContext<CommentHub> hubContext)
         {
             _service = service;
             _mapper = mapper;
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CommentResponse>> GetById([FromRoute] int id)
-        {
-            try
-            {
-                var comment = await _service.GetCommentByIdAsync(id);
-                if (comment == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(_mapper.Map<CommentResponse>(comment));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            _hubContext = hubContext;
         }
 
         [HttpGet("GetByReviewId/{reviewId}")]
@@ -66,7 +51,10 @@ namespace ReviewEverything.Server.Controllers
             comment.CreationDate = DateTime.UtcNow;
 
             var result = await _service.CreateCommentAsync(comment);
-            return Created(Url.Action($"GetById", new { id = comment.Id })!, _mapper.Map<CommentResponse>(comment));
+            var commentResponse = _mapper.Map<CommentResponse>(comment);
+
+            await _hubContext.Clients.Group(comment.ReviewId.ToString()).SendAsync("ReceiveComment", commentResponse);
+            return Ok();
         }
     }
 }

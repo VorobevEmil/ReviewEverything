@@ -56,19 +56,19 @@ namespace ReviewEverything.Server.Controllers
 
             }
 
-            var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            if (email is not null)
-            {
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user is not null)
-                {
-                    var loginProvider = new UserLoginInfo(provider, providerKey, provider);
-                    await _userManager.AddLoginAsync(user, loginProvider);
-                    await _signInManager.SignInAsync(user, false, null);
+            //var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            //if (email is not null)
+            //{
+            //    var user = await _userManager.FindByEmailAsync(email);
+            //    if (user is not null)
+            //    {
+            //        var loginProvider = new UserLoginInfo(provider, providerKey, provider);
+            //        await _userManager.AddLoginAsync(user, loginProvider);
+            //        await _signInManager.SignInAsync(user, false, null);
 
-                    return Redirect("/");
-                }
-            }
+            //        return Redirect("/");
+            //    }
+            //}
 
             return Redirect($"/account/sign-up-provider/{provider}");
         }
@@ -83,7 +83,6 @@ namespace ReviewEverything.Server.Controllers
             }
 
             var userClaims = result.Principal.Claims.ToArray();
-            var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             var givenName = userClaims.First(x => x.Type == ClaimTypes.GivenName).Value;
             var surname = userClaims.First(x => x.Type == ClaimTypes.Surname).Value;
             var fullName = string.Join(" ", givenName, surname);
@@ -91,7 +90,6 @@ namespace ReviewEverything.Server.Controllers
             OAuthSignUpModel signUp = new OAuthSignUpModel()
             {
                 FullName = fullName,
-                Email = email!
             };
             return Ok(signUp);
         }
@@ -105,9 +103,9 @@ namespace ReviewEverything.Server.Controllers
                 return Conflict($"Не удалось войти через поставщика");
             }
 
-            if (await _userManager.FindByEmailAsync(model.Email) != null || await _userManager.FindByNameAsync(model.UserName) != null)
+            if (await _userManager.FindByNameAsync(model.UserName) != null)
             {
-                return Conflict("Пользователь уже существует в системе");
+                return Conflict("Данное имя пользователя уже существует в системе");
             }
 
             var userClaims = result.Principal.Claims.ToArray();
@@ -117,7 +115,6 @@ namespace ReviewEverything.Server.Controllers
             {
                 FullName = model.FullName,
                 UserName = model.UserName,
-                Email = model.Email,
             };
 
             await _userManager.CreateAsync(user);

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using ReviewEverything.Server.Hubs;
 using ReviewEverything.Server.Options;
 using ReviewEverything.Server.Installers;
 
@@ -47,6 +48,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<CommentHub>("/commentHub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
