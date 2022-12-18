@@ -20,12 +20,14 @@ namespace ReviewEverything.Server.Services.CommentService
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Comment>> GetCommentsByReviewIdAsync(int reviewId)
+        public async Task<List<Comment>> GetCommentsByReviewIdAsync(int reviewId, int pageNumber, int pageSize, int elementSkip)
         {
             return await _context.Comments
                 .Include(x => x.User)
                 .Where(x => x.ReviewId == reviewId)
                 .OrderByDescending(x => x.CreationDate)
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .Skip(elementSkip)
                 .ToListAsync();
         }
 

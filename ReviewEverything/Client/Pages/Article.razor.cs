@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using ReviewEverything.Shared.Contracts.Requests;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
-using System.Data.Common;
 
 namespace ReviewEverything.Client.Pages
 {
@@ -15,14 +14,10 @@ namespace ReviewEverything.Client.Pages
     {
         [Parameter] public int Id { get; set; }
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-        [Inject] private ISnackbar Snackbar { get; set; } = default!;
         private ClaimsPrincipal User { get; set; } = default!;
         private string? _userId = default!;
         private ArticleReviewResponse ArticleReview { get; set; } = default!;
-        private List<CommentResponse> Comments { get; set; } = default!;
-        private HubConnection _hubConnection = default!;
 
-        private string _bodyComment = default!;
         private int _userRatingComposition = default!;
         private bool _userLike = default!;
 
@@ -30,9 +25,7 @@ namespace ReviewEverything.Client.Pages
         {
             await GetUserAsync();
             await GetArticleAsync();
-            await GetCommentsAsync();
             _userLike = CheckUserSetLike();
-            await ConfigureHubConnectionAsync();
         }
 
         private async Task GetUserAsync()
@@ -57,14 +50,6 @@ namespace ReviewEverything.Client.Pages
         }
 
 
-        private async Task GetCommentsAsync()
-        {
-            var httpResponseMessage = await HttpClient.GetAsync($"api/Comment/GetByReviewId/{Id}");
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                Comments = (await httpResponseMessage.Content.ReadFromJsonAsync<List<CommentResponse>>())!;
-            }
-        }
 
         private bool CheckUserSetLike()
         {
@@ -72,23 +57,6 @@ namespace ReviewEverything.Client.Pages
                    && ArticleReview.LikeUsers.Contains(GetUserId());
         }
 
-        private async Task ConfigureHubConnectionAsync()
-        {
-            _hubConnection = new HubConnectionBuilder()
-                .WithUrl(NavigationManager.ToAbsoluteUri("/commentHub"))
-                .Build();
-
-            _hubConnection.On<CommentResponse>("ReceiveComment", (comment) =>
-            {
-                Comments.Insert(0, comment);
-                StateHasChanged();;
-            });
-
-            await _hubConnection.StartAsync();
-
-            await _hubConnection.SendAsync("EnterToArticle", Id);
-
-        }
 
         private async Task SetUserRatingAsync(int rating)
         {
@@ -156,26 +124,6 @@ namespace ReviewEverything.Client.Pages
         private string GetUserId()
         {
             return User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-        }
-
-
-        private async Task SendCommentAsync()
-        {
-            if (User.Identity!.IsAuthenticated)
-            {
-                CommentRequest newComment = new()
-                {
-                    Body = _bodyComment,
-                    ReviewId = Id
-                };
-                var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Comment", newComment);
-                if (!httpResponseMessage.IsSuccessStatusCode)
-                {
-                    Snackbar.Add("Не удалось отправить комментарии", Severity.Error);
-                }
-
-                _bodyComment = default!;
-            }
         }
     }
 }

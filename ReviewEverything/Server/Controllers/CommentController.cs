@@ -28,11 +28,11 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet("GetByReviewId/{reviewId}")]
-        public async Task<ActionResult<List<CommentResponse>>> GetCommentsByReviewId(int reviewId)
+        public async Task<ActionResult<List<CommentResponse>>> GetCommentsByReviewId(int reviewId, int pageNumber, int pageSize, int elementSkip)
         {
             try
             {
-                var comments = await _service.GetCommentsByReviewIdAsync(reviewId);
+                var comments = await _service.GetCommentsByReviewIdAsync(reviewId, pageNumber, pageSize, elementSkip);
 
                 return Ok(_mapper.Map<List<CommentResponse>>(comments));
             }

@@ -92,55 +92,7 @@
             <span class="mx-1"></span>
             <MudText>@ArticleReview.LikeUsers.Count()</MudText>
         </div>
-        @if (Comments != null)
-        {
-            <MudDivider Class="mt-2" />
-            <div class="d-flex" style="align-items: center; justify-content: space-between;">
-                <MudText Style="font-size:36px;">Комментарии</MudText>
-                <div class="d-flex" style="align-items: center">
-                    <MudIcon Style="height: 20px; width: 20px;" Icon="@Icons.Filled.Comment" />
-                    <MudText Style="font-size:20px;">@Comments.Count</MudText>
-                </div>
-            </div>
-        }
 
-        <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Что ты думаешь об этом?" Lines="3" @bind-Value="_bodyComment" />
-        <AuthorizeView>
-            <Authorized>
-                <div class="text-end mt-3">
-                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">Отправить</MudButton>
-
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div style="display: flex; align-items: center; justify-content: flex-end;">
-                    <MudText>*Войдите чтобы оставить комментарий</MudText>
-                    <span class="mx-1"></span>
-                    <MudButton Disabled="true" Variant="Variant.Filled">Отправить</MudButton>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-        <div class="mt-5">
-            <MudDivider />
-            @if (Comments != null && Comments.Count != default)
-            {
-                foreach (var comment in Comments)
-                {
-                    <div class="my-5 d-flex">
-                        <MudAvatar Class="mx-2" Variant="Variant.Outlined">@comment.User[0]</MudAvatar>
-                        <div>
-                            <MudLink Style="font-size:20px;" Underline="Underline.Always" Href="@("./User/" + comment.UserId)" Color="Color.Default">@comment.User</MudLink>
-                            <MudText Style="font-size: 11px;">@comment.CreationDate.CalculateRelativeTime()</MudText>
-                            <MudText Class="mt-3">@comment.Body</MudText>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-
-            }
-        </div>
     }
     else
     {
@@ -149,7 +101,6 @@
         <MudSkeleton Style="margin:-10px 0;" Height="60px" />
         <MudSkeleton Style="margin:-70px 0;" Height="400px" />
         <MudSkeleton Height="80px" />
-        <MudDivider />
-        <MudSkeleton Style="margin:-100px 0;" Height="500px" />
     }
+    <ReviewComments Id="Id" />
 </div>

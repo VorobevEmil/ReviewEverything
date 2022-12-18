@@ -1,0 +1,51 @@
+﻿@using ReviewEverything.Client.Helpers
+
+<MudDivider Class="mt-2" />
+<MudText Style="font-size:36px;">Комментарии</MudText>
+
+<MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Что ты думаешь об этом?" Lines="3" @bind-Value="_bodyComment" />
+<AuthorizeView>
+    <Authorized>
+        <div class="text-end mt-3">
+            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">Отправить</MudButton>
+
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div style="display: flex; align-items: center; justify-content: flex-end;">
+            <MudText>*Войдите чтобы оставить комментарий</MudText>
+            <span class="mx-1"></span>
+            <MudButton Disabled="true" Variant="Variant.Filled">Отправить</MudButton>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+<div class="mt-5">
+    <MudDivider />
+    @if (Comments != null && Comments.Count != default)
+    {
+        foreach (var comment in Comments)
+        {
+            <div class="my-5 d-flex">
+                <MudAvatar Class="mx-2" Variant="Variant.Outlined">@comment.User[0]</MudAvatar>
+                <div>
+                    <MudLink Style="font-size:20px;" Underline="Underline.Always" Href="@("./User/" + comment.UserId)" Color="Color.Default">@comment.User</MudLink>
+                    <MudText Style="font-size: 11px;">@comment.CreationDate.CalculateRelativeTime()</MudText>
+                    <MudText Class="mt-3">@comment.Body</MudText>
+                </div>
+            </div>
+        }
+
+        @if (!_hiddenButtonLoadMore)
+        {
+            <div class="my-3 text-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LoadMoreCommentAsync">Show More Comments</MudButton>
+            </div>
+        }
+    }
+    else
+    {
+        <MudSkeleton Style="margin:-35px 0;" Height="170px" />
+        <MudSkeleton Style="margin:-35px 0;" Height="170px" />
+        <MudSkeleton Style="margin:-35px 0;" Height="170px" />
+    }
+</div>
