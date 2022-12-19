@@ -1,0 +1,36 @@
+﻿<MudPaper Class="my-2 py-2 px-4">
+    <MudText Style="font-weight: bold; font-size: 28px;">Теги</MudText>
+    <MudTextField Class="my-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Поиск" T="string" Value="_tagSearch" ValueChanged="SearchTagsAsync" />
+    <div class="my-2">
+        @foreach (var tag in SelectedTags)
+        {
+            <MudChip Size="Size.Small" Label="true" Variant="Variant.Filled" OnClose="async() => await RemoveTagAsync(tag)">@tag.Title</MudChip>
+        }
+    </div>
+
+    <div style="max-height: 350px; overflow-y: auto;">
+        @if (Tags != null)
+        {
+            foreach (var tag in Tags)
+            {
+                <MudChip Style="font-size: 14px; height: 24px;" Size="Size.Small" Label="true" Variant="Variant.Filled" Disabled="SelectedTags.Select(x => x.Id).Contains(tag.Id)" OnClick="(async () => await AddTagAsync(tag))">@tag.Title</MudChip>
+            }
+
+            @if (!_hiddenButtonLoadMore)
+            {
+                <div class="text-center my-2">
+                    <MudButton Size="Size.Small" Variant="Variant.Filled" OnClick="LoadMoreTagsAsync" Disabled="_sendRequest">Load More Tags</MudButton>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="d-flex" style="flex-flow: row wrap;">
+                @for (int i = 0; i < 14; i++)
+                {
+                    <MudSkeleton Class="mx-1" Height="30px" Width="120px" />
+                }
+            </div>
+        }
+    </div>
+</MudPaper>

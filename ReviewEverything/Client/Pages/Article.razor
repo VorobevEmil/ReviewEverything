@@ -1,5 +1,5 @@
 ﻿@page "/article/{Id:int}"
-@using ReviewEverything.Client.Helpers
+@using ReviewEverything.Client.Components.Views
 
 <div class="container mt-5">
     @if (ArticleReview != null)
@@ -102,5 +102,5 @@
         <MudSkeleton Style="margin:-70px 0;" Height="400px" />
         <MudSkeleton Height="80px" />
     }
-    <ReviewComments Id="Id" />
+    <CommentsComponent Id="Id" />
 </div>

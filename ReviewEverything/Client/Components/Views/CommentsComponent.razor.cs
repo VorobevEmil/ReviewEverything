@@ -1,16 +1,15 @@
+using System.Net.Http.Json;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
-using ReviewEverything.Client.Pages;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
-using System.Net.Http.Json;
-using System.Security.Claims;
 
-namespace ReviewEverything.Client.Components
+namespace ReviewEverything.Client.Components.Views
 {
-    public partial class ReviewComments
+    public partial class CommentsComponent
     {
         [Parameter] public int Id { get; set; }
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;

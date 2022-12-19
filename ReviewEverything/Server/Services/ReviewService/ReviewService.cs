@@ -36,7 +36,7 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetReviewsAsync(int? categoryId, string? userId, List<int>? tags)
+        public async Task<List<Review>> GetReviewsAsync(int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
             var reviews = GetReviewIncludeAll();
 
@@ -57,15 +57,15 @@ namespace ReviewEverything.Server.Services.ReviewService
                 var tagList = await reviews
                     .SelectMany(x => x.Tags)
                     .Where(x => tags.Contains(x.Id))
-                    .ToListAsync();
-                var result = (await reviews.ToListAsync())
+                    .ToListAsync(token);
+                var result = (await reviews.ToListAsync(token))
                     .Where(x => tagList
                         .All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
                     .ToList();
                 return result;
             }
 
-            return await reviews.ToListAsync();
+            return await reviews.ToListAsync(token);
         }
 
         public async Task<bool> CreateReviewAsync(Review review)

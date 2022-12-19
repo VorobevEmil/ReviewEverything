@@ -18,10 +18,5 @@ namespace ReviewEverything.Server.Services.UserService
             return await _context.Users 
                 .FirstOrDefaultAsync(user => user.Id == id);
         }
-
-        public async Task<List<ApplicationUser>> GetUsersAsync()
-        {
-            return await _context.Users.ToListAsync();
-        }
     }
 }

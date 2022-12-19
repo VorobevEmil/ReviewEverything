@@ -23,11 +23,11 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TagResponse>>> GetAll(string? search = default)
+        public async Task<ActionResult<List<TagResponse>>> GetAllBySearch(int page, int pageSize, string? search = default)
         {
             try
             {
-                var tags = await _service.GetTagsAsync(search);
+                var tags = await _service.GetTagsAsync(page, pageSize, search);
                 return Ok(_mapper.Map<List<TagResponse>>(tags));
             }
             catch

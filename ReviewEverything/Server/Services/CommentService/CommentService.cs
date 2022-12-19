@@ -13,7 +13,7 @@ namespace ReviewEverything.Server.Services.CommentService
             _context = context;
         }
 
-        public async Task<Comment?> GetCommentByIdAsync(int id)
+        private async Task<Comment?> GetCommentByIdAsync(int id)
         {
             return await _context.Comments
                 .Include(x => x.User)
@@ -37,25 +37,6 @@ namespace ReviewEverything.Server.Services.CommentService
             var created = await _context.SaveChangesAsync();
             comment.User = (await GetCommentByIdAsync(comment.Id))!.User;
             return created > 0;
-        }
-
-        public async Task<bool> UpdateCommentAsync(Comment comment)
-        {
-            _context.Comments.Update(comment);
-            var updated = await _context.SaveChangesAsync();
-            return updated > 0;
-        }
-
-        public async Task<bool> DeleteCommentAsync(int id)
-        {
-            var comment = await GetCommentByIdAsync(id);
-            if (comment == null)
-                return false;
-
-            _context.Comments.Remove(comment);
-            var deleted = await _context.SaveChangesAsync();
-
-            return deleted > 0;
         }
     }
 }

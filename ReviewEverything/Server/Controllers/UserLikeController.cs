@@ -22,8 +22,7 @@ namespace ReviewEverything.Server.Controllers
             var setLike = await _service.AddLikeToUserAsync(reviewId);
             if (setLike)
                 return Ok(setLike);
-            else
-                return NotFound();
+            return NotFound();
         }
 
         [HttpDelete("{reviewId}")]
@@ -32,8 +31,7 @@ namespace ReviewEverything.Server.Controllers
             var setLike = await _service.RemoveLikeFromUserAsync(reviewId);
             if (setLike)
                 return Ok(setLike);
-            else
-                return NotFound();
+            return NotFound();
         }
     }
 }

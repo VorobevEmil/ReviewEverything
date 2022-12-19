@@ -5,6 +5,5 @@ namespace ReviewEverything.Server.Services.UserService
     public interface IUserService
     {
         Task<ApplicationUser?> GetUserByIdAsync(string id);
-        Task<List<ApplicationUser>> GetUsersAsync();
     }
 }
