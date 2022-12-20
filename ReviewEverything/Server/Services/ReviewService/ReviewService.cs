@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using ReviewEverything.Client.Pages;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 using System.Linq;
@@ -36,21 +37,11 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetReviewsAsync(int? categoryId, string? userId, List<int>? tags, CancellationToken token)
+        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
             var reviews = GetReviewIncludeAll();
-
-            if (userId != null)
-            {
-                reviews = reviews
-                    .Where(x => x.AuthorId == userId);
-            }
-
-            if (categoryId != null)
-            {
-                reviews = reviews
-                    .Where(x => x.Composition.CategoryId == categoryId);
-            }
+            reviews = GetReviewsByAuthorId(reviews, userId);
+            reviews = GetReviewsByCategoryId(reviews, categoryId);
 
             if (tags != null)
             {
@@ -60,15 +51,38 @@ namespace ReviewEverything.Server.Services.ReviewService
                     .ToListAsync(token);
                 if (tagList.Count != 0)
                 {
-                    var result = (await reviews.ToListAsync(token))
-                        .Where(x => tagList
-                            .All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
+                    return (await reviews.ToListAsync(token))
+                        .Where(x => tagList.All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
                         .ToList();
-                    return result;
                 }
             }
 
-            return await reviews.ToListAsync(token);
+            return await reviews
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(token);
+        }
+
+        private IQueryable<Review> GetReviewsByAuthorId(IQueryable<Review> reviews, string? authorId)
+        {
+            if (authorId != null)
+            {
+                return reviews
+                    .Where(x => x.AuthorId == authorId);
+            }
+            return reviews;
+        }
+
+        private IQueryable<Review> GetReviewsByCategoryId(IQueryable<Review> reviews, int? categoryId)
+        {
+            if (categoryId != null)
+            {
+                return reviews
+                    .Where(x => x.Composition.CategoryId == categoryId);
+            }
+            return reviews;
         }
 
         public async Task<bool> CreateReviewAsync(Review review)
@@ -87,20 +101,20 @@ namespace ReviewEverything.Server.Services.ReviewService
 
         public async Task<bool> UpdateReviewAsync(Review review)
         {
-            var oldReview = await GetReviewByIdAsync(review.Id);
-            if (oldReview == null)
+            var updateReview = await GetReviewByIdAsync(review.Id);
+            if (updateReview == null)
                 return false;
 
-            oldReview.UpdateDate = DateTime.UtcNow;
-            oldReview.Title = review.Title;
-            oldReview.Subtitle = review.Subtitle;
-            oldReview.Body = review.Body;
-            oldReview.CompositionId = review.CompositionId;
+            updateReview.UpdateDate = DateTime.UtcNow;
+            updateReview.Title = review.Title;
+            updateReview.Subtitle = review.Subtitle;
+            updateReview.Body = review.Body;
+            updateReview.CompositionId = review.CompositionId;
 
-            var newTags = review.Tags.Where(x => !oldReview.Tags.Select(x => x.Id).Contains(x.Id)).ToList();
-            oldReview.Tags.RemoveAll(x => !review.Tags.Select(x => x.Id).Contains(x.Id));
-            oldReview.Tags.AddRange(newTags);
-            _context.Reviews.Update(oldReview);
+            var newTags = review.Tags.Where(x => !updateReview.Tags.Select(x => x.Id).Contains(x.Id)).ToList();
+            updateReview.Tags.RemoveAll(x => !review.Tags.Select(x => x.Id).Contains(x.Id));
+            updateReview.Tags.AddRange(newTags);
+            _context.Reviews.Update(updateReview);
             var updated = await _context.SaveChangesAsync();
             return updated > 0;
         }

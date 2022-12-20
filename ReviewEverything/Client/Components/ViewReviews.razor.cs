@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
-using System.Threading;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Services;
 using ReviewEverything.Client.Components.Views;
 using ReviewEverything.Client.Helpers;
+using ReviewEverything.Client.Services;
 using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Components
@@ -13,14 +13,20 @@ namespace ReviewEverything.Client.Components
     {
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private IBreakpointService BreakpointListener { get; set; } = default!;
+        [Inject] private BrowserService BrowserService { get; set; } = default!;
         [Parameter] public bool Editor { get; set; }
         [Parameter] public string? UserId { get; set; }
         public List<ReviewResponse> Reviews { get; set; } = default!;
         private TagsComponent _tags = default!;
 
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private Breakpoint _breakpoint = default!;
         private int? _categoryId = default!;
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private int _page = 1;
+        private int _pageSize = 10;
+        private bool _loadingReviews = false;
+        private bool _endReviews = false;
+
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -40,21 +46,48 @@ namespace ReviewEverything.Client.Components
             }
         }
 
-        private async Task GetReviewsFromApiAsync()
+        private async Task InitializationReviewsAsync()
         {
             CancelCancellationToken();
 
             Reviews = null!;
+            _page = 1;
+            _endReviews = false;
 
+            Reviews = await GetReviewsFromApiAsync();
+        }
+
+
+        private async Task PaginationReviewsAsync(ScrollEventArgs e)
+        {
+            if (_loadingReviews || _endReviews)
+                return;
+
+            var browserDimension = await BrowserService.GetDimensions();
+            if (e.FirstChildBoundingClientRect.AbsoluteBottom < browserDimension.Height + 50)
+                Reviews.AddRange(await GetReviewsFromApiAsync());
+        }
+
+        private async Task<List<ReviewResponse>> GetReviewsFromApiAsync()
+        {
+            _loadingReviews = true;
             var category = _categoryId != null ? $"categoryId={_categoryId}&" : null;
             var userId = UserId != null ? $"userId={UserId}&" : null;
             var tags = _tags.GetSelectedTags();
 
-            var httpResponseMessage = await HttpClient.GetAsync($"api/Review?{category}{userId}{tags}", _cancellationTokenSource.Token);
+            var httpResponseMessage = await HttpClient.GetAsync($"api/Review?page={_page}&pageSize={_pageSize}&{category}{userId}{tags}", _cancellationTokenSource.Token);
+            _loadingReviews = false;
             if (!_cancellationTokenSource.Token.IsCancellationRequested && httpResponseMessage.IsSuccessStatusCode)
             {
-                Reviews = (await httpResponseMessage.Content.ReadFromJsonAsync<List<ReviewResponse>>())!;
+                _page++;
+                var reviews = (await httpResponseMessage.Content.ReadFromJsonAsync<List<ReviewResponse>>())!;
+                if (reviews.Count < _pageSize)
+                    _endReviews = true;
+
+                return reviews;
             }
+
+            return new();
         }
 
         private void CancelCancellationToken()
@@ -62,19 +95,12 @@ namespace ReviewEverything.Client.Components
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
-
-            //TODO после создания пагинации сделать нормальную отмену
-            //if (_cancellationTokenSource.IsCancellationRequested)
-            //{
-            //    _cancellationTokenSource.Dispose();
-            //    _cancellationTokenSource = new CancellationTokenSource();
-            //}
         }
 
         private async Task GetReviewsFromCategoryId(int? categoryId)
         {
             _categoryId = categoryId;
-            await GetReviewsFromApiAsync();
+            await InitializationReviewsAsync();
         }
 
         private void NavigateToReviewEditor(int? reviewId = null)

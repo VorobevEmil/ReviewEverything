@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -30,8 +31,7 @@ namespace ReviewEverything.Client.Components.Views
         protected override async Task OnInitializedAsync()
         {
 
-            Comments = new List<CommentResponse>();
-            await LoadMoreCommentAsync();
+            Comments = await GetCommentsAsync();
             User = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
             await ConfigureHubConnectionAsync();
         }
@@ -40,8 +40,6 @@ namespace ReviewEverything.Client.Components.Views
         {
             var comments = await GetCommentsAsync();
 
-            if (comments.Count < _pageSize)
-                _hiddenButtonLoadMore = true;
 
             Comments.AddRange(comments);
         }
@@ -52,7 +50,12 @@ namespace ReviewEverything.Client.Components.Views
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 _pageNumber++;
-                return (await httpResponseMessage.Content.ReadFromJsonAsync<List<CommentResponse>>())!;
+                var comments = (await httpResponseMessage.Content.ReadFromJsonAsync<List<CommentResponse>>())!;
+
+                if (comments.Count < _pageSize)
+                    _hiddenButtonLoadMore = true;
+
+                return comments;
             }
 
             Snackbar.Add("Не удалось загрузить комментарии", Severity.Error);

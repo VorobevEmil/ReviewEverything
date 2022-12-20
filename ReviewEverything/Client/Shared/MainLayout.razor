@@ -10,7 +10,7 @@
 
     <MudAppBar Elevation="1">
         <MudBreakpointProvider>
-            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
                 <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
                     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ChangeDrawerOpen" />
                     <MudLink Style="display: flex; align-items: center;" Color="Color.Inherit" Href="./" Underline="Underline.None">
@@ -20,7 +20,7 @@
                     <MudIconButton OnClick="OpenSearchDialog" Color="Color.Inherit" Icon="@Icons.Filled.Search" />
                 </div>
             </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                 <div style="display: flex; align-items: center;">
                     <MudLink Style="display: flex; align-items: center;" Color="Color.Inherit" Href="./" Underline="Underline.None">
                         <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
@@ -67,7 +67,7 @@
     </MudAppBar>
 
     <MudBreakpointProvider>
-        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
             <MudDrawer @bind-Open="DrawerOpen" Elevation="2">
                 <MudDrawerHeader Style="@("background: " + (IsDarkMode ? "#151521ff" : "#f5f5f5ff"))" Dense="true">
                     <MudSpacer />
