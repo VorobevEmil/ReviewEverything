@@ -24,7 +24,7 @@ namespace ReviewEverything.Client.Components.Views
 
         private async Task SelectedCategoryAsync(int? categoryId = null)
         {
-            _titleCategory = categoryId == null ? "Âñå Îáçîðû" : $"Îáçîðû íà {Categories.First(x => x.Id == categoryId.Value).Title}";
+            _titleCategory = categoryId == null ? "Ð’ÑÐµ ÐžÐ±Ð·Ð¾Ñ€Ñ‹" : $"ÐžÐ±Ð·Ð¾Ñ€Ñ‹ Ð½Ð° {Categories.First(x => x.Id == categoryId.Value).Title}";
             
             await GetReviewsFromCategoryId.InvokeAsync(categoryId);
         }
