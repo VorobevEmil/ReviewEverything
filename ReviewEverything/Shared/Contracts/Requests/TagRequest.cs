@@ -7,6 +7,5 @@ namespace ReviewEverything.Shared.Contracts.Requests
     {
         [Required]
         public string Title { get; set; } = default!;
-        public List<ReviewResponse> Reviews { get; set; } = default!;
     }
 }

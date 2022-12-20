@@ -55,6 +55,23 @@ namespace ReviewEverything.Server.Controllers
             }
         }
 
+        [HttpGet("ExistByName/{title}")]
+        public async Task<IActionResult> ExistByName(string title)
+        {
+            try
+            {
+                var existsTag = await _service.ExistTagByNameAsync(title);
+                if (existsTag)
+                    return Ok("Данный тег уже существует");
+
+                return NotFound();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TagRequest request)
@@ -62,6 +79,9 @@ namespace ReviewEverything.Server.Controllers
             var tag = _mapper.Map<Tag>(request);
 
             var result = await _service.CreateTagAsync(tag);
+
+            if (!result)
+                return Conflict("Данный тег уже существует");
 
             return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
         }

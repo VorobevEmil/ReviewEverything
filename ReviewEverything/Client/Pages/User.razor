@@ -27,6 +27,9 @@
             </div>
         </div>
     </MudPaper>
-    
-    <ViewReviews UserId="@Id" Editor="_editor" />
+
+    @if (UserResponse != null)
+    {
+        <ViewReviews UserId="@Id" Editor="_editor" />
+    }
 </div>

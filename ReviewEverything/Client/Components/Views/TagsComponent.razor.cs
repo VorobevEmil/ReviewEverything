@@ -11,7 +11,6 @@ namespace ReviewEverything.Client.Components.Views
         [Parameter] public EventCallback GetReviewsFromApi { get; set; }
         private List<TagResponse> Tags { get; set; } = default!;
         private List<TagResponse> SelectedTags { get; set; } = new();
-        private Task _runRequest = null!;
         private string _tagSearch = default!;
 
         private int _page = 1;

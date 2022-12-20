@@ -12,21 +12,26 @@ namespace ReviewEverything.Client.Components
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Parameter] public ReviewRequest Review { get; set; } = default!;
         private TagRequest _tag = new();
+        public List<TagRequest> CreateTags { get; } = new();
 
         private async Task<IEnumerable<TagResponse>> SearchTagsAsync(string search)
         {
-            return (await HttpClient.GetFromJsonAsync<List<TagResponse>>($"api/Tag{(!string.IsNullOrWhiteSpace(search) ? $"?search={search}" : null)}"))!;
+            return (await HttpClient.GetFromJsonAsync<List<TagResponse>>($"api/Tag?page=1&pageSize=20{(!string.IsNullOrWhiteSpace(search) ? $"&search={search}" : null)}"))!;
         }
 
         private void AddTagInTagsList(TagResponse tag)
         {
-            if (!Review.Tags.Any(x => x.Id == tag.Id))
+            if (Review.Tags.All(x => x.Id != tag.Id) || (tag.Id == 0 && Review.Tags.All(x => x.Title.ToLower() != tag.Title.ToLower())))
                 Review.Tags.Add(tag);
+            else
+                Snackbar.Add("Данный тег уже добавлен в список", Severity.Warning);
+
         }
 
         private void RemoveTagFromList(TagResponse tag)
         {
             Review.Tags.Remove(tag);
+            CreateTags.RemoveAll(x => x.Title == tag.Title);
         }
 
         private async Task CreateTagAsync()
@@ -37,17 +42,18 @@ namespace ReviewEverything.Client.Components
                 return;
             }
 
-            var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Tag", _tag);
-            if (httpResponseMessage.StatusCode == HttpStatusCode.Created)
+            var httpResponseMessage = await HttpClient.GetAsync($"api/Tag/ExistByName/{_tag.Title}");
+
+            if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
             {
+                CreateTags.Add(_tag);
+                AddTagInTagsList(new TagResponse() { Title = _tag.Title });
                 _tag = new();
-                AddTagInTagsList((await httpResponseMessage.Content.ReadFromJsonAsync<TagResponse>())!);
             }
             else
             {
-                Snackbar.Add("Не удалось создать тег", Severity.Error);
+                Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
             }
-
         }
     }
 }

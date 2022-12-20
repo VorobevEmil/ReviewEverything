@@ -58,11 +58,14 @@ namespace ReviewEverything.Server.Services.ReviewService
                     .SelectMany(x => x.Tags)
                     .Where(x => tags.Contains(x.Id))
                     .ToListAsync(token);
-                var result = (await reviews.ToListAsync(token))
-                    .Where(x => tagList
-                        .All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
-                    .ToList();
-                return result;
+                if (tagList.Count != 0)
+                {
+                    var result = (await reviews.ToListAsync(token))
+                        .Where(x => tagList
+                            .All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
+                        .ToList();
+                    return result;
+                }
             }
 
             return await reviews.ToListAsync(token);
@@ -74,8 +77,8 @@ namespace ReviewEverything.Server.Services.ReviewService
             review.Tags = null!;
             await _context.Reviews.AddAsync(review);
             await _context.SaveChangesAsync();
-
-
+            review.Tags = tags;
+            await _context.SaveChangesAsync();
 
             var created = await _context.SaveChangesAsync();
 

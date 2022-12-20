@@ -10,15 +10,11 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Request
         {
             CreateMap<TagRequest, Tag>()
                 .ForMember(dest => dest.Title, opt =>
-                    opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.Reviews, opt =>
-                    opt.MapFrom(src => src.Reviews));
+                    opt.MapFrom(src => src.Title));
 
             CreateMap<Tag, TagRequest>()
                 .ForMember(dest => dest.Title, opt =>
-                    opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.Reviews, opt =>
-                    opt.MapFrom(src => src.Reviews));
+                    opt.MapFrom(src => src.Title));
         }
     }
 }

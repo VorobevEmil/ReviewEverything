@@ -9,7 +9,7 @@
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Категории</MudText>
                 <MudSpacer />
-                <MudButton Variant="Variant.Filled" OnClick="(async() => await CreateOrEditCategoryAsync())">Добавить</MudButton>
+                <MudButton Variant="Variant.Filled" OnClick="() => CreateOrEditCategoryAsync()">Добавить</MudButton>
             </ToolBarContent>
             <HeaderContent>
                 <MudTh>Название</MudTh>
@@ -19,8 +19,8 @@
                 <MudTd DataLabel="Название">@context.Title</MudTd>
                 <MudTd>
                     <div style="display: flex; justify-content: flex-end;">
-                        <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Edit" Color="Color.Info" OnClick="(async() => await CreateOrEditCategoryAsync(context.Id, context.Title))" />
-                        <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Delete" Color="Color.Error" OnClick="(async() => await DeleteCategoryAsync(context.Id))" />
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Edit" Color="Color.Info" OnClick="() => CreateOrEditCategoryAsync(context.Id, context.Title)" />
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Delete" Color="Color.Error" OnClick="() => DeleteCategoryAsync(context.Id)" />
                     </div>
                 </MudTd>
             </RowTemplate>

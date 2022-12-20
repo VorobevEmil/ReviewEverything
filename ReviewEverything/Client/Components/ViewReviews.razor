@@ -4,151 +4,122 @@
 
 <div class="mt-5">
     <div style="@(_breakpoint != Breakpoint.Xs ? "float: right; width: 300px;" : null)">
-        <TagsComponent GetReviewsFromApi="GetReviewsFromApiAsync" @ref="_tags"/>
+        <TagsComponent GetReviewsFromApi="GetReviewsFromApiAsync" @ref="_tags" />
     </div>
     <MudPaper Class="my-2 px-4 py-2" Style="@(_breakpoint != Breakpoint.Xs ? "float: left; width: calc(100% - 310px);" : null)">
         @if (Editor)
         {
             <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">Создать обзор</MudButton>
         }
-        @if (_titleCategory != null)
-        {
-            <MudText Style="font-size: 2.125rem; font-weight: 900">@_titleCategory</MudText>
-        }
-        else
-        {
-            <MudSkeleton Height="70px" Width="150px" Animation="Animation.Wave"/>
-        }
-        @if (Categories != null)
-        {
-            <MudTabs Class="my-3" Elevation="4" Rounded="true" AlwaysShowScrollButtons="true">
+        <CategoriesComponent GetReviewsFromCategoryId="GetReviewsFromCategoryId" />
 
-                <MudTabPanel Text="Все обзоры" OnClick="(async () => await SelectedCategoryAsync())"/>
-                @foreach (var category in Categories)
-                {
-                    <MudTabPanel Text="@category.Title" OnClick="(async () => await SelectedCategoryAsync(category.Id))"/>
-                }
-            </MudTabs>
-
-
-            @if (Reviews != null)
+        @if (Reviews != null)
+        {
+            foreach (var review in Reviews)
             {
-                foreach (var review in Reviews)
-                {
-                    <div @onclick="@(new EventCallback(null, () => NavigationManager.NavigateTo($"./article/{review.Id}")))" style="cursor: pointer;">
-                        <MudBreakpointProvider>
-                            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                                <div class="d-flex" style="align-items: center;">
-                                    <div style="position: relative">
-                                        <MudImage Src="@review.CloudImage.Url" Alt="@review.CloudImage.Title" Class="rounded-lg" Width="100"/>
-                                        <MudAvatar Style="width: 35px; height: 35px; font-size: 18px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
+                <div @onclick="@(new EventCallback(null, () => NavigationManager.NavigateTo($"./article/{review.Id}")))" style="cursor: pointer;">
+                    <MudBreakpointProvider>
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            <div class="d-flex" style="align-items: center;">
+                                <div style="position: relative">
+                                    <MudImage Src="@review.CloudImage.Url" Alt="@review.CloudImage.Title" Class="rounded-lg" Width="100" />
+                                    <MudAvatar Style="width: 35px; height: 35px; font-size: 18px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
+                                </div>
+                                <div class="mx-2 w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="mb-1 d-flex" style="align-items: center;">
+                                            <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height: 24px; width: 24px;" />
+                                            <span Style="font-size: 17px; line-height: normal;">@(review.UserScores.Count == default ? default : Math.Round(review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 1))<span style="font-size: 10px;">/5</span></span>
+                                        </div>
+                                        @if (Editor)
+                                        {
+                                            <div class="d-flex justify-content-end">
+                                                <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
+                                                <span class="mx-1"></span>
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="() => DeleteReviewAsync(review.Id)" Color="Color.Error" />
+                                            </div>
+                                        }
                                     </div>
-                                    <div class="mx-2 w-100">
-                                        <div class="d-flex justify-content-between">
+                                    <MudText Style="font-size: 12px;">@review.CreationDate.CalculateRelativeTime()</MudText>
+                                    <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
+                                </div>
+                            </div>
+                            <div class="d-flex my-2" style="align-items: center;">
+                                <div class="d-flex">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                </div>
+                                <div class="d-flex">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
+                                </div>
+                                <div class="d-flex mx-2">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
+                                </div>
+                                <div class="d-flex mx-2">
+                                    <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
+                                    <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
+                                </div>
+                            </div>
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                            <div class="d-flex" style="align-items: center;">
+                                <div style="position: relative">
+                                    <MudImage Src="@review.CloudImage.Url" Alt="@review.CloudImage.Title" Class="rounded-lg" Width="200" />
+                                    <MudAvatar Style="font-size: 21px; width: 50px; height: 50px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
+                                </div>
+                                <div class="mx-2 w-100">
+                                    <div class="d-flex" style="justify-content: space-between;">
+                                        <div class="mb-1 d-flex">
                                             <div class="mb-1 d-flex" style="align-items: center;">
-                                                <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height: 24px; width: 24px;"/>
-                                                <span Style="font-size: 17px; line-height: normal;">@(review.UserScores.Count == default ? default : Math.Round(review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 1))<span style="font-size: 10px;">/5</span></span>
+                                                <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height: 30px; width: 30px;" />
+                                                <span Style="font-size: 20px; line-height: normal;">@(review.UserScores.Count == default ? default : Math.Round(review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 1))<span style="font-size: 10px;">/5</span></span>
                                             </div>
-                                            @if (Editor)
-                                            {
-                                                <div class="d-flex justify-content-end">
-                                                    <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info"/>
-                                                    <span class="mx-1"></span>
-                                                    <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async () => await DeleteReviewAsync(review.Id)" Color="Color.Error"/>
-                                                </div>
-                                            }
                                         </div>
-                                        <MudText Style="font-size: 12px;">@review.CreationDate.CalculateRelativeTime()</MudText>
-                                        <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
-                                    </div>
-                                </div>
-                                <div class="d-flex my-2" style="align-items: center;">
-                                    <div class="d-flex">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin"/>
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
-                                    </div>
-                                    <div class="d-flex">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt"/>
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
-                                    </div>
-                                    <div class="d-flex mx-2">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person"/>
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
-                                    </div>
-                                    <div class="d-flex mx-2">
-                                        <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment"/>
-                                        <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
-                                    </div>
-                                </div>
-                            </MudHidden>
-                            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                                <div class="d-flex" style="align-items: center;">
-                                    <div style="position: relative">
-                                        <MudImage Src="@review.CloudImage.Url" Alt="@review.CloudImage.Title" Class="rounded-lg" Width="200"/>
-                                        <MudAvatar Style="font-size: 21px; width: 50px; height: 50px; position: absolute; right: 0; bottom: 0;" Color="Color.Error" Variant="Variant.Outlined">@review.AuthorScore</MudAvatar>
-                                    </div>
-                                    <div class="mx-2 w-100">
-                                        <div class="d-flex" style="justify-content: space-between;">
-                                            <div class="mb-1 d-flex">
-                                                <div class="mb-1 d-flex" style="align-items: center;">
-                                                    <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height: 30px; width: 30px;"/>
-                                                    <span Style="font-size: 20px; line-height: normal;">@(review.UserScores.Count == default ? default : Math.Round(review.UserScores.Sum(t => t.Score) / (double)review.UserScores.Count, 1))<span style="font-size: 10px;">/5</span></span>
-                                                </div>
-                                            </div>
-                                            @if (Editor)
-                                            {
-                                                <div class="d-flex">
-                                                    <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info"/>
-                                                    <span class="mx-1"></span>
-                                                    <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="async () => await DeleteReviewAsync(review.Id)" Color="Color.Error"/>
-                                                </div>
-                                            }
-                                        </div>
-                                        <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
-                                        <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() - @review.Subtitle</MudText>
-                                        <div class="d-flex mt-1" style="align-items: center;">
+                                        @if (Editor)
+                                        {
                                             <div class="d-flex">
-                                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin"/>
-                                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                                <MudIconButton Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => NavigateToReviewEditor(review.Id)" Color="Color.Info" />
+                                                <span class="mx-1"></span>
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="Size.Small" OnClick="() => DeleteReviewAsync(review.Id)" Color="Color.Error" />
                                             </div>
-                                            <div class="d-flex mx-2">
-                                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt"/>
-                                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
-                                            </div>
-                                            <div class="d-flex mx-2">
-                                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person"/>
-                                                <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
-                                            </div>
-                                            <div class="d-flex mx-2">
-                                                <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment"/>
-                                                <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
-                                            </div>
+                                        }
+                                    </div>
+                                    <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                                    <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() - @review.Subtitle</MudText>
+                                    <div class="d-flex mt-1" style="align-items: center;">
+                                        <div class="d-flex">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                        </div>
+                                        <div class="d-flex mx-2">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Composition</MudText>
+                                        </div>
+                                        <div class="d-flex mx-2">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Person" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Author</MudText>
+                                        </div>
+                                        <div class="d-flex mx-2">
+                                            <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Comment" />
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.CommentCount</MudText>
                                         </div>
                                     </div>
                                 </div>
-                            </MudHidden>
-                        </MudBreakpointProvider>
-                    </div>
-                    <MudDivider Light="true" Class="my-3"/>
-                }
-            }
-            else
-            {
-                <MudSkeleton Height="80px" Animation="Animation.Wave"/>
-                @for (int i = 0; i < 5; i++)
-                {
-                    <MudSkeleton Height="200px" Style="margin: -30px 0;" Animation="Animation.Wave"/>
-                    <MudDivider Light="true" Class="my-3"/>
-                }
+                            </div>
+                        </MudHidden>
+                    </MudBreakpointProvider>
+                </div>
+                <MudDivider Light="true" Class="my-3" />
             }
         }
         else
         {
-            <MudSkeleton Height="80px" Animation="Animation.Wave"/>
             @for (int i = 0; i < 5; i++)
             {
-                <MudSkeleton Height="200px" Style="margin: -30px 0;" Animation="Animation.Wave"/>
-                <MudDivider Light="true" Class="my-3"/>
+                <MudSkeleton Height="200px" Style="margin: -30px 0;" Animation="Animation.Wave" />
+                <MudDivider Light="true" Class="my-3" />
             }
         }
     </MudPaper>

@@ -30,6 +30,8 @@ namespace ReviewEverything.Server.Services.TagService
             }
 
             return await tags
+                .OrderBy(x => x.Title)
+                .ThenBy(x => x.Title.Length)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -37,10 +39,25 @@ namespace ReviewEverything.Server.Services.TagService
 
         public async Task<bool> CreateTagAsync(Tag tag)
         {
+            var existsTag = await _context.Tags
+                .FirstOrDefaultAsync(x => x.Title.ToLower() == tag.Title.ToLower());
+            if (existsTag != null)
+                return false;
+
             await _context.Tags.AddAsync(tag);
             var created = await _context.SaveChangesAsync();
 
             return created > 0;
+        }
+
+        public async Task<bool> ExistTagByNameAsync(string title)
+        {
+            var existsTag = await _context.Tags
+                .FirstOrDefaultAsync(x => x.Title.ToLower() == title.ToLower());
+            if (existsTag == null)
+                return false;
+
+            return true;
         }
     }
 }

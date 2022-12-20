@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using ReviewEverything.Client.Components;
 using ReviewEverything.Shared.Contracts.Requests;
+using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Pages
 {
@@ -15,6 +16,7 @@ namespace ReviewEverything.Client.Pages
 
         private ReviewRequest _review = null!;
         private SelectOrCreateComposition _composition = null!;
+        private SelectOrCreateTags _tags = null!;
         protected override async Task OnInitializedAsync()
         {
             await GetReviewAsync();
@@ -47,34 +49,43 @@ namespace ReviewEverything.Client.Pages
         private async Task OnValidSubmitAsync(EditContext context)
         {
             await _composition.CreateCompositionAsync();
+            await CreateTagsAsync();
+
             HttpResponseMessage httpMessageResponse;
             if (Id != null)
-            {
                 httpMessageResponse = await HttpClient.PutAsJsonAsync($"api/Review/{Id}", _review);
-                if (httpMessageResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    Snackbar.Add("Обзор успешно обновлен", Severity.Success);
-                    NavigationManager.NavigateTo("./");
-                }
-                else
-                {
-                    Snackbar.Add("Не удалось обновить обзор", Severity.Error);
-                }
+            else
+                httpMessageResponse = await HttpClient.PostAsJsonAsync("api/Review", _review);
+
+            if (httpMessageResponse.StatusCode is HttpStatusCode.OK or HttpStatusCode.Created)
+            {
+                Snackbar.Add($"Обзор успешно {(Id != null ? "обновлен" : "создан")}", Severity.Success);
+                NavigationManager.NavigateTo("./");
             }
             else
             {
-                httpMessageResponse = await HttpClient.PostAsJsonAsync("api/Review", _review);
-                if (httpMessageResponse.StatusCode == HttpStatusCode.Created)
+                Snackbar.Add($"Не удалось {(Id != null ? "обновить" : "создать")} обзор", Severity.Error);
+            }
+        }
+
+        private async Task CreateTagsAsync()
+        {
+            foreach (var tag in _tags.CreateTags)
+            {
+                var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Tag", tag);
+
+
+                if (httpResponseMessage.StatusCode == HttpStatusCode.Created)
                 {
-                    Snackbar.Add("Обзор успешно создан", Severity.Success);
-                    NavigationManager.NavigateTo("./");
+                    var responseTag = (await httpResponseMessage.Content.ReadFromJsonAsync<TagResponse>())!;
+                    _review.Tags[_review.Tags.FindIndex(x => x.Title == tag.Title)] = responseTag;
                 }
                 else
                 {
-                    Snackbar.Add("Не удалось создать обзор", Severity.Error);
+                    _review.Tags.RemoveAll(x => x.Title == tag.Title);
+                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
                 }
             }
-            
         }
     }
 }

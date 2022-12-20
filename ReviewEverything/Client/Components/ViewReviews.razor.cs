@@ -16,19 +16,11 @@ namespace ReviewEverything.Client.Components
         [Parameter] public bool Editor { get; set; }
         [Parameter] public string? UserId { get; set; }
         public List<ReviewResponse> Reviews { get; set; } = default!;
-        private List<CategoryResponse> Categories { get; set; } = default!;
         private TagsComponent _tags = default!;
 
         private Breakpoint _breakpoint = default!;
-        private string _titleCategory = default!;
         private int? _categoryId = default!;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-        protected override async Task OnInitializedAsync()
-        {
-            await GetCategoriesFromApi();
-            await SelectedCategoryAsync();
-        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -46,18 +38,6 @@ namespace ReviewEverything.Client.Components
                 _breakpoint = subscriptionResult.Breakpoint;
                 StateHasChanged();
             }
-        }
-
-        private async Task GetCategoriesFromApi()
-        {
-            Categories = (await HttpClient.GetFromJsonAsync<List<CategoryResponse>>("api/Category"))!;
-        }
-
-        private async Task SelectedCategoryAsync(int? categoryId = null)
-        {
-            _titleCategory = categoryId == null ? "Р’СЃРµ РћР±Р·РѕСЂС‹" : $"РћР±Р·РѕСЂС‹ РЅР° {Categories.First(x => x.Id == categoryId.Value).Title}";
-            _categoryId = categoryId;
-            await GetReviewsFromApiAsync();
         }
 
         private async Task GetReviewsFromApiAsync()
@@ -82,6 +62,19 @@ namespace ReviewEverything.Client.Components
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
+
+            //TODO после создания пагинации сделать нормальную отмену
+            //if (_cancellationTokenSource.IsCancellationRequested)
+            //{
+            //    _cancellationTokenSource.Dispose();
+            //    _cancellationTokenSource = new CancellationTokenSource();
+            //}
+        }
+
+        private async Task GetReviewsFromCategoryId(int? categoryId)
+        {
+            _categoryId = categoryId;
+            await GetReviewsFromApiAsync();
         }
 
         private void NavigateToReviewEditor(int? reviewId = null)

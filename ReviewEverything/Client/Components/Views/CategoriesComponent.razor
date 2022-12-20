@@ -1,0 +1,18 @@
+﻿@if (Categories != null)
+{
+    <MudText Style="font-size: 2.125rem; font-weight: 900">@_titleCategory</MudText>
+
+    <MudTabs Class="my-3" Elevation="4" Rounded="true" AlwaysShowScrollButtons="true">
+
+        <MudTabPanel Text="Все обзоры" OnClick="() =>  SelectedCategoryAsync()" />
+        @foreach (var category in Categories)
+        {
+            <MudTabPanel Text="@category.Title" OnClick="() => SelectedCategoryAsync(category.Id)" />
+        }
+    </MudTabs>
+}
+else
+{
+    <MudSkeleton Height="70px" Width="220px" Style="Margin:-10px 0;" Animation="Animation.Wave" />
+    <MudSkeleton Height="80px" Style="Margin:-10px 0;" Animation="Animation.Wave" />
+}

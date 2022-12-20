@@ -20,7 +20,7 @@
     </NotAuthorized>
 </AuthorizeView>
 <div class="mt-5">
-    <MudDivider />
+    <MudDivider Class="my-3" />
     @if (Comments != null && Comments.Count != default)
     {
         foreach (var comment in Comments)
@@ -41,6 +41,12 @@
                 <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LoadMoreCommentAsync">Show More Comments</MudButton>
             </div>
         }
+    }
+    else if (Comments != null && Comments.Count == default)
+    {
+        <MudPaper Class="mb-2 px-4 py-5 text-center">
+            <MudText>Тут пока не комментариев, будьте первым!</MudText>
+        </MudPaper>
     }
     else
     {
