@@ -114,6 +114,10 @@ namespace ReviewEverything.Server.Services.ReviewService
             var newTags = review.Tags.Where(x => !updateReview.Tags.Select(x => x.Id).Contains(x.Id)).ToList();
             updateReview.Tags.RemoveAll(x => !review.Tags.Select(x => x.Id).Contains(x.Id));
             updateReview.Tags.AddRange(newTags);
+
+            var newImages = review.CloudImages.Where(x => !updateReview.CloudImages.Select(x => x.Id).Contains(x.Id)).ToList();
+            updateReview.CloudImages.RemoveAll(x => !review.CloudImages.Select(x => x.Id).Contains(x.Id));
+            updateReview.CloudImages.AddRange(newImages);
             _context.Reviews.Update(updateReview);
             var updated = await _context.SaveChangesAsync();
             return updated > 0;

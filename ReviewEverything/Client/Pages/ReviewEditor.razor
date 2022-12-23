@@ -7,6 +7,7 @@
         {
             <EditForm Model="@_review" OnValidSubmit="OnValidSubmitAsync">
                 <DataAnnotationsValidator />
+                <ImageEditor CloudImages="_review.CloudImages" />
                 <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название" @bind-Value="_review.Title" For="@(() => _review.Title)" />
                 <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Подзаголовок" @bind-Value="_review.Subtitle" For="@(() => _review.Subtitle)" />
                 <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Оценка автора по 10-б шкале" @bind-Value="_review.AuthorScore" For="@(() => _review.AuthorScore)" />

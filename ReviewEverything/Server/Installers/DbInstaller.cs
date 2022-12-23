@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.CategoryService;
+using ReviewEverything.Server.Services.CloudImageService;
 using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Server.Services.CompositionService;
 using ReviewEverything.Server.Services.ReviewService;
@@ -31,6 +32,7 @@ namespace ReviewEverything.Server.Installers
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IUserScoreService, UserScoreService>();
             builder.Services.AddScoped<IUserLikeService, UserLikeService>();
+            builder.Services.AddScoped<ICloudImageService, CloudImageService>();
         }
     }
 }

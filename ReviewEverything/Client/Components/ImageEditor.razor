@@ -1,0 +1,24 @@
+﻿<div style="@(_breakpoint is not Breakpoint.Xs and not Breakpoint.Sm ? "margin: 0 10px; display:flex; align-items: center; justify-content: space-around;" : null)">
+    <div style="@(_breakpoint is not Breakpoint.Xs and not Breakpoint.Sm ? "float: left; width: 49%;" : null)">
+        <MudFileUpload T="IReadOnlyList<IBrowserFile>" OnFilesChanged="OnInputFileChanged" Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
+                       @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
+            <ButtonTemplate>
+                <MudPaper Height="200px" Outlined="true" Class="@_dragClass" Style="display: flex; justify-content: center; align-items: center;">
+                    <div style="text-align: center;">
+                        <MudText Style="font-weight: bold; font-size: 18px;">Drag and Drop images</MudText>
+                        <MudText Style="font-weight: bold; font-size: 18px;">or</MudText>
+                        <MudButton Variant="Variant.Filled">Browse</MudButton>
+                    </div>
+                </MudPaper>
+            </ButtonTemplate>
+        </MudFileUpload>
+    </div>
+    <div style="@(_breakpoint is not Breakpoint.Xs and not Breakpoint.Sm ? "float: right; width: 49%;" : null)">
+        <MudPaper Height="200px" Outlined="true" Class="@_defaultDragClass" Style="margin-top: 6px; overflow-y: auto">
+            @foreach (var cloudImage in CloudImages)
+            {
+                <MudChip Color="Color.Default" Size="Size.Small" OnClose="() => RemoveCloudImage(cloudImage)">@(cloudImage.Title.Length > 30 ? string.Concat(cloudImage.Title.Take(20)) + "..." + string.Concat(cloudImage.Title.Skip(cloudImage.Title.Length - 5)) : cloudImage.Title)</MudChip>
+            }
+        </MudPaper>
+    </div>
+</div>

@@ -29,11 +29,19 @@
             <MudLink Style="font-size: 24px;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudLink>
             <MudText Style="font-size: 2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
             <MudText Style="font-size: 1.75em;" Class="mt-1">@ArticleReview.Subtitle</MudText>
+
+            <MudCarousel ShowArrows="true" Style="height: 300px;" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
+                @foreach (var cloudImage in ArticleReview.CloudImages)
+                {
+                    <MudCarouselItem Transition="Transition.Slide" Style="text-align: center;">
+                        <MudImage ObjectFit="ObjectFit.Cover" Style="height: 300px;" Src="@cloudImage.Url" Alt="@cloudImage.Title" Elevation="25" Class="rounded-lg" />
+                    </MudCarouselItem>
+                }
+            </MudCarousel>
+
             <MudBreakpointProvider>
                 <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                    <div class="d-flex justify-center">
-                        <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%; max-height: 200px;" Src="@ArticleReview.CloudImages[0].Url" Alt="@ArticleReview.CloudImages[0].Title" Elevation="25" Class="rounded-lg" />
-                    </div>
+
                     <MudDivider Class="mt-2" />
                     <div class="mt-3 d-flex flex-column">
                         <div class="d-flex" style="align-items: center;">
@@ -58,10 +66,6 @@
                     </div>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-
-                    <div class="d-flex justify-center">
-                        <MudImage ObjectFit="ObjectFit.Cover" Style="width: 100%; max-height: 400px;" Src="@ArticleReview.CloudImages[0].Url" Alt="@ArticleReview.CloudImages[0].Title" Elevation="25" Class="rounded-lg" />
-                    </div>
                     <div class="mt-3" style="display: flex; align-items: center;">
                         <MudAvatar Variant="Variant.Outlined">@ArticleReview.Author[0]</MudAvatar>
                         <span class="mx-1"></span>
