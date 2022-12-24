@@ -36,7 +36,7 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.CommentCount, opt =>
                     opt.MapFrom(src => src.Comments.Count))
                 .ForMember(dest => dest.LikeUsers, opt =>
-                    opt.MapFrom(src => src.LikeUsers.Count))
+                    opt.MapFrom(src => src.LikeUsers.Select(x => x.Id).ToList()))
                 .ForMember(dest => dest.CreationDate, opt =>
                     opt.MapFrom(src => src.CreationDate))
                 .ForMember(dest => dest.UpdateDate, opt =>

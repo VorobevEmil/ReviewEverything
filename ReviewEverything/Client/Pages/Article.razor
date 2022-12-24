@@ -30,7 +30,7 @@
             <MudText Style="font-size: 2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
             <MudText Style="font-size: 1.75em;" Class="mt-1">@ArticleReview.Subtitle</MudText>
 
-            <MudCarousel ShowArrows="true" Style="height: 300px;" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
+            <MudCarousel ShowArrows="true" Style="height: 300px;" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
                 @foreach (var cloudImage in ArticleReview.CloudImages)
                 {
                     <MudCarouselItem Transition="Transition.Slide" Style="text-align: center;">
@@ -92,11 +92,7 @@
                 }
             </style>
             <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
-            <div class="mt-2 d-flex" style="align-items: center;">
-                <MudCheckBox Dense="true" ReadOnly="!User.Identity!.IsAuthenticated" T="bool" Checked="_userLike" CheckedChanged="SetUserLikeAsync" Color="Color.Secondary" CheckedIcon="@Icons.Material.Filled.Favorite" UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" />
-                <span class="mx-1"></span>
-                <MudText>@ArticleReview.LikeUsers.Count()</MudText>
-            </div>
+            <LikeUsersComponent Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
 
         }
         else

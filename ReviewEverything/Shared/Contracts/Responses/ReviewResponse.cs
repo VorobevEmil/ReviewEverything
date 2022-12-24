@@ -15,7 +15,7 @@
         public int CategoryId { get; set; }
         public string Category { get; set; } = default!;
         public int CommentCount { get; set; } = default!;
-        public int LikeUsers { get; set; } = default!;
+        public List<string> LikeUsers { get; set; } = default!;
         public DateTime CreationDate { get; set; }
         public DateTime? UpdateDate { get; set; } = default!;
     }

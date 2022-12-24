@@ -19,13 +19,11 @@ namespace ReviewEverything.Client.Pages
         private ArticleReviewResponse ArticleReview { get; set; } = default!;
 
         private int _userRatingComposition = default!;
-        private bool _userLike = default!;
 
         protected override async Task OnInitializedAsync()
         {
             await GetUserAsync();
             await GetArticleAsync();
-            _userLike = CheckUserSetLike();
         }
 
         private async Task GetUserAsync()
@@ -49,13 +47,6 @@ namespace ReviewEverything.Client.Pages
             _userRatingComposition = ArticleReview.UserScores.FirstOrDefault(x => x.UserId == _userId)?.Score ?? 0;
         }
 
-
-
-        private bool CheckUserSetLike()
-        {
-            return User.Identity!.IsAuthenticated
-                   && ArticleReview.LikeUsers.Contains(GetUserId());
-        }
 
 
         private async Task SetUserRatingAsync(int rating)
@@ -100,30 +91,6 @@ namespace ReviewEverything.Client.Pages
             {
                 if (userScore != null) ArticleReview.UserScores.Remove(userScore);
             }
-        }
-
-
-        private async Task SetUserLikeAsync(bool like)
-        {
-            if (!User.Identity!.IsAuthenticated)
-                return;
-
-            _userLike = like;
-            if (like)
-            {
-                ArticleReview.LikeUsers.Add(GetUserId());
-                await HttpClient.PostAsJsonAsync("api/UserLike", ArticleReview.Id);
-            }
-            else
-            {
-                ArticleReview.LikeUsers.Remove(GetUserId());
-                await HttpClient.DeleteAsync($"api/UserLike/{ArticleReview.Id}");
-            }
-        }
-
-        private string GetUserId()
-        {
-            return User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
         }
     }
 }
