@@ -2,14 +2,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReviewEverything.Client.Pages.Admin;
-using ReviewEverything.Client.Pages;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
 using ReviewEverything.Shared.Models.Enums;
-using static MudBlazor.CategoryTypes;
 
 namespace ReviewEverything.Server.Controllers
 {
@@ -27,7 +24,7 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int page, int pageSize, int? categoryId, string? userId, string? idTags, CancellationToken token)
+        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int page, int pageSize, SortByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, string? idTags, CancellationToken token)
         {
             try
             {
@@ -41,7 +38,7 @@ namespace ReviewEverything.Server.Controllers
                     tags = new List<int>() { int.Parse(idTags) };
                 }
 
-                var reviews = await _service.GetReviewsAsync(page, pageSize, categoryId, userId, tags, token);
+                var reviews = await _service.GetReviewsAsync(page, pageSize, sortByProperty, filterByAuthorScore,  categoryId, userId, tags, token);
                 return Ok(_mapper.Map<List<ReviewResponse>>(reviews));
             }
             catch

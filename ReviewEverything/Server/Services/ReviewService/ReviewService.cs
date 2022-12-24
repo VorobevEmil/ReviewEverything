@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using ReviewEverything.Client.Pages;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
-using System.Linq;
+using ReviewEverything.Shared.Models.Enums;
 
 namespace ReviewEverything.Server.Services.ReviewService
 {
@@ -37,11 +35,13 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
+        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
             var reviews = GetReviewIncludeAll();
             reviews = GetReviewsByAuthorId(reviews, userId);
             reviews = GetReviewsByCategoryId(reviews, categoryId);
+            reviews = FilterReviewsByAuthorScore(reviews, filterByAuthorScore);
+            reviews = SortReviewsByProperty(reviews, sortByProperty);
 
             if (tags != null)
             {
@@ -49,14 +49,14 @@ namespace ReviewEverything.Server.Services.ReviewService
                     .SelectMany(x => x.Tags)
                     .Where(x => tags.Contains(x.Id))
                     .ToListAsync(token);
-                if (tagList.Count != 0)
-                {
-                    return (await reviews.ToListAsync(token))
-                        .Where(x => tagList.All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .ToList();
-                }
+                if (tagList.Count == 0)
+                    return new List<Review>();
+
+                return (await reviews.ToListAsync(token))
+                    .Where(x => tagList.All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
             }
 
             return await reviews
@@ -67,22 +67,40 @@ namespace ReviewEverything.Server.Services.ReviewService
 
         private IQueryable<Review> GetReviewsByAuthorId(IQueryable<Review> reviews, string? authorId)
         {
-            if (authorId != null)
-            {
-                return reviews
-                    .Where(x => x.AuthorId == authorId);
-            }
-            return reviews;
+            if (authorId == null)
+                return reviews;
+
+            return reviews
+                .Where(x => x.AuthorId == authorId);
         }
 
         private IQueryable<Review> GetReviewsByCategoryId(IQueryable<Review> reviews, int? categoryId)
         {
-            if (categoryId != null)
+            if (categoryId == null)
+                return reviews;
+
+            return reviews
+                .Where(x => x.Composition.CategoryId == categoryId);
+        }
+
+        private IQueryable<Review> FilterReviewsByAuthorScore(IQueryable<Review> reviews, int? authorScore)
+        {
+            if (authorScore == null)
+                return reviews;
+            return reviews
+                .Where(x => x.AuthorScore == authorScore);
+        }
+
+        private IQueryable<Review> SortReviewsByProperty(IQueryable<Review> reviews, SortByProperty sortByProperty)
+        {
+            return sortByProperty switch
             {
-                return reviews
-                    .Where(x => x.Composition.CategoryId == categoryId);
-            }
-            return reviews;
+                SortByProperty.Latest => reviews.OrderByDescending(x => x.CreationDate),
+                SortByProperty.Oldest => reviews.OrderBy(x => x.CreationDate),
+                SortByProperty.Score => reviews.OrderByDescending(x => x.AuthorScore),
+                SortByProperty.Title => reviews.OrderBy(x => x.Title),
+                _ => reviews
+            };
         }
 
         public async Task<bool> CreateReviewAsync(Review review)

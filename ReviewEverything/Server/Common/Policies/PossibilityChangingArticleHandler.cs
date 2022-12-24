@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Services.ReviewService;
 using System.Security.Claims;
-using System.Text;
 
 namespace ReviewEverything.Server.Common.Policies
 {

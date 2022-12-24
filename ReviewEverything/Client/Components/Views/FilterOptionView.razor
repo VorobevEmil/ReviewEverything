@@ -1,0 +1,20 @@
+﻿@using ReviewEverything.Shared.Models.Enums
+<div class="my-2 options">
+    <div class="filter-options">
+        <MudSelect T="SortByProperty" Value="_sortByProperty" ValueChanged="ChangeSortByProperty" Style="width: 155px;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="SortByProperty.Latest">Sort by Latest</MudSelectItem>
+            <MudSelectItem Value="SortByProperty.Oldest">Sort by Oldest</MudSelectItem>
+            <MudSelectItem Value="SortByProperty.Score">Sort by Score</MudSelectItem>
+            <MudSelectItem Value="SortByProperty.Title">Sort by Title</MudSelectItem>
+        </MudSelect>
+        <span class="mx-1"></span>
+        <MudSelect T="int" Value="_filterByAuthorScore" ValueChanged="ChangeFilterByAuthorScore" Style="width: 155px;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="0">All Scores</MudSelectItem>
+            @for (int i = 10; i > 0; i--)
+            {
+                int x = i;
+                <MudSelectItem Value="@x">@x</MudSelectItem>
+            }
+        </MudSelect>
+    </div>
+</div>
