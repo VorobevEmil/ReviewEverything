@@ -92,8 +92,7 @@
                 }
             </style>
             <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
-            <LikeUsersComponent Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
-
+            <LikeUsersView Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
         }
         else
         {
