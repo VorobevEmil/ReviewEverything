@@ -1,35 +1,56 @@
-﻿using System.Net.Http.Json;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
+using ReviewEverything.Client.Services;
 using ReviewEverything.Client.Services.Authorization;
-using ReviewEverything.Shared.Contracts.Responses;
+using ReviewEverything.Client.Theme;
 
 namespace ReviewEverything.Client.Shared;
 
 public partial class MainLayout
 {
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private LayoutService LayoutService { get; set; } = default!;
     [Inject] private HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; } = default!;
-    [Inject] private ILocalStorageService LocalStorage { get; set; } = default!;
-    private bool IsDarkMode { get; set; } = default!;
     private bool DrawerOpen { get; set; } = default!;
-
-    private MudAutocomplete<ReviewSearchResponse> _searchAutocomplete = default!;
-
-    private bool _searchDialogOpen;
-    private void OpenSearchDialog() => _searchDialogOpen = true;
-    private DialogOptions _dialogOptions = new() { Position = DialogPosition.TopCenter, NoHeader = true };
-
+    private MudThemeProvider _mudThemeProvider = default!;
+    private LoginPartial _loginPartial = default!;
+    private HubConnection _hubConnection = default!;
     protected override async Task OnInitializedAsync()
     {
-        if (await LocalStorage.ContainKeyAsync("isDarkMode"))
-            IsDarkMode = await LocalStorage.GetItemAsync<bool>("isDarkMode");
+        LayoutService.SetBaseTheme(CustomTheme.LandingPageTheme());
+        await ConfigureHubConnectionAsync();
     }
 
-    private async Task ChangeThemeAsync()
+    private async Task ConfigureHubConnectionAsync()
     {
-        IsDarkMode = !IsDarkMode;
-        await LocalStorage.SetItemAsync("isDarkMode", IsDarkMode);
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/userManagerHub"))
+            .Build();
+
+        _hubConnection.On<string>("LogoutAccount", async (message) =>
+        {
+            await _loginPartial.LogoutAsync();
+            Snackbar.Add(message, Severity.Error);
+        });
+
+        await _hubConnection.StartAsync();
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ApplyUserPreferencesAsync();
+            StateHasChanged();
+        }
+    }
+
+    private async Task ApplyUserPreferencesAsync()
+    {
+        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+        await LayoutService.ApplyUserPreferencesAsync(defaultDarkMode);
     }
 
     public void ChangeDrawerOpen() => DrawerOpen = !DrawerOpen;
@@ -37,20 +58,5 @@ public partial class MainLayout
     {
         HostAuthenticationStateProvider.RefreshState();
         StateHasChanged();
-    }
-
-    private async Task<IEnumerable<ReviewSearchResponse>> Search(string search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return new List<ReviewSearchResponse>();
-
-        return (await HttpClient.GetFromJsonAsync<IEnumerable<ReviewSearchResponse>>($"api/Review/Search/{search}"))!;
-    }
-
-    private async Task OnSearchResult(ReviewSearchResponse entry)
-    {
-        NavigationManager.NavigateTo($"/");
-        NavigationManager.NavigateTo($"/Article/{entry.Id}");
-        await _searchAutocomplete.Clear();
     }
 }

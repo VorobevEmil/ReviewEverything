@@ -22,6 +22,7 @@ builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.Get
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<DisplayHelper>();
 builder.Services.AddScoped<BrowserService>();
+builder.Services.AddScoped<LayoutService>();
 
 builder.Services.AddAuthorizationCore(configure =>
 {

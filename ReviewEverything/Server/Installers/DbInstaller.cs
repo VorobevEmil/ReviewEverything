@@ -9,6 +9,7 @@ using ReviewEverything.Server.Services.CompositionService;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Server.Services.TagService;
 using ReviewEverything.Server.Services.UserLikeService;
+using ReviewEverything.Server.Services.UserManagementService;
 using ReviewEverything.Server.Services.UserScoreService;
 using ReviewEverything.Server.Services.UserService;
 
@@ -32,6 +33,7 @@ namespace ReviewEverything.Server.Installers
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IUserScoreService, UserScoreService>();
             builder.Services.AddScoped<IUserLikeService, UserLikeService>();
+            builder.Services.AddScoped<IUserManagementService, UserManagementService>();
             builder.Services.AddScoped<ICloudImageService, CloudImageService>();
         }
     }

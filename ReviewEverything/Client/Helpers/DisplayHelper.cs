@@ -18,5 +18,13 @@ namespace ReviewEverything.Client.Helpers
                 "Удаление не может быть отменено!",
                 yesText: "Удалить!", cancelText: "Отмена");
         }
+
+        public async Task<bool?> ShowMessageBoxAsync(string message, string yesText, string cancelText = "Отмена")
+        {
+            return await _dialogService.ShowMessageBox(
+                "Внимание",
+                message,
+                yesText: yesText, cancelText: cancelText);
+        }
     }
 }

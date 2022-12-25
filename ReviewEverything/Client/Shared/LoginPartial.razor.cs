@@ -7,7 +7,7 @@ namespace ReviewEverything.Client.Shared
     {
         [CascadingParameter] public MainLayout Parent { get; set; } = default!;
 
-        private async Task LogoutAsync()
+        public async Task LogoutAsync()
         {
             await HttpClient.PostAsync("api/Account/Logout", null);
             Parent.RefreshState();

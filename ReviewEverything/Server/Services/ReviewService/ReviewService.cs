@@ -35,7 +35,7 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
+        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
             var reviews = GetReviewIncludeAll();
             reviews = GetReviewsByAuthorId(reviews, userId);
@@ -91,14 +91,14 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .Where(x => x.AuthorScore == authorScore);
         }
 
-        private IQueryable<Review> SortReviewsByProperty(IQueryable<Review> reviews, SortByProperty sortByProperty)
+        private IQueryable<Review> SortReviewsByProperty(IQueryable<Review> reviews, SortReviewByProperty sortByProperty)
         {
             return sortByProperty switch
             {
-                SortByProperty.Latest => reviews.OrderByDescending(x => x.CreationDate),
-                SortByProperty.Oldest => reviews.OrderBy(x => x.CreationDate),
-                SortByProperty.Score => reviews.OrderByDescending(x => x.AuthorScore),
-                SortByProperty.Title => reviews.OrderBy(x => x.Title),
+                SortReviewByProperty.Latest => reviews.OrderByDescending(x => x.CreationDate),
+                SortReviewByProperty.Oldest => reviews.OrderBy(x => x.CreationDate),
+                SortReviewByProperty.Score => reviews.OrderByDescending(x => x.AuthorScore),
+                SortReviewByProperty.Title => reviews.OrderBy(x => x.Title),
                 _ => reviews
             };
         }

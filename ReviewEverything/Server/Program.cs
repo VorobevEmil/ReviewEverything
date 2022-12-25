@@ -49,6 +49,8 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 app.MapHub<CommentHub>("/commentHub");
+app.MapHub<UserManagerHub>("/userManagerHub");
+
 app.MapFallbackToFile("index.html");
 
 app.Run();

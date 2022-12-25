@@ -1,5 +1,10 @@
 ﻿@page "/review-editor/{id:int?}"
 @attribute [Authorize]
+<PageTitle>@(Id == null ? "Создать" : "Редактировать") обзор</PageTitle>
+
+@{
+    #pragma warning disable
+}
 
 <div class="container mt-5">
     <MudPaper Class="px-4 py-5">
@@ -31,10 +36,6 @@
                         .editor-preview-full.editor-preview.editor-preview-active {
                             color: var(--mud-palette-text-primary);
                             background-color: var(--mud-palette-surface);
-                        }
-
-                        .preview.no-disable.active {
-                            background: var(--mud-palette-surface);
                         }
 
                         .editor-toolbar > button {

@@ -5,12 +5,12 @@ namespace ReviewEverything.Client.Components.Views
 {
     public partial class FilterOptionView
     {
-        private SortByProperty _sortByProperty;
+        private SortReviewByProperty _sortByProperty;
         private int _filterByAuthorScore = 0;
 
         [Parameter] public EventCallback GetReviewsFromApi { get; set; }
 
-        private async Task ChangeSortByProperty(SortByProperty sortByProperty)
+        private async Task ChangeSortByProperty(SortReviewByProperty sortByProperty)
         {
             _sortByProperty = sortByProperty;
             await GetReviewsFromApi.InvokeAsync();

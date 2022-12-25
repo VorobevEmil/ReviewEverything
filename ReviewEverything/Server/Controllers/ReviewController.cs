@@ -24,7 +24,7 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int page, int pageSize, SortByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, string? idTags, CancellationToken token)
+        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, string? idTags, CancellationToken token)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace ReviewEverything.Server.Controllers
             return NotFound();
         }
 
-        [Authorize]
+        [Authorize("ChangingArticle")]
         [HttpDelete("{reviewId}")]
         public async Task<IActionResult> Delete([FromRoute] int reviewId)
         {
@@ -116,6 +116,5 @@ namespace ReviewEverything.Server.Controllers
 
             return NotFound();
         }
-
     }
 }

@@ -58,7 +58,7 @@ namespace ReviewEverything.Client.Components.Views
                 return comments;
             }
 
-            Snackbar.Add("Не удалось загрузить комментарии", Severity.Error);
+            Snackbar.Add("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё", Severity.Error);
             return new List<CommentResponse>();
         }
 
@@ -89,7 +89,7 @@ namespace ReviewEverything.Client.Components.Views
                 var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Comment", newComment);
                 if (!httpResponseMessage.IsSuccessStatusCode)
                 {
-                    Snackbar.Add("Не удалось отправить комментарии", Severity.Error);
+                    Snackbar.Add("РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РїСЂР°РІРёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё", Severity.Error);
                 }
 
                 _bodyComment = default!;

@@ -51,24 +51,11 @@ namespace ReviewEverything.Server.Controllers
             var userProvider = await _userManager.FindByLoginAsync(provider, providerKey);
             if (userProvider is not null)
             {
-                await _signInManager.SignInAsync(userProvider, false, null);
+                if (!userProvider.Block)
+                    await _signInManager.SignInAsync(userProvider, false, null);
                 return Redirect("/");
 
             }
-
-            //var email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            //if (email is not null)
-            //{
-            //    var user = await _userManager.FindByEmailAsync(email);
-            //    if (user is not null)
-            //    {
-            //        var loginProvider = new UserLoginInfo(provider, providerKey, provider);
-            //        await _userManager.AddLoginAsync(user, loginProvider);
-            //        await _signInManager.SignInAsync(user, false, null);
-
-            //        return Redirect("/");
-            //    }
-            //}
 
             return Redirect($"/account/sign-up-provider/{provider}");
         }

@@ -1,8 +1,11 @@
 ﻿@using System.Security.Claims
-@using ReviewEverything.Shared.Contracts.Responses;
+@using ReviewEverything.Client.Components.Views
 @inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="IsDarkMode" />
+@{
+#pragma warning disable
+}
+<MudThemeProvider @ref="_mudThemeProvider" Theme="@LayoutService.CurrentTheme" IsDarkMode="@LayoutService.IsDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -17,7 +20,7 @@
                         <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
                         <MudText Style="font-size: 18px;">Reviews of everything</MudText>
                     </MudLink>
-                    <MudIconButton OnClick="OpenSearchDialog" Color="Color.Inherit" Icon="@Icons.Filled.Search" />
+                    <SearchReviewsDialog/>
                 </div>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -29,12 +32,13 @@
                     <span class="mx-3"></span>
                     <AuthorizeView Policy="Admin">
                         <Authorized>
-                            <MudMenu TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter" FullWidth="true">
+                            <MudMenu ActivationEvent="@MouseEvent.MouseOver" TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter" FullWidth="true">
                                 <ActivatorContent>
                                     <MudButton StartIcon="@Icons.Material.Filled.Security" Variant="Variant.Outlined" Color="Color.Inherit">Панель управления</MudButton>
                                 </ActivatorContent>
                                 <ChildContent>
-                                    <MudMenuItem Href="/admin/category">Категории</MudMenuItem>
+                                    <MudMenuItem Href="./admin/user-manager">Пользователи</MudMenuItem>
+                                    <MudMenuItem Href="./admin/category">Категории</MudMenuItem>
                                 </ChildContent>
                             </MudMenu>
                             <span class="mx-1"></span>
@@ -42,7 +46,7 @@
                     </AuthorizeView>
                     <AuthorizeView>
                         <Authorized>
-                            <MudMenu TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter">
+                            <MudMenu ActivationEvent="@MouseEvent.MouseOver" TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter">
                                 <ActivatorContent>
                                     <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">Аккаунт</MudButton>
                                 </ActivatorContent>
@@ -56,10 +60,10 @@
                     </AuthorizeView>
                 </div>
                 <MudSpacer />
-                <MudIconButton OnClick="OpenSearchDialog" Color="Color.Inherit" Icon="@Icons.Filled.Search" />
-                <MudToggleIconButton Color="Color.Inherit" Toggled="IsDarkMode" ToggledChanged="ChangeThemeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
+                <SearchReviewsDialog/>
+                <MudToggleIconButton Color="Color.Inherit" Toggled="LayoutService.IsDarkMode" ToggledChanged="LayoutService.SetDarkModeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 <CascadingValue Value="this">
-                    <LoginPartial />
+                    <LoginPartial @ref="_loginPartial" />
                 </CascadingValue>
             </MudHidden>
             <span class="mx-1"></span>
@@ -69,13 +73,13 @@
     <MudBreakpointProvider>
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
             <MudDrawer @bind-Open="DrawerOpen" Elevation="2">
-                <MudDrawerHeader Style="@("background: " + (IsDarkMode ? "#151521ff" : "#f5f5f5ff"))" Dense="true">
+                <MudDrawerHeader Style="@("background: " + (LayoutService.IsDarkMode ? "#151521ff" : "#f5f5f5ff"))" Dense="true">
                     <MudSpacer />
-                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" Toggled="IsDarkMode" ToggledChanged="ChangeThemeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
+                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" Toggled="LayoutService.IsDarkMode" ToggledChanged="LayoutService.SetDarkModeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 </MudDrawerHeader>
                 <MudList Clickable="true">
                     <CascadingValue Value="this">
-                        <LoginPartial />
+                        <LoginPartial @ref="_loginPartial" />
                     </CascadingValue>
                     <CascadingValue Value="this">
                         <MoblieNavLink />
@@ -85,18 +89,6 @@
         </MudHidden>
     </MudBreakpointProvider>
 
-    <MudDialog @bind-IsVisible="_searchDialogOpen" Options="_dialogOptions" Class="docs-gray-bg" ClassContent="docs-mobile-dialog-search">
-        <DialogContent>
-            <MudAutocomplete @ref="_searchAutocomplete" T="ReviewSearchResponse" PopoverClass="docs-mobile-dialog-search-popover" Placeholder="Search review" SearchFunc="Search" ValueChanged="OnSearchResult" Clearable="true" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
-                <ItemTemplate Context="result">
-                    <MudText>@result.Title</MudText>
-                </ItemTemplate>
-            </MudAutocomplete>
-            <div class="d-flex justify-center align-center mud-height-full pb-16" style="width:300px; height:30vh;">
-                <MudText Typo="Typo.body2" Class="mud-text-secondary">Nothing found, do a search</MudText>
-            </div>
-        </DialogContent>
-    </MudDialog>
 
     <MudMainContent>
         <CascadingValue Value="this">

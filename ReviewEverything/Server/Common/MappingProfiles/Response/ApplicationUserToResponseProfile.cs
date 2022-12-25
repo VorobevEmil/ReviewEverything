@@ -14,7 +14,9 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.FullName, opt =>
                     opt.MapFrom(src => src.FullName))
                 .ForMember(dest => dest.UserName, opt =>
-                    opt.MapFrom(src => src.UserName));
+                    opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Status, opt =>
+                    opt.MapFrom(src => src.Block ? "Заблокирован" : "Разблокирован"));
         }
     }
 }

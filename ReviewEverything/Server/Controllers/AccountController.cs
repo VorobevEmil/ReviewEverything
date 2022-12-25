@@ -31,6 +31,9 @@ namespace ReviewEverything.Server.Controllers
             var applicationUser = await _userManager.FindByEmailAsync(model.Email);
             if (applicationUser != null)
             {
+                if (applicationUser.Block)
+                    return Conflict("Ваш аккаунт заблокирован");
+
                 var result = await _signInManager.PasswordSignInAsync(applicationUser, model.Password, false, false);
                 if (result.Succeeded)
                 {

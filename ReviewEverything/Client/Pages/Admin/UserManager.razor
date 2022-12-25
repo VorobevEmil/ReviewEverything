@@ -1,3 +1,40 @@
 ﻿@page "/admin/user-manager"
+@using ReviewEverything.Shared.Contracts.Responses
+@using ReviewEverything.Shared.Models.Enums
 @attribute [Authorize("Admin")]
 <PageTitle>Пользователи - Панель управления</PageTitle>
+
+<div class="container mt-12">
+    <MudTable T="UserResponse" ServerData="@(new Func<TableState, Task<TableData<UserResponse>>>(ServerReload))" @bind-SelectedItems="_selectedUsers" MultiSelection="true" @ref="_mudTable">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Пользователи</MudText>
+            <MudSpacer />
+            <MudTextField Placeholder="Поиск" T="string" Value="_search" ValueChanged="SearchUserAsync" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <span class="mx-1"></span>
+            <MudSelect Label="Поиск по свойству" T="FilterUserByProperty" Value="_filterUserByProperty" ValueChanged="ChangeFilterForSearchAsync" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                <MudSelectItem Value="FilterUserByProperty.FullName">Полное Имя</MudSelectItem>
+                <MudSelectItem Value="FilterUserByProperty.UserName">UserName</MudSelectItem>
+            </MudSelect>
+            <div class="mx-1 my-2">
+                <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Filled.Lock" OnClick="() => ChangeStatusBlockInUsersAsync(true)">Block</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Filled.LockOpen" OnClick="() => ChangeStatusBlockInUsersAsync(false)" Class="mx-1">Unblock</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Filled.Delete" OnClick="DeleteUsersAsync">Delete</MudButton>
+            </div>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Id пользователя</MudTh>
+            <MudTh>Полное Имя</MudTh>
+            <MudTh>UserName</MudTh>
+            <MudTh>Статус</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Полное Имя">@context.FullName</MudTd>
+            <MudTd DataLabel="UserName">@context.UserName</MudTd>
+            <MudTd DataLabel="Статус">@context.Status</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager RowsPerPageString="Строк на странице" />
+        </PagerContent>
+    </MudTable>
+</div>

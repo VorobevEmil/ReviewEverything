@@ -1,6 +1,6 @@
 ﻿namespace ReviewEverything.Shared.Models.Enums
 {
-    public enum SortByProperty
+    public enum SortReviewByProperty
     {
         Latest,
         Oldest,
