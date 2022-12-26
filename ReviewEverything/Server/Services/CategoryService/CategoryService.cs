@@ -15,7 +15,9 @@ namespace ReviewEverything.Server.Services.CategoryService
 
         public async Task<List<Category>> GetCategoriesAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .OrderBy(x => x.Title)
+                .ToListAsync();
         }
 
         public async Task<Category?> GetCategoryByIdAsync(int id)

@@ -15,8 +15,8 @@ namespace ReviewEverything.Client.Pages.Admin
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-        private HashSet<UserResponse> _selectedUsers = default!;
-        private MudTable<UserResponse> _mudTable = default!;
+        private HashSet<UserManagementResponse> _selectedUsers = new();
+        private MudTable<UserManagementResponse> _mudTable = default!;
         private string _userId = default!;
         private FilterUserByProperty _filterUserByProperty = default!;
         private string _search = default!;
@@ -27,12 +27,12 @@ namespace ReviewEverything.Client.Pages.Admin
                 x.Type == ClaimTypes.NameIdentifier).Value;
         }
 
-        private async Task<TableData<UserResponse>> ServerReload(TableState state)
+        private async Task<TableData<UserManagementResponse>> ServerReload(TableState state)
         {
             var parameterUrl = ParameterUrl(state.Page, state.PageSize);
             UserCountResponse data = (await HttpClient.GetFromJsonAsync<UserCountResponse>($"api/UserManagement?{parameterUrl}"))!;
 
-            return new TableData<UserResponse>() { TotalItems = data.Count, Items = data.Users };
+            return new TableData<UserManagementResponse>() { TotalItems = data.Count, Items = data.Users };
         }
 
         private string ParameterUrl(int tablePage, int tablePageSize)
@@ -60,8 +60,6 @@ namespace ReviewEverything.Client.Pages.Admin
 
         private async Task ChangeStatusBlockInUsersAsync(bool statusBlock)
         {
-            if (CheckSelectedUserOnEmpty())
-                return;
 
             var status = statusBlock ? "Заблокировать" : "Разблокировать";
             var result = await DisplayHelper.ShowMessageBoxAsync($"Вы действительно хотите {status.ToLower()} выделенных пользователей?", status + "!");
@@ -87,8 +85,6 @@ namespace ReviewEverything.Client.Pages.Admin
 
         private async Task DeleteUsersAsync()
         {
-            if (CheckSelectedUserOnEmpty())
-                return;
 
             var result = await DisplayHelper.ShowDeleteMessageBoxAsync();
             if (result != true)
@@ -108,9 +104,28 @@ namespace ReviewEverything.Client.Pages.Admin
             await _mudTable.ReloadServerData();
         }
 
-        private bool CheckSelectedUserOnEmpty()
+        private async Task ChangeUserRoleAsync(bool statusRole)
         {
-            return _selectedUsers.Count == 0;
+            var status = statusRole ? "выдать" : "забрать";
+            var result = await DisplayHelper.ShowMessageBoxAsync($"Вы действительно хотите {status} права администратора выбранным пользователям?", "Да!");
+            if (result != true)
+                return;
+
+            MoveUser();
+            foreach (var user in _selectedUsers)
+            {
+                var httpResponseMessage = await HttpClient.PostAsJsonAsync($"api/UserManagement/ChangeUserRole/{user.Id}", statusRole);
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    user.Admin = statusRole;
+                }
+                else
+                {
+                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
+                }
+            }
+
+            _selectedUsers.Clear();
         }
 
         private void MoveUser()

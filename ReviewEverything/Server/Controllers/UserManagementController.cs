@@ -22,13 +22,21 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserResponse>>> GetAll(int page, int pageSize, FilterUserByProperty filterUserByProperty, string? search, CancellationToken token)
+        public async Task<ActionResult<List<UserManagementResponse>>> GetAll(int page, int pageSize, FilterUserByProperty filterUserByProperty, string? search, CancellationToken token)
         {
             try
             {
                 var result = await _service.GetUsersAsync(page, pageSize, filterUserByProperty, search, token);
+                var users = _mapper.Map<List<UserManagementResponse>>(result.users);
+                foreach (var user in users)
+                {
+                    if (await _service.CheckUserContainsAdminRole(user.Id))
+                    {
+                        user.Admin = true;
+                    }
+                }
 
-                return Ok(new UserCountResponse(result.count, _mapper.Map<List<UserResponse>>(result.users)));
+                return Ok(new UserCountResponse(result.count, users));
             }
             catch (Exception)
             {
@@ -49,6 +57,21 @@ namespace ReviewEverything.Server.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPost("ChangeUserRole/{userId}")]
+        public async Task<IActionResult> ChangeUserRole(string userId, [FromBody] bool statusRole, CancellationToken token)
+        {
+            try
+            {
+                await _service.ChangeUserRoleAsync(userId, statusRole, token: token);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
 
         [HttpDelete("{userId}")]
         public async Task<IActionResult> Delete([FromRoute] string userId, CancellationToken token)

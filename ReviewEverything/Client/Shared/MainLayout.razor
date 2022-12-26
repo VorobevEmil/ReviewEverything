@@ -10,7 +10,6 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-
     <MudAppBar Elevation="1">
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
@@ -20,7 +19,7 @@
                         <MudIcon Style="height: 30px; width: 30px;" Icon="@Icons.Filled.Camera" />
                         <MudText Style="font-size: 18px;">Reviews of everything</MudText>
                     </MudLink>
-                    <SearchReviewsDialog/>
+                    <SearchReviewsDialog />
                 </div>
             </MudHidden>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -60,7 +59,7 @@
                     </AuthorizeView>
                 </div>
                 <MudSpacer />
-                <SearchReviewsDialog/>
+                <SearchReviewsDialog />
                 <MudToggleIconButton Color="Color.Inherit" Toggled="LayoutService.IsDarkMode" ToggledChanged="LayoutService.SetDarkModeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 <CascadingValue Value="this">
                     <LoginPartial @ref="_loginPartial" />

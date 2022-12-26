@@ -4,8 +4,12 @@
 @attribute [Authorize("Admin")]
 <PageTitle>Пользователи - Панель управления</PageTitle>
 
+@{
+#pragma warning disable
+}
+
 <div class="container mt-12">
-    <MudTable T="UserResponse" ServerData="@(new Func<TableState, Task<TableData<UserResponse>>>(ServerReload))" @bind-SelectedItems="_selectedUsers" MultiSelection="true" @ref="_mudTable">
+    <MudTable T="UserManagementResponse" ServerData="@(new Func<TableState, Task<TableData<UserManagementResponse>>>(ServerReload))" @bind-SelectedItems="_selectedUsers" MultiSelection="true" @ref="_mudTable">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Пользователи</MudText>
             <MudSpacer />
@@ -15,23 +19,33 @@
                 <MudSelectItem Value="FilterUserByProperty.FullName">Полное Имя</MudSelectItem>
                 <MudSelectItem Value="FilterUserByProperty.UserName">UserName</MudSelectItem>
             </MudSelect>
-            <div class="mx-1 my-2">
-                <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="@Icons.Filled.Lock" OnClick="() => ChangeStatusBlockInUsersAsync(true)">Block</MudButton>
-                <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Filled.LockOpen" OnClick="() => ChangeStatusBlockInUsersAsync(false)" Class="mx-1">Unblock</MudButton>
-                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Filled.Delete" OnClick="DeleteUsersAsync">Delete</MudButton>
-            </div>
+            <MudMenu Class="my-2 d-flex justify-center" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                <ActivatorContent>
+                    <MudChip Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">Управление</MudChip>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem Icon="@Icons.Filled.Lock" IconColor="Color.Error" OnClick="() => ChangeStatusBlockInUsersAsync(true)">Block</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.LockOpen" IconColor="Color.Primary" OnClick="() => ChangeStatusBlockInUsersAsync(false)">Unblock</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.AddModerator" IconColor="Color.Success" OnClick="() => ChangeUserRoleAsync(true)">Set Admin role</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.RemoveModerator" IconColor="Color.Warning" OnClick="() => ChangeUserRoleAsync(false)">Remove Admin role</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.Delete" IconColor="Color.Secondary" OnClick="DeleteUsersAsync">Delete</MudMenuItem>
+                </ChildContent>
+            </MudMenu>
         </ToolBarContent>
         <HeaderContent>
             <MudTh>Id пользователя</MudTh>
             <MudTh>Полное Имя</MudTh>
             <MudTh>UserName</MudTh>
             <MudTh>Статус</MudTh>
+            <MudTh>Права Администратора</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Id">@context.Id</MudTd>
-            <MudTd DataLabel="Полное Имя">@context.FullName</MudTd>
+            <MudTd DataLabel="Полное Имя"><MudLink Href="@($"./user/{context.Id}")" Color="Color.Default">@context.FullName</MudLink></MudTd>
             <MudTd DataLabel="UserName">@context.UserName</MudTd>
             <MudTd DataLabel="Статус">@context.Status</MudTd>
+            <MudTd DataLabel="Права Администратора"><MudCheckBox T="bool" ReadOnly="true" Checked="@context.Admin"></MudCheckBox></MudTd>
+
         </RowTemplate>
         <PagerContent>
             <MudTablePager RowsPerPageString="Строк на странице" />

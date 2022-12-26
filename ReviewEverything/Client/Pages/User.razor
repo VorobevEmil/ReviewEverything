@@ -9,6 +9,10 @@
                 {
                     <MudAvatar Style="height: 200px; width: 200px; font-size: 10rem;" Variant="Variant.Outlined" Color="Color.Inherit">@UserResponse.FullName[0]</MudAvatar>
                     <MudText Class="mt-2" Style="word-break: break-all; font-size: 2rem; font-weight: 600">@UserResponse.UserName</MudText>
+                    <div class="d-flex">
+                        <MudIcon Color="Color.Secondary" Icon="@Icons.Filled.Favorite"/>
+                        <MudText Class="mx-1">@UserResponse.Likes</MudText>
+                    </div>
                 }
                 else
                 {

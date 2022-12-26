@@ -2,13 +2,13 @@
 {
     public class UserCountResponse
     {
-        public UserCountResponse(int count, List<UserResponse> users)
+        public UserCountResponse(int count, List<UserManagementResponse> users)
         {
             Count = count;
             Users = users;
         }
 
         public int Count { get; set; }
-        public List<UserResponse> Users { get; set; }
+        public List<UserManagementResponse> Users { get; set; }
     }
 }

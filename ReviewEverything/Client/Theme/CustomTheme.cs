@@ -83,15 +83,16 @@ namespace ReviewEverything.Client.Theme
         private static readonly Palette LandingPageLightPalette = new()
         {
             AppbarText = "#424242",
-            AppbarBackground = "#F9FAFC",
+            AppbarBackground = "#f6f8f7",
             BackgroundGrey = "#F9FAFC",
-            Surface = "#F9FAFC",
+            Surface = "#f6f8f7ff",
+            Background = "#F9FAFC",
             TextSecondary = "#425466",
             Dark = "#110E2D",
             DarkLighten = "#1A1643",
             GrayDefault = "#4B5563",
             GrayLight = "#9CA3AF",
-            GrayLighter = "#adbdccff"
+            GrayLighter = "#adbdccff",
         };
         private static readonly PaletteDark LandingPageDarkPalette = new()
         {
