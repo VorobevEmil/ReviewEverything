@@ -5,58 +5,59 @@ using ReviewEverything.Client.Services;
 using ReviewEverything.Client.Services.Authorization;
 using ReviewEverything.Client.Theme;
 
-namespace ReviewEverything.Client.Shared;
-
-public partial class MainLayout
+namespace ReviewEverything.Client.Shared
 {
-    [Inject] private ISnackbar Snackbar { get; set; } = default!;
-    [Inject] private LayoutService LayoutService { get; set; } = default!;
-    [Inject] private HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; } = default!;
-    private bool DrawerOpen { get; set; } = default!;
-    private MudThemeProvider _mudThemeProvider = default!;
-    private LoginPartial _loginPartial = default!;
-    private HubConnection _hubConnection = default!;
-    protected override async Task OnInitializedAsync()
+    public partial class MainLayout
     {
-        LayoutService.SetBaseTheme(CustomTheme.LandingPageTheme());
-        await ConfigureHubConnectionAsync();
-    }
-
-    private async Task ConfigureHubConnectionAsync()
-    {
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/userManagerHub"))
-            .Build();
-
-        _hubConnection.On<string>("LogoutAccount", async (message) =>
+        [Inject] private ISnackbar Snackbar { get; set; } = default!;
+        [Inject] private LayoutService LayoutService { get; set; } = default!;
+        [Inject] private HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; } = default!;
+        private bool DrawerOpen { get; set; } = default!;
+        private MudThemeProvider _mudThemeProvider = default!;
+        private LoginPartial _loginPartial = default!;
+        private HubConnection _hubConnection = default!;
+        protected override async Task OnInitializedAsync()
         {
-            await _loginPartial.LogoutAsync();
-            Snackbar.Add(message, Severity.Error);
-        });
+            LayoutService.SetBaseTheme(CustomTheme.LandingPageTheme());
+            await ConfigureHubConnectionAsync();
+        }
 
-        await _hubConnection.StartAsync();
-    }
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
+        private async Task ConfigureHubConnectionAsync()
         {
-            await ApplyUserPreferencesAsync();
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl(NavigationManager.ToAbsoluteUri("/userManagerHub"))
+                .Build();
+
+            _hubConnection.On<string>("LogoutAccount", async (message) =>
+            {
+                await _loginPartial.LogoutAsync();
+                Snackbar.Add(message, Severity.Error);
+            });
+
+            await _hubConnection.StartAsync();
+        }
+
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await ApplyUserPreferencesAsync();
+                StateHasChanged();
+            }
+        }
+
+        private async Task ApplyUserPreferencesAsync()
+        {
+            var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+            await LayoutService.ApplyUserPreferencesAsync(defaultDarkMode);
+        }
+
+        public void ChangeDrawerOpen() => DrawerOpen = !DrawerOpen;
+        public void RefreshState()
+        {
+            HostAuthenticationStateProvider.RefreshState();
             StateHasChanged();
         }
-    }
-
-    private async Task ApplyUserPreferencesAsync()
-    {
-        var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
-        await LayoutService.ApplyUserPreferencesAsync(defaultDarkMode);
-    }
-
-    public void ChangeDrawerOpen() => DrawerOpen = !DrawerOpen;
-    public void RefreshState()
-    {
-        HostAuthenticationStateProvider.RefreshState();
-        StateHasChanged();
     }
 }

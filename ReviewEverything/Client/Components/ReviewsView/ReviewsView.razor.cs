@@ -1,16 +1,13 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using MudBlazor.Services;
-using ReviewEverything.Client.Components.Views;
 using ReviewEverything.Client.Helpers;
 using ReviewEverything.Client.Services;
 using ReviewEverything.Shared.Contracts.Responses;
-using ReviewEverything.Shared.Models.Enums;
 
-namespace ReviewEverything.Client.Components
+namespace ReviewEverything.Client.Components.ReviewsView
 {
-    public partial class ViewReviews
+    public partial class ReviewsView
     {
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private BrowserService BrowserService { get; set; } = default!;

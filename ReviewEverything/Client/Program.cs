@@ -1,3 +1,4 @@
+using System.Globalization;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -23,7 +24,6 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<DisplayHelper>();
 builder.Services.AddScoped<BrowserService>();
 builder.Services.AddScoped<LayoutService>();
-
 builder.Services.AddAuthorizationCore(configure =>
 {
     configure.AddPolicy("Admin", pb =>
@@ -33,4 +33,9 @@ builder.Services.AddAuthorizationCore(configure =>
     });
 });
 
-await builder.Build().RunAsync();
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+var host = builder.Build();
+await host.SetDefaultCulture();
+
+await host.RunAsync();

@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using MudBlazor.Services;
-using ReviewEverything.Shared.Models;
-using System.IO;
-using System.Net.Http.Json;
-using ReviewEverything.Client.Pages;
 using ReviewEverything.Shared.Contracts.Requests;
+using ReviewEverything.Shared.Models;
 
-namespace ReviewEverything.Client.Components
+namespace ReviewEverything.Client.Components.ReviewEditor
 {
     public partial class ImageEditor
     {

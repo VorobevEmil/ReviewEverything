@@ -1,6 +1,7 @@
 ﻿@using System.Security.Claims
 @using ReviewEverything.Client.Components.Views
 @inherits LayoutComponentBase
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
 #pragma warning disable
@@ -33,11 +34,11 @@
                         <Authorized>
                             <MudMenu ActivationEvent="@MouseEvent.MouseOver" TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter" FullWidth="true">
                                 <ActivatorContent>
-                                    <MudButton StartIcon="@Icons.Material.Filled.Security" Variant="Variant.Outlined" Color="Color.Inherit">Панель управления</MudButton>
+                                    <MudButton StartIcon="@Icons.Material.Filled.Security" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Control Panel"]</MudButton>
                                 </ActivatorContent>
                                 <ChildContent>
-                                    <MudMenuItem Href="./admin/user-manager">Пользователи</MudMenuItem>
-                                    <MudMenuItem Href="./admin/category">Категории</MudMenuItem>
+                                    <MudMenuItem Href="./admin/user-manager">@Localizer["Users"]</MudMenuItem>
+                                    <MudMenuItem Href="./admin/category">@Localizer["Categories"]</MudMenuItem>
                                 </ChildContent>
                             </MudMenu>
                             <span class="mx-1"></span>
@@ -47,11 +48,11 @@
                         <Authorized>
                             <MudMenu ActivationEvent="@MouseEvent.MouseOver" TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter">
                                 <ActivatorContent>
-                                    <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">Аккаунт</MudButton>
+                                    <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Account"]</MudButton>
                                 </ActivatorContent>
                                 <ChildContent>
-                                    <MudMenuItem Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")">Моя страница</MudMenuItem>
-                                    <MudMenuItem>Настройки</MudMenuItem>
+                                    <MudMenuItem Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")">@Localizer["My page"]</MudMenuItem>
+                                    <MudMenuItem>@Localizer["Settings"]</MudMenuItem>
                                 </ChildContent>
                             </MudMenu>
                             <span class="mx-1"></span>
@@ -59,6 +60,7 @@
                     </AuthorizeView>
                 </div>
                 <MudSpacer />
+                <CultureSelector />
                 <SearchReviewsDialog />
                 <MudToggleIconButton Color="Color.Inherit" Toggled="LayoutService.IsDarkMode" ToggledChanged="LayoutService.SetDarkModeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
                 <CascadingValue Value="this">
@@ -72,9 +74,10 @@
     <MudBreakpointProvider>
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
             <MudDrawer @bind-Open="DrawerOpen" Elevation="2">
-                <MudDrawerHeader Style="@("background: " + (LayoutService.IsDarkMode ? "#151521ff" : "#f5f5f5ff"))" Dense="true">
-                    <MudSpacer />
-                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" Toggled="LayoutService.IsDarkMode" ToggledChanged="LayoutService.SetDarkModeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay" />
+                <MudDrawerHeader Dense="true">
+                    <CultureSelector />
+                    <MudSpacer/>
+                    <MudToggleIconButton Size="Size.Small" ToggledSize="Size.Small" Color="Color.Inherit" Toggled="LayoutService.IsDarkMode" ToggledChanged="LayoutService.SetDarkModeAsync" Icon="@Icons.Filled.WbSunny" ToggledIcon="@Icons.Filled.NightsStay"/>
                 </MudDrawerHeader>
                 <MudList Clickable="true">
                     <CascadingValue Value="this">

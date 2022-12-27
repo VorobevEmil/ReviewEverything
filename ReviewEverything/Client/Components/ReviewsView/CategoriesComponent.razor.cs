@@ -1,16 +1,15 @@
-using ReviewEverything.Shared.Contracts.Responses;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using ReviewEverything.Shared.Contracts.Responses;
 
-namespace ReviewEverything.Client.Components.Views
+namespace ReviewEverything.Client.Components.ReviewsView
 {
     public partial class CategoriesComponent
     {
-
         [Parameter] public EventCallback GetReviewsFromApi { get; set; }
         private List<CategoryResponse> Categories { get; set; } = default!;
         private int? _categoryId;
-        private string _titleCategory = default!;
+        private string _titleCategory = "Все Обзоры";
 
         protected override async Task OnInitializedAsync()
         {

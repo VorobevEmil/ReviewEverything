@@ -1,21 +1,21 @@
 ﻿@using ReviewEverything.Client.Helpers
+@inject IStringLocalizer<ArticleComments> Localizer
 
 <MudDivider Class="mt-2" />
-<MudText Style="font-size:36px;">Комментарии</MudText>
+<MudText Style="font-size:36px;">@Localizer["Comments"]</MudText>
 
-<MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Что ты думаешь об этом?" Lines="3" @bind-Value="_bodyComment" />
+<MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Placeholder Input"]" Lines="3" @bind-Value="_bodyComment" />
 <AuthorizeView>
     <Authorized>
         <div class="text-end mt-3">
-            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">Отправить</MudButton>
-
+            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">@Localizer["Send"]</MudButton>
         </div>
     </Authorized>
     <NotAuthorized>
         <div style="display: flex; align-items: center; justify-content: flex-end;">
-            <MudText>*Войдите чтобы оставить комментарий</MudText>
+            <MudText>@Localizer["Authorize Message"]</MudText>
             <span class="mx-1"></span>
-            <MudButton Disabled="true" Variant="Variant.Filled">Отправить</MudButton>
+            <MudButton Disabled="true" Variant="Variant.Filled">@Localizer["Send"]</MudButton>
         </div>
     </NotAuthorized>
 </AuthorizeView>
@@ -38,14 +38,14 @@
         @if (!_hiddenButtonLoadMore)
         {
             <div class="my-3 text-center">
-                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LoadMoreCommentAsync">Show More Comments</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LoadMoreCommentAsync">@Localizer["Load Comments"]</MudButton>
             </div>
         }
     }
     else if (Comments != null && Comments.Count == default)
     {
         <MudPaper Class="mb-2 px-4 py-5 text-center">
-            <MudText>Тут пока не комментариев, будьте первым!</MudText>
+            <MudText>@Localizer["No Comments"]</MudText>
         </MudPaper>
     }
     else

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using ReviewEverything.Shared.Models.Enums;
 
-namespace ReviewEverything.Client.Components.Views
+namespace ReviewEverything.Client.Components.ReviewsView
 {
     public partial class FilterOptionView
     {

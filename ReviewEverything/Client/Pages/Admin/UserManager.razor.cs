@@ -61,8 +61,8 @@ namespace ReviewEverything.Client.Pages.Admin
         private async Task ChangeStatusBlockInUsersAsync(bool statusBlock)
         {
 
-            var status = statusBlock ? "Заблокировать" : "Разблокировать";
-            var result = await DisplayHelper.ShowMessageBoxAsync($"Вы действительно хотите {status.ToLower()} выделенных пользователей?", status + "!");
+            var status = (statusBlock ? "Block" : "Unblock") + " users";
+            var result = await DisplayHelper.ShowMessageBoxAsync(Localizer[status], status + "!");
             if (result != true)
                 return;
 
@@ -106,8 +106,8 @@ namespace ReviewEverything.Client.Pages.Admin
 
         private async Task ChangeUserRoleAsync(bool statusRole)
         {
-            var status = statusRole ? "выдать" : "забрать";
-            var result = await DisplayHelper.ShowMessageBoxAsync($"Вы действительно хотите {status} права администратора выбранным пользователям?", "Да!");
+            var status = statusRole ? "Give " : "Take";
+            var result = await DisplayHelper.ShowMessageBoxAsync(Localizer[status], Localizer["Yes"]);
             if (result != true)
                 return;
 

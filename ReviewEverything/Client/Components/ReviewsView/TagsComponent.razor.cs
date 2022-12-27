@@ -1,10 +1,8 @@
-using ReviewEverything.Shared.Contracts.Responses;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
-using static MudBlazor.CategoryTypes;
-using System.Threading;
+using ReviewEverything.Shared.Contracts.Responses;
 
-namespace ReviewEverything.Client.Components.Views
+namespace ReviewEverything.Client.Components.ReviewsView
 {
     public partial class TagsComponent
     {

@@ -1,0 +1,21 @@
+﻿@inject IStringLocalizer<ReviewsView> Localizer
+
+<div class="my-2 options">
+    <div class="filter-options">
+        <MudSelect T="SortReviewByProperty" Value="_sortByProperty" ValueChanged="ChangeSortByProperty" Style="width: min-content;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="SortReviewByProperty.Latest">@Localizer["Latest"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Oldest">@Localizer["Oldest"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Score">@Localizer["Score"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Title">@Localizer["Title"]</MudSelectItem>
+        </MudSelect>
+        <span class="mx-1"></span>
+        <MudSelect T="int" Value="_filterByAuthorScore" ValueChanged="ChangeFilterByAuthorScore" Style="width: min-content;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="0">@Localizer["All Scores"]</MudSelectItem>
+            @for (int i = 10; i > 0; i--)
+            {
+                int x = i;
+                <MudSelectItem Value="@x">@x</MudSelectItem>
+            }
+        </MudSelect>
+    </div>
+</div>

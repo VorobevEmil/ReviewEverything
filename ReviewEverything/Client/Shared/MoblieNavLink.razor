@@ -1,12 +1,14 @@
 ﻿@using System.Security.Claims
 @using ReviewEverything.Shared.Contracts.Responses
+@inject IStringLocalizer<SharedResource> Localizer
+
 <AuthorizeView Policy="Admin">
     <Authorized>
         <MudDivider />
-        <MudListItem Text="Панель управления">
+        <MudListItem Text="@Localizer["Control Panel"]">
             <NestedList>
-                <MudListItem Href="./admin/user-manager" OnClick="MainLayout.ChangeDrawerOpen">Пользователи</MudListItem>
-                <MudListItem Href="./admin/category" OnClick="MainLayout.ChangeDrawerOpen">Категории</MudListItem>
+                <MudListItem Href="./admin/user-manager" OnClick="MainLayout.ChangeDrawerOpen">@Localizer["Users"]</MudListItem>
+                <MudListItem Href="./admin/category" OnClick="MainLayout.ChangeDrawerOpen">@Localizer["Categories"]</MudListItem>
             </NestedList>
         </MudListItem>
     </Authorized>
@@ -14,10 +16,10 @@
 <MudDivider />
 <AuthorizeView>
     <Authorized>
-        <MudListItem Text="Аккаунт">
+        <MudListItem Text="@Localizer["Account"]">
             <NestedList>
-                <MudListItem Text="Моя страница" OnClick="MainLayout.ChangeDrawerOpen" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
-                <MudListItem Text="Настройки" OnClick="MainLayout.ChangeDrawerOpen" />
+                <MudListItem Text="@Localizer["My page"]" OnClick="MainLayout.ChangeDrawerOpen" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
+                <MudListItem Text="@Localizer["Settings"]" OnClick="MainLayout.ChangeDrawerOpen" />
             </NestedList>
         </MudListItem>
     </Authorized>

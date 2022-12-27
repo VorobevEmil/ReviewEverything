@@ -1,7 +1,6 @@
-﻿@using ReviewEverything.Shared.Contracts.Responses
-@using ReviewEverything.Client.Helpers
+﻿@using ReviewEverything.Client.Helpers
 @using ReviewEverything.Client.Components.Views
-@using ReviewEverything.Shared.Models.Enums;
+@inject IStringLocalizer<ReviewsView> Localizer
 
 @{
     #pragma warning disable CS8625
@@ -13,7 +12,7 @@
     <MudPaper Class="my-2 px-4 py-2 review-view">
         @if (Editor)
         {
-            <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">Создать обзор</MudButton>
+            <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">@Localizer["Create review"]</MudButton>
         }
         <CategoriesComponent GetReviewsFromApi="InitializationReviewsAsync" @ref="_categories" />
         <FilterOptionView GetReviewsFromApi="InitializationReviewsAsync" @ref="_filterOption" />
@@ -134,7 +133,7 @@
         else if (Reviews != null && Reviews.Count == default)
         {
             <MudPaper Class="my-2 px-4 py-5 text-center">
-                <MudText>Обзоров ещё не было создано</MudText>
+                <MudText>@Localizer["Not created review"]</MudText>
             </MudPaper>
         }
         else

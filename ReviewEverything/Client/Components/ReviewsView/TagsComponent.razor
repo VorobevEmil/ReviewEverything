@@ -1,6 +1,9 @@
-﻿<MudPaper Class="my-2 py-2 px-4">
-    <MudText Style="font-weight: bold; font-size: 28px;">Теги</MudText>
-    <MudTextField Class="my-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Поиск" T="string" Value="_tagSearch" ValueChanged="SearchTagsAsync" />
+﻿@inject IStringLocalizer<ReviewsView> Localizer
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+
+<MudPaper Class="my-2 py-2 px-4">
+    <MudText Style="font-weight: bold; font-size: 28px;">@Localizer["Tags"]</MudText>
+    <MudTextField Class="my-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@SharedLocalizer["Search"]" T="string" Value="_tagSearch" ValueChanged="SearchTagsAsync" />
     <div class="my-2">
         @foreach (var tag in SelectedTags)
         {
@@ -19,7 +22,7 @@
             @if (!_hiddenButtonLoadMore)
             {
                 <div class="text-center my-2">
-                    <MudButton Size="Size.Small" Variant="Variant.Filled" OnClick="LoadMoreTagsAsync" Disabled="_sendRequest">Load More Tags</MudButton>
+                    <MudButton Size="Size.Small" Variant="Variant.Filled" OnClick="LoadMoreTagsAsync" Disabled="_sendRequest">@Localizer["Load Tags"]</MudButton>
                 </div>
             }
         }

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
-using System.Net.Http.Json;
 
-namespace ReviewEverything.Client.Components
+namespace ReviewEverything.Client.Components.ReviewEditor
 {
     public partial class SelectOrCreateComposition
     {

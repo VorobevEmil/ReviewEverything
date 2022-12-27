@@ -1,0 +1,28 @@
+﻿@using System.Globalization
+<MudChip Size="Size.Small" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="ChangeCulture">@Culture.Name</MudChip>
+
+@code {
+
+    [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
+    private CultureInfo Culture
+    {
+        get => CultureInfo.CurrentCulture;
+        set
+        {
+            if (!Equals(CultureInfo.CurrentCulture, value))
+            {
+                var js = (IJSInProcessRuntime)JSRuntime;
+                js.InvokeVoid("blazorCulture.set", value.Name);
+                NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+            }
+        }
+    }
+
+    private void ChangeCulture()
+    {
+        var ruCulture = new CultureInfo("ru-RU");
+        var enCulture = new CultureInfo("en-US");
+
+        Culture = Equals(Culture, ruCulture) ? enCulture : ruCulture;
+    }
+}

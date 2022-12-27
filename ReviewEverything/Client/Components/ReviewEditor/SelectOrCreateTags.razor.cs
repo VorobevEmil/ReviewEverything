@@ -5,7 +5,7 @@ using MudBlazor;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
 
-namespace ReviewEverything.Client.Components
+namespace ReviewEverything.Client.Components.ReviewEditor
 {
     public partial class SelectOrCreateTags
     {

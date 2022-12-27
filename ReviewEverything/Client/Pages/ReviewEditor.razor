@@ -1,5 +1,6 @@
 ﻿@page "/review-editor/{id:int?}"
 @attribute [Authorize]
+@using ReviewEverything.Client.Components.ReviewEditor
 <PageTitle>@(Id == null ? "Создать" : "Редактировать") обзор</PageTitle>
 
 @{

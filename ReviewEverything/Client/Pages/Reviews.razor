@@ -1,6 +1,9 @@
 ﻿@page "/"
-<PageTitle>Список обзоров</PageTitle>
+@using ReviewEverything.Client.Components.ReviewsView
+@inject IStringLocalizer<ReviewsView> Localizer
+
+<PageTitle>@Localizer["All Reviews"]</PageTitle>
 
 <div class="container">
-    <ViewReviews />
+    <ReviewsView />
 </div>

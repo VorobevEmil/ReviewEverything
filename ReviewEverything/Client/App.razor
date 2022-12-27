@@ -1,11 +1,12 @@
-﻿<CascadingAuthenticationState>
+﻿@inject IStringLocalizer<App> Localizer
+<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     <AuthorizeView Context="authContext">
                         <Authorized>
-                            <MudText Style="text-align: center; font-size: xx-large;" Color="Color.Warning">Недостаточно прав для просмотра содержимого</MudText>
+                            <MudText Style="text-align: center; font-size: xx-large;" Color="Color.Warning">@Localizer["NoRight"]</MudText>
                         </Authorized>
                         <NotAuthorized>
                             @{
@@ -22,8 +23,8 @@
                     <LayoutView Layout="@typeof(MainLayout)">
                         <PageTitle>404 Not Found</PageTitle>
                         <div style="display:flex; flex-direction: column; align-items: center;">
-                            <span style="font-size: 36px; color:#424242ff;">Not Found</span>
-                            <span style="font-size: 30px; color:#424242ff;">Извините, по этому адресу ничего не найдено.</span>
+                            <span style="font-size: 36px;">Not Found</span>
+                            <span style="font-size: 30px;">@Localizer["NotFound"]</span>
                         </div>
                     </LayoutView>
                 </Authorized>

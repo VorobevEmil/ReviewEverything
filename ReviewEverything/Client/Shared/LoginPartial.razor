@@ -1,18 +1,19 @@
-﻿<AuthorizeView>
+﻿@inject IStringLocalizer<LoginPartial> Localizer
+<AuthorizeView>
     <Authorized>
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-            <MudListItem Text="Logout" OnClick="LogoutAsync" />
+            <MudListItem Text="@Localizer["Logout"]" OnClick="LogoutAsync" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="LogoutAsync">Logout</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="LogoutAsync">@Localizer["Logout"]</MudButton>
         </MudHidden>
     </Authorized>
     <NotAuthorized>
         <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-            <MudListItem OnClick="Parent.ChangeDrawerOpen" Text="Sign In" Href="./account/sign-in" />
+            <MudListItem OnClick="Parent.ChangeDrawerOpen" Text="@Localizer["Sign In"]" Href="./account/sign-in" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="@(new EventCallback(null, () => NavigationManager.NavigateTo("./account/sign-in")))">Sign in</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="@(new EventCallback(null, () => NavigationManager.NavigateTo("./account/sign-in")))">@Localizer["Sign In"]</MudButton>
         </MudHidden>
     </NotAuthorized>
 </AuthorizeView>

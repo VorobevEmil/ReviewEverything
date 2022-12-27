@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
-using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -10,7 +9,7 @@ using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Components.Views
 {
-    public partial class CommentsComponent
+    public partial class ArticleComments
     {
         [Parameter] public int Id { get; set; }
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;

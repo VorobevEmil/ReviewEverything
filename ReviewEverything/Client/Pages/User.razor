@@ -1,5 +1,8 @@
 ﻿@page "/user/{id}"
-<PageTitle>Страница пользователя</PageTitle>
+@using ReviewEverything.Client.Components.ReviewsView
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+
+<PageTitle>@(UserResponse is null ? SharedLocalizer["Loading"] : UserResponse.FullName)</PageTitle>
 
 <div class="container mt-5">
     <MudPaper Class="px-4 py-5">
@@ -35,6 +38,6 @@
 
     @if (UserResponse != null)
     {
-        <ViewReviews UserId="@Id" Editor="_editor" />
+        <ReviewsView UserId="@Id" Editor="_editor" />
     }
 </div>
