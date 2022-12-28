@@ -6,9 +6,9 @@
 
 <PageTitle>@(ArticleReview is null ? SharedLocalizer["Loading"] : ArticleReview.Title)</PageTitle>
 
-<div class="container mt-5 mb-3">
-    <MudPaper Class="px-5 py-3">
-        @if (ArticleReview != null)
+    <div class="container mt-5 mb-3">
+        <MudPaper Class="px-5 py-3">
+            @if (ArticleReview != null)
         {
             <div class="mb-1 d-flex" style="align-items: center;">
                 <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height: 40px; width: 40px;" />
@@ -105,8 +105,13 @@
             <MudSkeleton Style="margin: -10px 0;" Height="70px" Width="250px" />
             <MudSkeleton Style="margin: -10px 0;" Height="60px" />
             <MudSkeleton Style="margin: -70px 0;" Height="400px" />
-            <MudSkeleton Height="80px" />
+            <MudSkeleton Style="margin: -130px 0;" Height="800px" />
         }
-        <ArticleComments Id="Id" />
     </MudPaper>
+    <div class="mt-2 container-similar-review">
+        <SimilarArticleView ReviewId="Id" />
+    </div>
+    <div class="mt-2 container-comment">
+        <ArticleComments Id="Id" />
+    </div>
 </div>

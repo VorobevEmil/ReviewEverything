@@ -79,11 +79,28 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                 .ForMember(dest => dest.UpdateDate, opt =>
                     opt.MapFrom(src => src.UpdateDate));
 
+            CreateMap<Review, SimilarArticleReviewResponse>()
+                .ForMember(dest => dest.Id, opt =>
+                    opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Title, opt =>
+                    opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Subtitle, opt =>
+                    opt.MapFrom(src => src.Subtitle))
+                .ForMember(dest => dest.CloudImage, opt =>
+                    opt.MapFrom(src => src.CloudImages[0]))
+                .ForMember(dest => dest.Composition, opt =>
+                    opt.MapFrom(src => src.Composition.Title))
+                .ForMember(dest => dest.Author, opt =>
+                    opt.MapFrom(src => src.Author.FullName))
+                .ForMember(dest => dest.Comments, opt =>
+                    opt.MapFrom(src => src.Comments.Count));
+
             CreateMap<Review, ReviewSearchResponse>()
                 .ForMember(dest => dest.Id, opt =>
                     opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Title, opt =>
                     opt.MapFrom(src => src.Title));
+
         }
     }
 }

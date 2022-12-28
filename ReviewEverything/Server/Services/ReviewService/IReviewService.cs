@@ -11,5 +11,6 @@ namespace ReviewEverything.Server.Services.ReviewService
         Task<bool> CreateReviewAsync(Review review);
         Task<bool> UpdateReviewAsync(Review review);
         Task<bool> DeleteReviewAsync(int id);
+        Task<List<Review>?> GetSimilarArticleAsync(int reviewId);
     }
 }

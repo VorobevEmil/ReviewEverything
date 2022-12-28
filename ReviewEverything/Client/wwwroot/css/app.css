@@ -105,6 +105,7 @@ a, .btn-link {
         display: flex;
         justify-content: end;
     }
+
     .filter-options {
         display: flex;
         width: fit-content;
@@ -123,6 +124,7 @@ a, .btn-link {
         float: right;
         width: 300px;
     }
+
     .review-view {
         float: left;
         width: calc(100% - 310px);
@@ -136,6 +138,16 @@ a, .btn-link {
     .filter-options {
         display: flex;
         width: fit-content;
+    }
+}
+
+@media (min-width: 960px) {
+    .container-similar-review {
+        width: 200px;
+        float: right;
+    }
+    .container-comment {
+        width: calc(100% - 210px);
     }
 }
 

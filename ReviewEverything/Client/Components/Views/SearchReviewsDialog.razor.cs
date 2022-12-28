@@ -23,7 +23,7 @@ namespace ReviewEverything.Client.Components.Views
 
         private async Task OnSearchResult(ReviewSearchResponse entry)
         {
-            NavigationManager.NavigateTo($"/");
+            NavigationManager.NavigateTo($"/redirect-page");
             NavigationManager.NavigateTo($"/Article/{entry.Id}");
             await _searchAutocomplete.Clear();
         }

@@ -38,7 +38,7 @@ namespace ReviewEverything.Server.Controllers
                     tags = new List<int>() { int.Parse(idTags) };
                 }
 
-                var reviews = await _service.GetReviewsAsync(page, pageSize, sortByProperty, filterByAuthorScore,  categoryId, userId, tags, token);
+                var reviews = await _service.GetReviewsAsync(page, pageSize, sortByProperty, filterByAuthorScore, categoryId, userId, tags, token);
                 return Ok(_mapper.Map<List<ReviewResponse>>(reviews));
             }
             catch
@@ -56,7 +56,7 @@ namespace ReviewEverything.Server.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<ActionResult<ArticleReviewResponse>> GetById([FromRoute] int id)
         {
             var review = await _service.GetReviewByIdAsync(id);
             if (review == null)
@@ -65,6 +65,18 @@ namespace ReviewEverything.Server.Controllers
             }
 
             return Ok(_mapper.Map<ArticleReviewResponse>(review));
+        }
+
+        [HttpGet("GetSimilarArticles/{reviewId}")]
+        public async Task<ActionResult<List<SimilarArticleReviewResponse>>> GetSimilarArticles(int reviewId)
+        {
+            var articles = await _service.GetSimilarArticleAsync(reviewId);
+            if (articles == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<List<SimilarArticleReviewResponse>>(articles));
         }
 
         [Authorize("ChangingArticle")]

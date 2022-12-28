@@ -126,6 +126,9 @@
   <data name="Creation Date" xml:space="preserve">
     <value>Дата создания:</value>
   </data>
+  <data name="Similar" xml:space="preserve">
+    <value>Похожее</value>
+  </data>
   <data name="Update Date" xml:space="preserve">
     <value>Дата изменения:</value>
   </data>

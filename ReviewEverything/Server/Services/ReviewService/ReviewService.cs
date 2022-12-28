@@ -14,30 +14,33 @@ namespace ReviewEverything.Server.Services.ReviewService
             _context = context;
         }
 
-        private IQueryable<Review> GetReviewIncludeAll()
+        public async Task<Review?> GetReviewByIdAsync(int id)
         {
-            return _context.Reviews
-                .Include(x => x.Author)
+            return await _context.Reviews
                 .Include(x => x.CloudImages)
-                .Include(x => x.Tags)
-                .Include(x => x.Comments)
-                .Include(x => x.LikeUsers)
+                .Include(x => x.Author)
                 .Include(x => x.Composition)
                 .ThenInclude(x => x.Category)
                 .Include(x => x.Composition)
                 .ThenInclude(x => x.UserScores)
-                .AsQueryable();
-        }
-
-        public async Task<Review?> GetReviewByIdAsync(int id)
-        {
-            return await GetReviewIncludeAll()
+                .Include(x => x.Tags)
+                .Include(x => x.LikeUsers)  
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
         public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
-            var reviews = GetReviewIncludeAll();
+            var reviews = _context.Reviews
+                .Include(x => x.CloudImages)
+                .Include(x => x.Author)
+                .Include(x => x.Composition)
+                .ThenInclude(x => x.UserScores)
+                .Include(x => x.Composition)
+                .ThenInclude(x => x.Category)
+                .Include(x => x.Comments)
+                .Include(x => x.LikeUsers)
+                .AsQueryable();
+
             reviews = GetReviewsByAuthorId(reviews, userId);
             reviews = GetReviewsByCategoryId(reviews, categoryId);
             reviews = FilterReviewsByAuthorScore(reviews, filterByAuthorScore);
@@ -143,7 +146,7 @@ namespace ReviewEverything.Server.Services.ReviewService
 
         public async Task<bool> DeleteReviewAsync(int id)
         {
-            var review = await GetReviewByIdAsync(id);
+            var review = await _context.Reviews.FirstOrDefaultAsync(x => x.Id == id);
             if (review == null)
                 return false;
 
@@ -153,22 +156,31 @@ namespace ReviewEverything.Server.Services.ReviewService
             return deleted > 0;
         }
 
+        public async Task<List<Review>?> GetSimilarArticleAsync(int reviewId)
+        {
+            var review = await _context.Reviews
+                .Include(x => x.Author)
+                .Include(x => x.Composition)
+                .ThenInclude(x => x.Reviews)
+                .ThenInclude(x => x.CloudImages)
+                .Include(x => x.Composition)
+                .ThenInclude(x => x.Reviews)
+                .ThenInclude(x => x.Comments)
+                .FirstOrDefaultAsync(x => x.Id == reviewId);
+            if (review == null)
+                return null!;
+            review.Composition.Reviews.Remove(review);
+
+            return review.Composition.Reviews;
+        }
+
         public async Task<List<Review>> SearchReviewsAsync(string search)
         {
             var reviews = await _context.Reviews
-                            .Where(p => EF.Functions.Like(p.Title.ToLower(), $"%{search.ToLower()}%"))
+                .Include(x => x.Comments)
+                            .Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{search.ToLower()}%")
+                                        || x.Comments.Any(x => EF.Functions.Like(x.Body.ToLower(), $"%{search.ToLower()}%")))
                             .ToListAsync();
-
-            var comments = await _context.Comments
-                            .Include(x => x.Review)
-                            .Where(x => EF.Functions.Like(x.Body.ToLower(), $"%{search.ToLower()}%"))
-                            .Where(x => !reviews.Select(x => x.Id).Contains(x.ReviewId))
-                            .GroupBy(x => x.ReviewId)
-                            .Select(x => x.First())
-                            .ToListAsync();
-
-            reviews.AddRange(comments.Select(x => x.Review).ToList());
-
             return reviews;
         }
     }
