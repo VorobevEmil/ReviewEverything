@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
-using ReviewEverything.Server.Models;
 
 namespace ReviewEverything.Server.Services.UserLikeService
 {

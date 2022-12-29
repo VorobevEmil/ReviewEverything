@@ -3,8 +3,6 @@ using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
-using PSC.Blazor.Components.MarkdownEditor.EventsArgs;
-using ReviewEverything.Client.Components;
 using ReviewEverything.Client.Components.ReviewEditor;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;

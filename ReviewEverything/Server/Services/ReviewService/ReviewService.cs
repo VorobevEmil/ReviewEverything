@@ -14,9 +14,9 @@ namespace ReviewEverything.Server.Services.ReviewService
             _context = context;
         }
 
-        public async Task<Review?> GetReviewByIdAsync(int id)
+        public IQueryable<Review> GetIncludesReview()
         {
-            return await _context.Reviews
+            return _context.Reviews
                 .Include(x => x.CloudImages)
                 .Include(x => x.Author)
                 .Include(x => x.Composition)
@@ -24,43 +24,27 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .Include(x => x.Composition)
                 .ThenInclude(x => x.UserScores)
                 .Include(x => x.Tags)
-                .Include(x => x.LikeUsers)  
+                .Include(x => x.LikeUsers)
+                .AsQueryable();
+        }
+
+        public async Task<Review?> GetReviewByIdAsync(int id)
+        {
+            return await GetIncludesReview()
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
         public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
-            var reviews = _context.Reviews
-                .Include(x => x.CloudImages)
-                .Include(x => x.Author)
-                .Include(x => x.Composition)
-                .ThenInclude(x => x.UserScores)
-                .Include(x => x.Composition)
-                .ThenInclude(x => x.Category)
+            var reviews = GetIncludesReview()
                 .Include(x => x.Comments)
-                .Include(x => x.LikeUsers)
                 .AsQueryable();
 
             reviews = GetReviewsByAuthorId(reviews, userId);
             reviews = GetReviewsByCategoryId(reviews, categoryId);
+            reviews = GetReviewsByTags(reviews, tags);
             reviews = FilterReviewsByAuthorScore(reviews, filterByAuthorScore);
             reviews = SortReviewsByProperty(reviews, sortByProperty);
-
-            if (tags != null)
-            {
-                var tagList = await reviews
-                    .SelectMany(x => x.Tags)
-                    .Where(x => tags.Contains(x.Id))
-                    .ToListAsync(token);
-                if (tagList.Count == 0)
-                    return new List<Review>();
-
-                return (await reviews.ToListAsync(token))
-                    .Where(x => tagList.All(tag => x.Tags.Select(x => x.Id).Contains(tag.Id)))
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-            }
 
             return await reviews
                 .Skip((page - 1) * pageSize)
@@ -84,6 +68,17 @@ namespace ReviewEverything.Server.Services.ReviewService
 
             return reviews
                 .Where(x => x.Composition.CategoryId == categoryId);
+        }
+
+        private IQueryable<Review> GetReviewsByTags(IQueryable<Review> reviews, List<int>? tags)
+        {
+            if (tags == null)
+                return reviews;
+
+            return reviews
+                    .Where(x => _context.Tags
+                        .Where(tag => tags.Contains(tag.Id))
+                        .All(tag => x.Tags.Contains(tag)));
         }
 
         private IQueryable<Review> FilterReviewsByAuthorScore(IQueryable<Review> reviews, int? authorScore)
@@ -179,7 +174,7 @@ namespace ReviewEverything.Server.Services.ReviewService
             var reviews = await _context.Reviews
                 .Include(x => x.Comments)
                             .Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{search.ToLower()}%")
-                                        || x.Comments.Any(x => EF.Functions.Like(x.Body.ToLower(), $"%{search.ToLower()}%")))
+                                        || x.Comments.Any(comment => EF.Functions.Like(comment.Body.ToLower(), $"%{search.ToLower()}%")))
                             .ToListAsync();
             return reviews;
         }

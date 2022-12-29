@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Models;
-using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;

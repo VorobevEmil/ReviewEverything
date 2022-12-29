@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ReviewEverything.Server.Models
+﻿namespace ReviewEverything.Server.Models
 {
     public class Review
     {

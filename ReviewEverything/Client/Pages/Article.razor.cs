@@ -5,8 +5,6 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using ReviewEverything.Shared.Contracts.Requests;
-using Microsoft.AspNetCore.SignalR.Client;
-using MudBlazor;
 
 namespace ReviewEverything.Client.Pages
 {
