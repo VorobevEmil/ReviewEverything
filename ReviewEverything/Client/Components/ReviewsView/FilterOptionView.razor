@@ -3,14 +3,14 @@
 <div class="my-2 options">
     <div class="filter-options">
         <MudSelect T="SortReviewByProperty" Value="_sortByProperty" ValueChanged="ChangeSortByProperty" Style="width: min-content;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-            <MudSelectItem Value="SortReviewByProperty.Latest">@Localizer["Latest"]</MudSelectItem>
-            <MudSelectItem Value="SortReviewByProperty.Oldest">@Localizer["Oldest"]</MudSelectItem>
-            <MudSelectItem Value="SortReviewByProperty.Score">@Localizer["Score"]</MudSelectItem>
-            <MudSelectItem Value="SortReviewByProperty.Title">@Localizer["Title"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Latest">@Localizer["Сортировать по последним"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Oldest">@Localizer["Сортировать по старым"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Score">@Localizer["Сортировать по оценке"]</MudSelectItem>
+            <MudSelectItem Value="SortReviewByProperty.Title">@Localizer["Сортировать по названию"]</MudSelectItem>
         </MudSelect>
         <span class="mx-1"></span>
         <MudSelect T="int" Value="_filterByAuthorScore" ValueChanged="ChangeFilterByAuthorScore" Style="width: min-content;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-            <MudSelectItem Value="0">@Localizer["All Scores"]</MudSelectItem>
+            <MudSelectItem Value="0">@Localizer["Все оценки"]</MudSelectItem>
             @for (int i = 10; i > 0; i--)
             {
                 int x = i;

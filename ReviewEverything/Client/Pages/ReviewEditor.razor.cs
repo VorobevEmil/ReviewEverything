@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Components.ReviewEditor;
 using ReviewEverything.Shared.Contracts.Requests;
@@ -12,6 +13,7 @@ namespace ReviewEverything.Client.Pages
     public partial class ReviewEditor
     {
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
+        [Inject] private IStringLocalizer<ReviewEditor> Localizer { get; set; } = default!;
         [Parameter] public int? Id { get; set; }
 
         private ReviewRequest _review = null!;
@@ -33,11 +35,11 @@ namespace ReviewEverything.Client.Pages
                 }
                 else if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    Snackbar.Add("Обзор был не найден", Severity.Error);
+                    Snackbar.Add("РћР±Р·РѕСЂ Р±С‹Р» РЅРµ РЅР°Р№РґРµРЅ", Severity.Error);
                 }
                 else
                 {
-                    Snackbar.Add("Не удалось загрузить обзор", Severity.Error);
+                    Snackbar.Add("РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РѕР±Р·РѕСЂ", Severity.Error);
                 }
             }
             else
@@ -59,12 +61,12 @@ namespace ReviewEverything.Client.Pages
 
             if (httpMessageResponse.StatusCode is HttpStatusCode.OK or HttpStatusCode.Created)
             {
-                Snackbar.Add($"Обзор успешно {(Id != null ? "обновлен" : "создан")}", Severity.Success);
+                Snackbar.Add($"РћР±Р·РѕСЂ СѓСЃРїРµС€РЅРѕ {(Id != null ? "РѕР±РЅРѕРІР»РµРЅ" : "СЃРѕР·РґР°РЅ")}", Severity.Success);
                 NavigationManager.NavigateTo("./");
             }
             else
             {
-                Snackbar.Add($"Не удалось {(Id != null ? "обновить" : "создать")} обзор", Severity.Error);
+                Snackbar.Add($"РќРµ СѓРґР°Р»РѕСЃСЊ {(Id != null ? "РѕР±РЅРѕРІРёС‚СЊ" : "СЃРѕР·РґР°С‚СЊ")} РѕР±Р·РѕСЂ", Severity.Error);
             }
         }
 

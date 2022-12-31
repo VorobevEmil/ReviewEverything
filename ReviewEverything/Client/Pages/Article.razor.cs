@@ -5,6 +5,8 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using ReviewEverything.Shared.Contracts.Requests;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Client.Resources;
 
 namespace ReviewEverything.Client.Pages
 {
@@ -12,6 +14,9 @@ namespace ReviewEverything.Client.Pages
     {
         [Parameter] public int Id { get; set; }
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+        [Inject] private IStringLocalizer<Article> Localizer { get; set; } = default!;
+        private IStringLocalizer<ResourcesShared> SharedLocalizer { get; set; } = ResourcesShared.CreateStringLocalizer();
+
         private ClaimsPrincipal User { get; set; } = default!;
         private string? _userId = default!;
         private ArticleReviewResponse ArticleReview { get; set; } = default!;

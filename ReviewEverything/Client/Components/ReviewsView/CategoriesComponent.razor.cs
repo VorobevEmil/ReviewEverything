@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Components.ReviewsView
@@ -7,6 +8,7 @@ namespace ReviewEverything.Client.Components.ReviewsView
     public partial class CategoriesComponent
     {
         [Parameter] public EventCallback GetReviewsFromApi { get; set; }
+        [Inject] private IStringLocalizer<ReviewsView> Localizer { get; set; } = default!;
         private List<CategoryResponse> Categories { get; set; } = default!;
         private int? _categoryId;
         private string _titleCategory = "Все Обзоры";

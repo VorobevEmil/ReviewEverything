@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Shared\ReviewEverything.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\Components\Views\" />
-  </ItemGroup>
-
 </Project>

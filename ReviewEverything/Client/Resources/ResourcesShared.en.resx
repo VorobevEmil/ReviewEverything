@@ -117,19 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Author Score" xml:space="preserve">
-    <value>Оценка автора</value>
+  <data name="Все Обзоры" xml:space="preserve">
+    <value>All Reviews</value>
   </data>
-  <data name="Authorization Required" xml:space="preserve">
-    <value>Для того, чтобы оценить произведение необходима авторизация</value>
-  </data>
-  <data name="Creation Date" xml:space="preserve">
-    <value>Дата создания:</value>
-  </data>
-  <data name="Similar" xml:space="preserve">
-    <value>Похожее</value>
-  </data>
-  <data name="Update Date" xml:space="preserve">
-    <value>Дата изменения:</value>
+  <data name="Загрузка..." xml:space="preserve">
+    <value>Loading...</value>
   </data>
 </root>

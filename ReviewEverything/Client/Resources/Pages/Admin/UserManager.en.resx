@@ -117,76 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Block" xml:space="preserve">
-    <value>Block</value>
-  </data>
-  <data name="Block users" xml:space="preserve">
-    <value>Do you really want to block dedicated users?</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Delete message" xml:space="preserve">
-    <value>Deletion cannot be undone!</value>
-  </data>
-  <data name="Full Name" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
-  <data name="Give" xml:space="preserve">
-    <value>Do you really want to give the administrator role to selected users?</value>
-  </data>
-  <data name="Id User" xml:space="preserve">
+  <data name="Id Пользователя" xml:space="preserve">
     <value>Id User</value>
   </data>
-  <data name="Management" xml:space="preserve">
-    <value>Management</value>
+  <data name="Блокировать" xml:space="preserve">
+    <value>Block</value>
   </data>
-  <data name="Remove Admin role" xml:space="preserve">
-    <value>Remove Admin role</value>
+  <data name="Вы действительно хотите дать роль администратора выбранным пользователям?" xml:space="preserve">
+    <value>Do you really want to give the administrator role to selected users?</value>
   </data>
-  <data name="Role Admin" xml:space="preserve">
-    <value>Role Admin</value>
-  </data>
-  <data name="Rows" xml:space="preserve">
-    <value>Rows per page</value>
-  </data>
-  <data name="Search by property" xml:space="preserve">
-    <value>Search by property</value>
-  </data>
-  <data name="Set Admin role" xml:space="preserve">
-    <value>Set Admin role</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Take" xml:space="preserve">
+  <data name="Вы действительно хотите забрать роль администратора выбранным пользователям?" xml:space="preserve">
     <value>Do you really want to take the administrator role to the selected users?</value>
   </data>
-  <data name="Unblock" xml:space="preserve">
-    <value>Unblock</value>
+  <data name="Вы действительно хотите удалить выделенных пользователей, удаление не может быть отменено!" xml:space="preserve">
+    <value>You really want to delete the highlighted users, the deletion cannot be undone!</value>
   </data>
-  <data name="Unblock users" xml:space="preserve">
-    <value>Do you really want to unblock dedicated users?</value>
-  </data>
-  <data name="User Name" xml:space="preserve">
-    <value>User Name</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
+  <data name="Да" xml:space="preserve">
     <value>Yes</value>
   </data>
   <data name="Заблокирован" xml:space="preserve">
     <value>Block</value>
   </data>
+  <data name="Заблокировать выделенных пользователей" xml:space="preserve">
+    <value>Block dedicated users</value>
+  </data>
+  <data name="Имя Пользователя" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="Панель управление" xml:space="preserve">
+    <value>Panel Control</value>
+  </data>
+  <data name="Поиск" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Поиск по свойству" xml:space="preserve">
+    <value>Search by property</value>
+  </data>
+  <data name="Полное Имя" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Пользователи" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="Разблокирован" xml:space="preserve">
     <value>Unblock</value>
+  </data>
+  <data name="Разблокировать" xml:space="preserve">
+    <value>Unblock</value>
+  </data>
+  <data name="Разблокировать выделенных пользователей" xml:space="preserve">
+    <value>Unblock dedicated users</value>
+  </data>
+  <data name="Роль Администратора" xml:space="preserve">
+    <value>Role Admin</value>
+  </data>
+  <data name="Снять роль администратора" xml:space="preserve">
+    <value>Remove Admin Role</value>
+  </data>
+  <data name="Статус" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Строк на странице" xml:space="preserve">
+    <value>Rows per page</value>
+  </data>
+  <data name="Удалить" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Управление" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="Установить роль администратора" xml:space="preserve">
+    <value>Set Admin Role</value>
   </data>
 </root>

@@ -6,7 +6,7 @@
                 <NotAuthorized>
                     <AuthorizeView Context="authContext">
                         <Authorized>
-                            <MudText Style="text-align: center; font-size: xx-large;" Color="Color.Warning">@Localizer["NoRight"]</MudText>
+                            <MudText Style="text-align: center; font-size: xx-large;" Color="Color.Warning">@Localizer["Недостаточно прав для просмотра содержимого."]</MudText>
                         </Authorized>
                         <NotAuthorized>
                             @{
@@ -18,22 +18,13 @@
             </AuthorizeRouteView>
         </Found>
         <NotFound>
-            <AuthorizeView Context="authContext">
-                <Authorized>
-                    <LayoutView Layout="@typeof(MainLayout)">
-                        <PageTitle>404 Not Found</PageTitle>
-                        <div style="display:flex; flex-direction: column; align-items: center;">
-                            <span style="font-size: 36px;">Not Found</span>
-                            <span style="font-size: 30px;">@Localizer["NotFound"]</span>
-                        </div>
-                    </LayoutView>
-                </Authorized>
-                <NotAuthorized>
-                    @{
-                        NavigationManager.NavigateTo("/account/sign-in");
-                    }
-                </NotAuthorized>
-            </AuthorizeView>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <PageTitle>404 Not Found</PageTitle>
+                <div style="display:flex; flex-direction: column; align-items: center;">
+                    <span style="font-size: 36px;">@Localizer["Не найдено"]</span>
+                    <span style="font-size: 30px;">@Localizer["Извините, по этому адресу ничего не найдено."]</span>
+                </div>
+            </LayoutView>
         </NotFound>
     </Router>
 </CascadingAuthenticationState>

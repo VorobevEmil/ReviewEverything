@@ -1,21 +1,22 @@
 ﻿@using ReviewEverything.Client.Helpers
-@inject IStringLocalizer<ArticleComments> Localizer
+@using ReviewEverything.Client.Pages
+@inject IStringLocalizer<Article> Localizer
 
 <MudPaper Class="px-4 py-5">
-    <MudText Style="font-size:36px;">@Localizer["Comments"]</MudText>
+    <MudText Style="font-size:36px;">@Localizer["Комментарии"]</MudText>
 
-    <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Placeholder Input"]" Lines="3" @bind-Value="_bodyComment" />
+    <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Что ты думаешь об этом?"]" Lines="3" @bind-Value="_bodyComment" />
     <AuthorizeView>
         <Authorized>
             <div class="text-end mt-3">
-                <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">@Localizer["Send"]</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SendCommentAsync">@Localizer["Отправить"]</MudButton>
             </div>
         </Authorized>
         <NotAuthorized>
             <div style="display: flex; align-items: center; justify-content: flex-end;">
-                <MudText>@Localizer["Authorize Message"]</MudText>
+                <MudText>@Localizer["*Войдите чтобы оставить комментарий"]</MudText>
                 <span class="mx-1"></span>
-                <MudButton Disabled="true" Variant="Variant.Filled">@Localizer["Send"]</MudButton>
+                <MudButton Disabled="true" Variant="Variant.Filled">@Localizer["Отправить"]</MudButton>
             </div>
         </NotAuthorized>
     </AuthorizeView>
@@ -38,14 +39,14 @@
             @if (!_hiddenButtonLoadMore)
             {
                 <div class="my-3 text-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LoadMoreCommentAsync">@Localizer["Load Comments"]</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="LoadMoreCommentAsync">@Localizer["Загрузить больше комментариев"]</MudButton>
                 </div>
             }
         }
         else if (Comments != null && Comments.Count == default)
         {
             <MudPaper Class="mb-2 px-4 py-5 text-center">
-                <MudText>@Localizer["No Comments"]</MudText>
+                <MudText>@Localizer["Тут пока не комментариев, будьте первым!"]</MudText>
             </MudPaper>
         }
         else

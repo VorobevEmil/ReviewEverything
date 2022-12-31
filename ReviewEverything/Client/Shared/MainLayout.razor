@@ -1,7 +1,6 @@
 ﻿@using System.Security.Claims
 @using ReviewEverything.Client.Components.Views
 @inherits LayoutComponentBase
-@inject IStringLocalizer<SharedResource> Localizer
 
 @{
 #pragma warning disable
@@ -34,11 +33,11 @@
                         <Authorized>
                             <MudMenu ActivationEvent="@MouseEvent.MouseOver" TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter" FullWidth="true">
                                 <ActivatorContent>
-                                    <MudButton StartIcon="@Icons.Material.Filled.Security" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Control Panel"]</MudButton>
+                                    <MudButton StartIcon="@Icons.Material.Filled.Security" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Панель управления"]</MudButton>
                                 </ActivatorContent>
                                 <ChildContent>
-                                    <MudMenuItem Href="./admin/user-manager">@Localizer["Users"]</MudMenuItem>
-                                    <MudMenuItem Href="./admin/category">@Localizer["Categories"]</MudMenuItem>
+                                    <MudMenuItem Href="./admin/user-manager">@Localizer["Пользователи"]</MudMenuItem>
+                                    <MudMenuItem Href="./admin/category">@Localizer["Категории"]</MudMenuItem>
                                 </ChildContent>
                             </MudMenu>
                             <span class="mx-1"></span>
@@ -48,11 +47,11 @@
                         <Authorized>
                             <MudMenu ActivationEvent="@MouseEvent.MouseOver" TransformOrigin="Origin.TopCenter" AnchorOrigin="Origin.BottomCenter">
                                 <ActivatorContent>
-                                    <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Account"]</MudButton>
+                                    <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Аккаунт"]</MudButton>
                                 </ActivatorContent>
                                 <ChildContent>
-                                    <MudMenuItem Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")">@Localizer["My page"]</MudMenuItem>
-                                    <MudMenuItem>@Localizer["Settings"]</MudMenuItem>
+                                    <MudMenuItem Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")">@Localizer["Моя страница"]</MudMenuItem>
+                                    <MudMenuItem>@Localizer["Настройки"]</MudMenuItem>
                                 </ChildContent>
                             </MudMenu>
                             <span class="mx-1"></span>

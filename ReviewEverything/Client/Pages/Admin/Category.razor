@@ -1,26 +1,23 @@
 ﻿@page "/Admin/Category"
 @attribute [Authorize("Admin")]
-@inject IStringLocalizer<Category> Localizer;
-@inject IStringLocalizer<SharedResource> SharedLocalizer
 
-
-<PageTitle>@Localizer["Categories"] - @SharedLocalizer["Control Panel"]</PageTitle>
+<PageTitle>@Localizer["Категории"] - @Localizer["Панель управления"]</PageTitle>
 
 <div class="container mt-5">
     @if (Categories != null)
     {
         <MudTable Items="Categories" Dense="true">
             <ToolBarContent>
-                <MudText Typo="Typo.h6">@Localizer["Categories"]</MudText>
+                <MudText Typo="Typo.h6">@Localizer["Категории"]</MudText>
                 <MudSpacer />
-                <MudButton Variant="Variant.Filled" OnClick="() => CreateOrEditCategoryAsync()">@Localizer["Add"]</MudButton>
+                <MudButton Variant="Variant.Filled" OnClick="() => CreateOrEditCategoryAsync()">@Localizer["Добавить"]</MudButton>
             </ToolBarContent>
             <HeaderContent>
-                <MudTh>@Localizer["Title"]</MudTh>
+                <MudTh>@Localizer["Название"]</MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="@Localizer["Title"]">@context.Title</MudTd>
+                <MudTd DataLabel="@context.Title">@context.Title</MudTd>
                 <MudTd>
                     <div style="display: flex; justify-content: flex-end;">
                         <MudIconButton Size="Size.Small" Icon="@Icons.Filled.Edit" Color="Color.Info" OnClick="() => CreateOrEditCategoryAsync(context.Id, context.Title)" />
@@ -46,13 +43,13 @@
 }
 <MudMessageBox @ref="MessageBox">
     <MessageContent>
-        <MudTextField DebounceInterval="500" Style="width: 320px;" @bind-Value="CategoryRequest.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Category Title"]" />
+        <MudTextField DebounceInterval="500" Style="width: 320px;" @bind-Value="CategoryRequest.Title" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название Категории"]" />
     </MessageContent>
     <YesButton>
-        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Primary">@Localizer["Save"]</MudButton>
+        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Primary">@Localizer["Сохранить"]</MudButton>
     </YesButton>
     <NoButton>
-        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Secondary">@Localizer["Cancel"]</MudButton>
+        <MudButton Class="mx-2" Variant="Variant.Filled" Color="Color.Secondary">@Localizer["Отмена"]</MudButton>
     </NoButton>
 </MudMessageBox>
 @{

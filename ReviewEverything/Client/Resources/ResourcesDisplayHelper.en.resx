@@ -117,70 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Block" xml:space="preserve">
-    <value>Заблокировать</value>
+  <data name="Внимание" xml:space="preserve">
+    <value>Warning</value>
   </data>
-  <data name="Block users" xml:space="preserve">
-    <value>Вы действительно хотите заблокировать выделенных пользователей?</value>
+  <data name="Да" xml:space="preserve">
+    <value>Yes</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
+  <data name="Отмена" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="Delete message" xml:space="preserve">
-    <value>Deletion cannot be undone!</value>
-  </data>
-  <data name="Full Name" xml:space="preserve">
-    <value>Полное Имя</value>
-  </data>
-  <data name="Give" xml:space="preserve">
-    <value>Вы действительно хотите выдать роль администратора выбранным пользователям?</value>
-  </data>
-  <data name="Id User" xml:space="preserve">
-    <value>Id пользователя</value>
-  </data>
-  <data name="Management" xml:space="preserve">
-    <value>Управление</value>
-  </data>
-  <data name="Remove Admin role" xml:space="preserve">
-    <value>Снять роль администратора</value>
-  </data>
-  <data name="Role Admin" xml:space="preserve">
-    <value>Роль Администратора</value>
-  </data>
-  <data name="Rows" xml:space="preserve">
-    <value>Строк на странице</value>
-  </data>
-  <data name="Search by property" xml:space="preserve">
-    <value>Поиск по свойству</value>
-  </data>
-  <data name="Set Admin role" xml:space="preserve">
-    <value>Установить роль администратора</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Статус</value>
-  </data>
-  <data name="Take" xml:space="preserve">
-    <value>Вы действительно хотите забрать роль администратора выбранным пользователям?</value>
-  </data>
-  <data name="Unblock" xml:space="preserve">
-    <value>Разблокировать</value>
-  </data>
-  <data name="Unblock users" xml:space="preserve">
-    <value>Вы действительно хотите разблокировать выделенных пользователей?</value>
-  </data>
-  <data name="User Name" xml:space="preserve">
-    <value>Имя Пользователя</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Пользователи</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Внимание</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Да!</value>
+  <data name="Удаление не может быть отменено!" xml:space="preserve">
+    <value>Deleting can not be undone!</value>
   </data>
 </root>

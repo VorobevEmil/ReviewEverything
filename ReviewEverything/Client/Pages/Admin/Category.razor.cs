@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Helpers;
 using ReviewEverything.Shared.Contracts.Requests;
@@ -11,6 +11,7 @@ namespace ReviewEverything.Client.Pages.Admin
 {
     public partial class Category
     {
+        [Inject] private IStringLocalizer<Category> Localizer { get; set; } = default!;
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         private MudMessageBox MessageBox { get; set; } = default!;

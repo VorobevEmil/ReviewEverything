@@ -1,11 +1,14 @@
 ﻿@page "/review-editor/{id:int?}"
 @attribute [Authorize]
 @using ReviewEverything.Client.Components.ReviewEditor
-<PageTitle>@(Id == null ? "Создать" : "Редактировать") обзор</PageTitle>
 
 @{
     #pragma warning disable
 }
+
+<PageTitle>
+    @(string.Format("{0} {1}", (Id == null ? Localizer["Создать"] : Localizer["Редактировать"]), Localizer["обзор"]))
+</PageTitle>
 
 <div class="container mt-5">
     <MudPaper Class="px-4 py-5">
@@ -14,9 +17,9 @@
             <EditForm Model="@_review" OnValidSubmit="OnValidSubmitAsync">
                 <DataAnnotationsValidator />
                 <ImageEditor CloudImages="_review.CloudImages" />
-                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Название" @bind-Value="_review.Title" For="@(() => _review.Title)" />
-                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Подзаголовок" @bind-Value="_review.Subtitle" For="@(() => _review.Subtitle)" />
-                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="Оценка автора по 10-б шкале" @bind-Value="_review.AuthorScore" For="@(() => _review.AuthorScore)" />
+                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название"]" @bind-Value="_review.Title" For="@(() => _review.Title)" />
+                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Подзаголовок"]" @bind-Value="_review.Subtitle" For="@(() => _review.Subtitle)" />
+                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Оценка автора по 10-б шкале"]" @bind-Value="_review.AuthorScore" For="@(() => _review.AuthorScore)" />
 
                 <SelectOrCreateComposition Review="_review" @ref="_composition" />
                 <SelectOrCreateTags Review="_review" @ref="_tags" />
@@ -48,7 +51,7 @@
                 </div>
 
                 <div class="mt-5 text-end">
-                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" ButtonType="ButtonType.Submit">Сохранить</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" ButtonType="ButtonType.Submit">@Localizer["Сохранить"]</MudButton>
                 </div>
             </EditForm>
         }

@@ -2,17 +2,20 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Client.Resources;
 using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Pages
 {
     public partial class User
     {
-        [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
-
         [Parameter] public string Id { get; set; } = default!;
+        [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+        private IStringLocalizer<ResourcesShared> SharedLocalizer { get; set; } = ResourcesShared.CreateStringLocalizer();
+
         private UserResponse? UserResponse { get; set; }
-        
+
         private bool _editor;
 
         protected override async Task OnInitializedAsync()

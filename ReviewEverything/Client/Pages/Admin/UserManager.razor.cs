@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Helpers;
 using ReviewEverything.Shared.Contracts.Responses;
@@ -12,6 +13,7 @@ namespace ReviewEverything.Client.Pages.Admin
 {
     public partial class UserManager
     {
+        [Inject] private IStringLocalizer<UserManager> Localizer { get; set; } = default!;
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
@@ -61,8 +63,8 @@ namespace ReviewEverything.Client.Pages.Admin
         private async Task ChangeStatusBlockInUsersAsync(bool statusBlock)
         {
 
-            var status = (statusBlock ? "Block" : "Unblock") + " users";
-            var result = await DisplayHelper.ShowMessageBoxAsync(Localizer[status], status + "!");
+            var status = (statusBlock ? "Заблокировать" : "Разблокировать") + " выделенных пользователей";
+            var result = await DisplayHelper.ShowMessageBoxAsync(Localizer[status]);
             if (result != true)
                 return;
 
@@ -72,7 +74,7 @@ namespace ReviewEverything.Client.Pages.Admin
                 var httpResponseMessage = await HttpClient.PostAsJsonAsync($"api/UserManagement/BlockUser/{user.Id}", statusBlock);
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    user.Status = statusBlock ? "������������" : "�������������";
+                    user.Status = statusBlock ? "Заблокирован" : "Разблокирован";
                 }
                 else
                 {
@@ -86,7 +88,7 @@ namespace ReviewEverything.Client.Pages.Admin
         private async Task DeleteUsersAsync()
         {
 
-            var result = await DisplayHelper.ShowDeleteMessageBoxAsync();
+            var result = await DisplayHelper.ShowDeleteMessageBoxAsync(@Localizer["Вы действительно хотите удалить выделенных пользователей, удаление не может быть отменено!"]);
             if (result != true)
                 return;
 
@@ -106,8 +108,8 @@ namespace ReviewEverything.Client.Pages.Admin
 
         private async Task ChangeUserRoleAsync(bool statusRole)
         {
-            var status = statusRole ? "Give " : "Take";
-            var result = await DisplayHelper.ShowMessageBoxAsync(Localizer[status], Localizer["Yes"]);
+            var status = $"Вы действительно хотите {(statusRole ? "дать" : "забрать")} роль администратора выбранным пользователям?";
+            var result = await DisplayHelper.ShowMessageBoxAsync(Localizer[status]);
             if (result != true)
                 return;
 

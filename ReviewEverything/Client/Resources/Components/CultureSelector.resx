@@ -117,13 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Google" xml:space="preserve">
-    <value>Continue with Google</value>
+  <data name="en-US" xml:space="preserve">
+    <value>Английский</value>
   </data>
-  <data name="or" xml:space="preserve">
-    <value>or</value>
-  </data>
-  <data name="Vk" xml:space="preserve">
-    <value>Continue with Vk</value>
+  <data name="ru-RU" xml:space="preserve">
+    <value>Русский</value>
   </data>
 </root>

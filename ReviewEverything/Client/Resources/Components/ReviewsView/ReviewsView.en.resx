@@ -117,44 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All Reviews" xml:space="preserve">
-    <value>All Reviews</value>
-  </data>
-  <data name="All Scores" xml:space="preserve">
-    <value>All Scores</value>
-  </data>
-  <data name="Create review" xml:space="preserve">
-    <value>Create review</value>
-  </data>
-  <data name="Latest" xml:space="preserve">
-    <value>Sort by Latest</value>
-  </data>
-  <data name="Load Tags" xml:space="preserve">
-    <value>Load More Tags</value>
-  </data>
-  <data name="Not created review" xml:space="preserve">
-    <value>Reviews have not been created yet</value>
-  </data>
-  <data name="Oldest" xml:space="preserve">
-    <value>Sort by Oldest</value>
-  </data>
-  <data name="Score" xml:space="preserve">
-    <value>Sort by Score</value>
-  </data>
-  <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Sort by Title</value>
-  </data>
   <data name="Все Обзоры" xml:space="preserve">
     <value>All Reviews</value>
+  </data>
+  <data name="Все оценки" xml:space="preserve">
+    <value>All Scores</value>
+  </data>
+  <data name="Загрузить больше тегов" xml:space="preserve">
+    <value>Load More Tags</value>
   </data>
   <data name="Книги" xml:space="preserve">
     <value>Books</value>
   </data>
   <data name="Мультфильмы" xml:space="preserve">
-    <value>Сartoons</value>
+    <value>Cartoons</value>
+  </data>
+  <data name="Обзоров ещё не было создано" xml:space="preserve">
+    <value>Reviews have not been created yet</value>
   </data>
   <data name="Обзоры на Книги" xml:space="preserve">
     <value>Reviews of Books</value>
@@ -168,8 +147,29 @@
   <data name="Обзоры на Фильмы" xml:space="preserve">
     <value>Reviews of Films</value>
   </data>
+  <data name="Поиск" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Сериалы" xml:space="preserve">
     <value>Serials</value>
+  </data>
+  <data name="Создать обзор" xml:space="preserve">
+    <value>Create review</value>
+  </data>
+  <data name="Сортировать по названию" xml:space="preserve">
+    <value>Sort by Title</value>
+  </data>
+  <data name="Сортировать по оценке" xml:space="preserve">
+    <value>Sort by Score</value>
+  </data>
+  <data name="Сортировать по последним" xml:space="preserve">
+    <value>Sort by Latest</value>
+  </data>
+  <data name="Сортировать по старым" xml:space="preserve">
+    <value>Sort by Oldest</value>
+  </data>
+  <data name="Теги" xml:space="preserve">
+    <value>Tags</value>
   </data>
   <data name="Фильмы" xml:space="preserve">
     <value>Films</value>

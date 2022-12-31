@@ -1,6 +1,5 @@
 ﻿@using ReviewEverything.Client.Helpers
 @using ReviewEverything.Client.Components.Views
-@inject IStringLocalizer<ReviewsView> Localizer
 
 @{
     #pragma warning disable CS8625
@@ -12,7 +11,7 @@
     <MudPaper Class="my-2 px-4 py-2 review-view">
         @if (Editor)
         {
-            <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">@Localizer["Create review"]</MudButton>
+            <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">@Localizer["Создать обзор"]</MudButton>
         }
         <CategoriesComponent GetReviewsFromApi="InitializationReviewsAsync" @ref="_categories" />
         <FilterOptionView GetReviewsFromApi="InitializationReviewsAsync" @ref="_filterOption" />
@@ -94,7 +93,7 @@
                                     <div class="d-flex mt-1" style="align-items: center; flex-wrap: wrap;">
                                         <div class="d-flex">
                                             <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />
-                                            <MudText Class="mx-1" Style="font-size: 11px;">@review.Category</MudText>
+                                            <MudText Class="mx-1" Style="font-size: 11px;">@Localizer[review.Category]</MudText>
                                         </div>
                                         <div class="d-flex">
                                             <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.Bolt" />
@@ -133,7 +132,7 @@
         else if (Reviews != null && Reviews.Count == default)
         {
             <MudPaper Class="my-2 px-4 py-5 text-center">
-                <MudText>@Localizer["Not created review"]</MudText>
+                <MudText>@Localizer["Обзоров ещё не было создано"]</MudText>
             </MudPaper>
         }
         else

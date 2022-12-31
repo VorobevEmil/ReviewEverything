@@ -117,19 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Author Score" xml:space="preserve">
-    <value>Author score</value>
+  <data name="*Войдите чтобы оставить комментарий" xml:space="preserve">
+    <value>*Log in to leave a comment</value>
   </data>
-  <data name="Authorization Required" xml:space="preserve">
-    <value>In order to evaluate the work, authorization is required</value>
+  <data name="Дата изменения:" xml:space="preserve">
+    <value>Date of change:</value>
   </data>
-  <data name="Creation Date" xml:space="preserve">
+  <data name="Дата создания:" xml:space="preserve">
     <value>Date of creation:</value>
   </data>
-  <data name="Similar" xml:space="preserve">
+  <data name="Для того, чтобы оценить произведение необходима авторизация" xml:space="preserve">
+    <value>In order to evaluate the work, authorization is required</value>
+  </data>
+  <data name="Загрузить больше комментариев" xml:space="preserve">
+    <value>Load More Comments</value>
+  </data>
+  <data name="Комментарии" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="Отправить" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Оценка автора:" xml:space="preserve">
+    <value>Author score:</value>
+  </data>
+  <data name="Похожее" xml:space="preserve">
     <value>Similar</value>
   </data>
-  <data name="Update Date" xml:space="preserve">
-    <value>Date of change:</value>
+  <data name="Тут пока не комментариев, будьте первым!" xml:space="preserve">
+    <value>There are no comments here yet, be the first!</value>
+  </data>
+  <data name="Что ты думаешь об этом?" xml:space="preserve">
+    <value>What you think about it?</value>
   </data>
 </root>

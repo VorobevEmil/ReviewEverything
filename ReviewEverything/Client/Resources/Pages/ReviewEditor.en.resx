@@ -117,31 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Account" xml:space="preserve">
-    <value>Аккаунт</value>
+  <data name="Выбрать" xml:space="preserve">
+    <value>Browse</value>
   </data>
-  <data name="Categories" xml:space="preserve">
-    <value>Категории</value>
+  <data name="Добавить" xml:space="preserve">
+    <value>Add</value>
   </data>
-  <data name="Control Panel" xml:space="preserve">
-    <value>Панель управления</value>
+  <data name="или" xml:space="preserve">
+    <value>or</value>
   </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Загрузка...</value>
+  <data name="Категория" xml:space="preserve">
+    <value>Category</value>
   </data>
-  <data name="My page" xml:space="preserve">
-    <value>Моя страница</value>
+  <data name="Название" xml:space="preserve">
+    <value>Title</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Поиск</value>
+  <data name="Название произведения" xml:space="preserve">
+    <value>Title composition</value>
   </data>
-  <data name="Search not found" xml:space="preserve">
-    <value>Ничего не найдено, выполните поиск</value>
+  <data name="обзор" xml:space="preserve">
+    <value>review</value>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Настройки</value>
+  <data name="Отмена" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>Пользователи</value>
+  <data name="Оценка автора по 10-б шкале" xml:space="preserve">
+    <value>The author's rating on a 10-point scale</value>
+  </data>
+  <data name="Перетащите изображения" xml:space="preserve">
+    <value>Drag and Drop images</value>
+  </data>
+  <data name="Подзаголовок" xml:space="preserve">
+    <value>Subtitle</value>
+  </data>
+  <data name="Произведение" xml:space="preserve">
+    <value>Composition</value>
+  </data>
+  <data name="Редактировать" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Создать" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Создать тег" xml:space="preserve">
+    <value>Create tag</value>
+  </data>
+  <data name="Сохранить" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Теги" xml:space="preserve">
+    <value>Tags</value>
   </data>
 </root>

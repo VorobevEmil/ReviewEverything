@@ -1,14 +1,13 @@
 ﻿@page "/article/{Id:int}"
 @using ReviewEverything.Client.Components.Views
-@inject IStringLocalizer<Article> Localizer
-@inject IStringLocalizer<SharedResource> SharedLocalizer
 
+<PageTitle>
+    @(ArticleReview is null ? SharedLocalizer["Загрузка..."] : ArticleReview.Title)
+</PageTitle>
 
-<PageTitle>@(ArticleReview is null ? SharedLocalizer["Loading"] : ArticleReview.Title)</PageTitle>
-
-    <div class="container mt-5 mb-3">
-        <MudPaper Class="px-5 py-3">
-            @if (ArticleReview != null)
+<div class="container mt-5 mb-3">
+    <MudPaper Class="px-5 py-3">
+        @if (ArticleReview != null)
         {
             <div class="mb-1 d-flex" style="align-items: center;">
                 <MudIcon Icon="@Icons.Filled.Star" Color="Color.Warning" Style="height: 40px; width: 40px;" />
@@ -22,14 +21,14 @@
                         <MudRating Size="Size.Large" SelectedValue="_userRatingComposition" SelectedValueChanged="SetUserRatingAsync" />
                     </Authorized>
                     <NotAuthorized>
-                        <MudText>@Localizer["Authorization Required"]</MudText>
+                        <MudText>@Localizer["Для того, чтобы оценить произведение необходима авторизация"]</MudText>
                     </NotAuthorized>
                 </AuthorizeView>
             </div>
             <div style="display: flex; align-items: center;">
                 <MudIcon Color="Color.Warning" Icon="@Icons.Filled.Star" Style="height: 30px; width: 30px;" />
                 <span class="mx-1"></span>
-                <span style="font-size: 18px;">@Localizer["Author Score"]: @ArticleReview.AuthorScore/10</span>
+                <span style="font-size: 18px;">@Localizer["Оценка автора:"] @ArticleReview.AuthorScore/10</span>
             </div>
             <MudText Style="font-size: 24px;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudText>
             <MudText Style="font-size: 2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
@@ -59,14 +58,14 @@
                             <div class="d-flex mt-2">
                                 <MudIcon Icon="@Icons.Filled.CheckCircleOutline" />
                                 <span class="mx-1"></span>
-                                <MudText Style="font-size: 16px;">@Localizer["Update Date"] @ArticleReview.UpdateDate.Value.ToShortDateString() @ArticleReview.UpdateDate.Value.ToShortTimeString()</MudText>
+                                <MudText Style="font-size: 16px;">@Localizer["Дата изменения:"] @ArticleReview.UpdateDate.Value.ToShortDateString() @ArticleReview.UpdateDate.Value.ToShortTimeString()</MudText>
                             </div>
 
                         }
                         <div class="d-flex mt-2">
                             <MudIcon Icon="@Icons.Filled.StickyNote2" />
                             <span class="mx-1"></span>
-                            <MudText Style="font-size: 16px;">@Localizer["Creation Date"] @ArticleReview.CreationDate.ToShortDateString() @ArticleReview.CreationDate.ToShortTimeString()</MudText>
+                            <MudText Style="font-size: 16px;">@Localizer["Дата создания:"] @ArticleReview.CreationDate.ToShortDateString() @ArticleReview.CreationDate.ToShortTimeString()</MudText>
                         </div>
                     </div>
                 </MudHidden>
@@ -80,13 +79,13 @@
                         {
                             <MudIcon Icon="@Icons.Filled.CheckCircleOutline" />
                             <span class="mx-1"></span>
-                            <MudText Style="font-size: 16px;">@Localizer["Update Date"] @ArticleReview.UpdateDate.Value.ToShortDateString() @ArticleReview.UpdateDate.Value.ToShortTimeString()</MudText>
+                            <MudText Style="font-size: 16px;">@Localizer["Дата изменения:"] @ArticleReview.UpdateDate.Value.ToShortDateString() @ArticleReview.UpdateDate.Value.ToShortTimeString()</MudText>
                             <span class="mx-3"></span>
                         }
 
                         <MudIcon Icon="@Icons.Filled.StickyNote2" />
                         <span class="mx-1"></span>
-                        <MudText Style="font-size: 16px;">@Localizer["Creation Date"] @ArticleReview.CreationDate.ToShortDateString() @ArticleReview.CreationDate.ToShortTimeString()</MudText>
+                        <MudText Style="font-size: 16px;">@Localizer["Дата создания:"] @ArticleReview.CreationDate.ToShortDateString() @ArticleReview.CreationDate.ToShortTimeString()</MudText>
                     </div>
                 </MudHidden>
             </MudBreakpointProvider>

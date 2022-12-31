@@ -1,13 +1,16 @@
-﻿<div style="@(_breakpoint is not Breakpoint.Xs and not Breakpoint.Sm ? "margin: 0 10px; display:flex; align-items: center; justify-content: space-around;" : null)">
+﻿@using ReviewEverything.Client.Pages
+@inject IStringLocalizer<ReviewEditor> Localizer
+
+<div style="@(_breakpoint is not Breakpoint.Xs and not Breakpoint.Sm ? "margin: 0 10px; display:flex; align-items: center; justify-content: space-around;" : null)">
     <div style="@(_breakpoint is not Breakpoint.Xs and not Breakpoint.Sm ? "float: left; width: 49%;" : null)">
         <MudFileUpload T="IReadOnlyList<IBrowserFile>" OnFilesChanged="OnInputFileChanged" Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
                        @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
             <ButtonTemplate>
                 <MudPaper Height="200px" Outlined="true" Class="@_dragClass" Style="display: flex; justify-content: center; align-items: center;">
                     <div style="text-align: center;">
-                        <MudText Style="font-weight: bold; font-size: 18px;">Drag and Drop images</MudText>
-                        <MudText Style="font-weight: bold; font-size: 18px;">or</MudText>
-                        <MudButton Variant="Variant.Filled">Browse</MudButton>
+                        <MudText Style="font-weight: bold; font-size: 18px;">@Localizer["Перетащите изображения"]</MudText>
+                        <MudText Style="font-weight: bold; font-size: 18px;">@Localizer["или"]</MudText>
+                        <MudButton Variant="Variant.Filled">@Localizer["Выбрать"]</MudButton>
                     </div>
                 </MudPaper>
             </ButtonTemplate>

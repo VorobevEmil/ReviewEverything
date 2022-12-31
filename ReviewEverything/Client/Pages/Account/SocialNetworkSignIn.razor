@@ -1,18 +1,17 @@
 ﻿@using ReviewEverything.Client.Theme
-@inject IStringLocalizer<SocialNetworkSignIn> Localizer
 
 <div class="mt-5">
     <form method="post" action="/api/OAuth/SignIn-Google">
-        <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">@Localizer["Google"]</MudButton>
+        <MudButton StartIcon="@Icons.Custom.Brands.Google" Color="Color.Error" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">@Localizer["Продолжить с Google"]</MudButton>
     </form>
     <div class="mt-2"></div>
     <form method="post" action="/api/OAuth/SignIn-Vkontakte">
-        <MudButton StartIcon="@CustomIcons.LogoVk" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">@Localizer["Vk"]</MudButton>
+        <MudButton StartIcon="@CustomIcons.LogoVk" Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" ButtonType="ButtonType.Submit">@Localizer["Продолжить с Vk"]</MudButton>
     </form>
 </div>
 
 <div class="mt-2" style="display: flex; align-items: center;">
     <span style="display: inline-block; height: 3px; width: 50px; border-top: solid 1px #E3E3E3;"></span>
-    <MudText Class="mx-5" Style="font-size: 12px;">@Localizer["or"]</MudText>
+    <MudText Class="mx-5" Style="font-size: 12px;">@Localizer["или"]</MudText>
     <span style="display: inline-block; height: 3px; width: 50px; border-top: solid 1px #E3E3E3;"></span>
 </div>

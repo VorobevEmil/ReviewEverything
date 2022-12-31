@@ -1,18 +1,20 @@
 ﻿@using ReviewEverything.Shared.Contracts.Responses
-@inject IStringLocalizer<SharedResource> Localizer
 
+@{
+    #pragma warning disable
+}
 <MudIconButton OnClick="OpenSearchDialog" Color="Color.Inherit" Icon="@Icons.Filled.Search" />
-
 
 <MudDialog @bind-IsVisible="_searchDialogOpen" Options="_dialogOptions" Class="docs-gray-bg" ClassContent="docs-mobile-dialog-search">
     <DialogContent>
-        <MudAutocomplete T="ReviewSearchResponse" PopoverClass="docs-mobile-dialog-search-popover" Placeholder="@Localizer["Search"]" Margin="Margin.Dense" SearchFunc="SearchAsync" ValueChanged="OnSearchResult" Clearable="true" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
+
+        <MudAutocomplete T="ReviewSearchResponse" PopoverClass="docs-mobile-dialog-search-popover" Placeholder="@Localizer["Поиск"]" Margin="Margin.Dense" SearchFunc="SearchAsync" ValueChanged="OnSearchResult" Clearable="true" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" @ref="_searchAutocomplete">
             <ItemTemplate Context="result">
                 <MudText>@result.Title</MudText>
             </ItemTemplate>
         </MudAutocomplete>
-        <div class="d-flex justify-center align-center mud-height-full pb-16" style="width:300px; height:30vh;">
-            <MudText Typo="Typo.body2" Class="mud-text-secondary">@Localizer["Search not found"]</MudText>
+        <div class="d-flex justify-center align-center mud-height-full pb-16" style="width: 300px; height: 30vh;">
+            <MudText Typo="Typo.body2" Class="mud-text-secondary">@Localizer["Ничего не найдено, выполните поиск"]</MudText>
         </div>
     </DialogContent>
 </MudDialog>

@@ -1,10 +1,8 @@
 ﻿@page "/admin/user-manager"
 @using ReviewEverything.Shared.Contracts.Responses
 @attribute [Authorize("Admin")]
-@inject IStringLocalizer<UserManager> Localizer
-@inject IStringLocalizer<SharedResource> SharedLocalizer
 
-<PageTitle>@Localizer["Users"] - @SharedLocalizer["Control Panel"]</PageTitle>
+<PageTitle>@Localizer["Пользователи"] - @Localizer["Панель управление"]</PageTitle>
 
 @{
 #pragma warning disable
@@ -13,44 +11,44 @@
 <div class="container mt-12">
     <MudTable T="UserManagementResponse" ServerData="@(new Func<TableState, Task<TableData<UserManagementResponse>>>(ServerReload))" @bind-SelectedItems="_selectedUsers" MultiSelection="true" @ref="_mudTable">
         <ToolBarContent>
-            <MudText Typo="Typo.h6">@Localizer["Users"]</MudText>
+            <MudText Typo="Typo.h6">@Localizer["Пользователи"]</MudText>
             <MudSpacer />
-            <MudTextField Placeholder="@SharedLocalizer["Search"]" T="string" Value="_search" ValueChanged="SearchUserAsync" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <MudTextField Placeholder="@Localizer["Поиск"]" T="string" Value="_search" ValueChanged="SearchUserAsync" Variant="Variant.Outlined" Margin="Margin.Dense" />
             <span class="mx-1"></span>
-            <MudSelect Label="@Localizer["Search by property"]" T="FilterUserByProperty" Value="_filterUserByProperty" ValueChanged="ChangeFilterForSearchAsync" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-                <MudSelectItem Value="FilterUserByProperty.FullName">@Localizer["Full Name"]</MudSelectItem>
-                <MudSelectItem Value="FilterUserByProperty.UserName">@Localizer["User Name"]</MudSelectItem>
+            <MudSelect Label="@Localizer["Поиск по свойству"]" T="FilterUserByProperty" Value="_filterUserByProperty" ValueChanged="ChangeFilterForSearchAsync" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                <MudSelectItem Value="FilterUserByProperty.FullName">@Localizer["Полное Имя"]</MudSelectItem>
+                <MudSelectItem Value="FilterUserByProperty.UserName">@Localizer["Имя Пользователя"]</MudSelectItem>
             </MudSelect>
             <MudMenu Class="my-2 d-flex justify-center" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
                 <ActivatorContent>
-                    <MudChip Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">@Localizer["Management"]</MudChip>
+                    <MudChip Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">@Localizer["Управление"]</MudChip>
                 </ActivatorContent>
                 <ChildContent>
-                    <MudMenuItem Icon="@Icons.Filled.Lock" IconColor="Color.Error" OnClick="() => ChangeStatusBlockInUsersAsync(true)">@Localizer["Block"]</MudMenuItem>
-                    <MudMenuItem Icon="@Icons.Filled.LockOpen" IconColor="Color.Primary" OnClick="() => ChangeStatusBlockInUsersAsync(false)">@Localizer["Unblock"]</MudMenuItem>
-                    <MudMenuItem Icon="@Icons.Filled.AddModerator" IconColor="Color.Success" OnClick="() => ChangeUserRoleAsync(true)">@Localizer["Set Admin role"]</MudMenuItem>
-                    <MudMenuItem Icon="@Icons.Filled.RemoveModerator" IconColor="Color.Warning" OnClick="() => ChangeUserRoleAsync(false)">@Localizer["Remove Admin role"]</MudMenuItem>
-                    <MudMenuItem Icon="@Icons.Filled.Delete" IconColor="Color.Secondary" OnClick="DeleteUsersAsync">@Localizer["Delete"]</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.Lock" IconColor="Color.Error" OnClick="() => ChangeStatusBlockInUsersAsync(true)">@Localizer["Блокировать"]</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.LockOpen" IconColor="Color.Primary" OnClick="() => ChangeStatusBlockInUsersAsync(false)">@Localizer["Разблокировать"]</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.AddModerator" IconColor="Color.Success" OnClick="() => ChangeUserRoleAsync(true)">@Localizer["Установить роль администратора"]</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.RemoveModerator" IconColor="Color.Warning" OnClick="() => ChangeUserRoleAsync(false)">@Localizer["Снять роль администратора"]</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Filled.Delete" IconColor="Color.Secondary" OnClick="DeleteUsersAsync">@Localizer["Удалить"]</MudMenuItem>
                 </ChildContent>
             </MudMenu>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>@Localizer["Id User"]</MudTh>
-            <MudTh>@Localizer["Full Name"]</MudTh>
-            <MudTh>@Localizer["User Name"]</MudTh>
-            <MudTh>@Localizer["Status"]</MudTh>
-            <MudTh>@Localizer["Role Admin"]</MudTh>
+            <MudTh>@Localizer["Id Пользователя"]</MudTh>
+            <MudTh>@Localizer["Полное Имя"]</MudTh>
+            <MudTh>@Localizer["Имя Пользователя"]</MudTh>
+            <MudTh>@Localizer["Статус"]</MudTh>
+            <MudTh>@Localizer["Роль Администратора"]</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="@Localizer["Id User"]">@context.Id</MudTd>
-            <MudTd DataLabel="@Localizer["Full Name"]"><MudLink Href="@($"./user/{context.Id}")" Color="Color.Default">@context.FullName</MudLink></MudTd>
-            <MudTd DataLabel="@Localizer["User Name"]">@context.UserName</MudTd>
-            <MudTd DataLabel="@Localizer["Status"]">@Localizer[context.Status]</MudTd>
-            <MudTd DataLabel="@Localizer["Role Admin"]"><MudCheckBox T="bool" ReadOnly="true" Checked="@context.Admin"></MudCheckBox></MudTd>
+            <MudTd DataLabel="@Localizer["Id Пользователя"]">@context.Id</MudTd>
+            <MudTd DataLabel="@Localizer["Полное Имя"]"><MudLink Href="@($"./user/{context.Id}")" Color="Color.Default">@context.FullName</MudLink></MudTd>
+            <MudTd DataLabel="@Localizer["Имя Пользователя"]">@context.UserName</MudTd>
+            <MudTd DataLabel="@Localizer["Статус"]">@Localizer[context.Status]</MudTd>
+            <MudTd DataLabel="@Localizer["Роль Администратора"]"><MudCheckBox T="bool" ReadOnly="true" Checked="@context.Admin"></MudCheckBox></MudTd>
 
         </RowTemplate>
         <PagerContent>
-            <MudTablePager RowsPerPageString="@Localizer["Rows"]" />
+            <MudTablePager RowsPerPageString="@Localizer["Строк на странице"]" />
         </PagerContent>
     </MudTable>
 </div>

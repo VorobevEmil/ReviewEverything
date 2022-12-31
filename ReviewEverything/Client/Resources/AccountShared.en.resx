@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,22 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Authorize Message" xml:space="preserve">
-    <value>*Войдите чтобы оставить комментарий</value>
+  <data name="Войти" xml:space="preserve">
+    <value>Log In</value>
   </data>
-  <data name="Comments" xml:space="preserve">
-    <value>Комментарии</value>
+  <data name="ВОЙТИ В УЧЕТНУЮ ЗАПИСЬ" xml:space="preserve">
+    <value>LOG IN TO ACCOUNT</value>
   </data>
-  <data name="Load Comments" xml:space="preserve">
-    <value>Загрузить больше комментариев</value>
+  <data name="или" xml:space="preserve">
+    <value>or</value>
   </data>
-  <data name="No Comments" xml:space="preserve">
-    <value>Тут пока не комментариев, будьте первым!</value>
+  <data name="Имя Пользователя" xml:space="preserve">
+    <value>User Name</value>
   </data>
-  <data name="Placeholder Input" xml:space="preserve">
-    <value>Что ты думаешь об этом?</value>
+  <data name="Нет учетной записи?" xml:space="preserve">
+    <value>Not a member?</value>
   </data>
-  <data name="Send" xml:space="preserve">
-    <value>Отправить</value>
+  <data name="Пароль" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Подтвердите Пароль" xml:space="preserve">
+    <value>Verify Password</value>
+  </data>
+  <data name="Полное Имя" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Продолжить с Google" xml:space="preserve">
+    <value>Continue with Google</value>
+  </data>
+  <data name="Продолжить с Vk" xml:space="preserve">
+    <value>Continue with Vk</value>
+  </data>
+  <data name="Регистрация" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Создать аккаунт" xml:space="preserve">
+    <value>Create an account</value>
+  </data>
+  <data name="СОЗДАТЬ УЧЕТНУЮ ЗАПИСЬ" xml:space="preserve">
+    <value>CREATE AN ACCOUNT</value>
   </data>
 </root>

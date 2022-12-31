@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Helpers;
 using ReviewEverything.Client.Services;
@@ -11,6 +12,7 @@ namespace ReviewEverything.Client.Components.ReviewsView
     {
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private BrowserService BrowserService { get; set; } = default!;
+        [Inject] private IStringLocalizer<ReviewsView> Localizer { get; set; } = default!;
         [Parameter] public bool Editor { get; set; }
         [Parameter] public string? UserId { get; set; }
         public List<ReviewResponse> Reviews { get; set; } = default!;

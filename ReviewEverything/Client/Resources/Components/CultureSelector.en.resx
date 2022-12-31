@@ -117,34 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All Reviews" xml:space="preserve">
-    <value>Все обзоры</value>
+  <data name="en-US" xml:space="preserve">
+    <value>English</value>
   </data>
-  <data name="All Scores" xml:space="preserve">
-    <value>Все оценки</value>
-  </data>
-  <data name="Create review" xml:space="preserve">
-    <value>Создать обзор</value>
-  </data>
-  <data name="Latest" xml:space="preserve">
-    <value>Сортировать по последним</value>
-  </data>
-  <data name="Load Tags" xml:space="preserve">
-    <value>Загрузить больше тегов</value>
-  </data>
-  <data name="Not created review" xml:space="preserve">
-    <value>Обзоров ещё не было создано</value>
-  </data>
-  <data name="Oldest" xml:space="preserve">
-    <value>Сортировать по старым</value>
-  </data>
-  <data name="Score" xml:space="preserve">
-    <value>Сортировать по оценке</value>
-  </data>
-  <data name="Tags" xml:space="preserve">
-    <value>Теги</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Сортировать по названию</value>
+  <data name="ru-RU" xml:space="preserve">
+    <value>Russian</value>
   </data>
 </root>

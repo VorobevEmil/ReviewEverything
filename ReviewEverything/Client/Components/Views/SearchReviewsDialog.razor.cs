@@ -1,11 +1,14 @@
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Shared.Contracts.Responses;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace ReviewEverything.Client.Components.Views
 {
     public partial class SearchReviewsDialog
     {
+        [Inject] private IStringLocalizer<SearchReviewsDialog> Localizer { get; set; } = default!;
         private bool _searchDialogOpen;
         private void OpenSearchDialog() => _searchDialogOpen = true;
         private readonly DialogOptions _dialogOptions = new() { Position = DialogPosition.TopCenter, NoHeader = true };
@@ -21,7 +24,7 @@ namespace ReviewEverything.Client.Components.Views
             return (await HttpClient.GetFromJsonAsync<IEnumerable<ReviewSearchResponse>>($"api/Review/Search/{search}"))!;
         }
 
-        private async Task OnSearchResult(ReviewSearchResponse entry)
+        private async Task OnSearchResult(ReviewSearchResponse? entry)
         {
             NavigationManager.NavigateTo($"/redirect-page");
             NavigationManager.NavigateTo($"/Article/{entry.Id}");

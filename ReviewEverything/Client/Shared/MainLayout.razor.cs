@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Services;
 using ReviewEverything.Client.Services.Authorization;
@@ -12,6 +13,7 @@ namespace ReviewEverything.Client.Shared
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private LayoutService LayoutService { get; set; } = default!;
         [Inject] private HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; } = default!;
+        [Inject] private IStringLocalizer<MainLayout> Localizer { get; set; } = default!;
         private bool DrawerOpen { get; set; } = default!;
         private MudThemeProvider _mudThemeProvider = default!;
         private LoginPartial _loginPartial = default!;

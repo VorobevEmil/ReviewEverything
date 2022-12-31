@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Contracts.Responses;
@@ -9,6 +10,7 @@ namespace ReviewEverything.Client.Components.ReviewEditor
 {
     public partial class SelectOrCreateTags
     {
+        [Inject] private IStringLocalizer<Pages.ReviewEditor> Localizer { get; set; } = default!;
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Parameter] public ReviewRequest Review { get; set; } = default!;
         private TagRequest _tag = new();

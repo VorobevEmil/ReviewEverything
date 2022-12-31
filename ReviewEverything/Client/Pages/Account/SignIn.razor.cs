@@ -4,8 +4,11 @@ using ReviewEverything.Shared.Models.Account;
 using System.Net.Http.Json;
 using System.Net;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using ReviewEverything.Client.Services.Authorization;
 using ReviewEverything.Client.Shared;
+using ReviewEverything.Client.Resources;
 
 namespace ReviewEverything.Client.Pages.Account;
 
@@ -14,6 +17,7 @@ public partial class SignIn
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Inject] private HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; } = default!;
     [CascadingParameter] public MainLayout Parent { get; set; } = default!;
+    private IStringLocalizer<AccountShared> Localizer { get; set; } = AccountShared.CreateStringLocalizer();
 
     private readonly SignInModel _model = new();
     private bool _sendRequest = false;

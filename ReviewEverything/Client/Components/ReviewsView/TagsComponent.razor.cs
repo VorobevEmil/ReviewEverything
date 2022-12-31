@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Components.ReviewsView
@@ -7,6 +8,8 @@ namespace ReviewEverything.Client.Components.ReviewsView
     public partial class TagsComponent
     {
         [Parameter] public EventCallback GetReviewsFromApi { get; set; }
+        [Inject] private IStringLocalizer<ReviewsView> Localizer { get; set; } = default!;
+
         private List<TagResponse> Tags { get; set; } = default!;
         private List<TagResponse> SelectedTags { get; set; } = new();
         private string _tagSearch = default!;

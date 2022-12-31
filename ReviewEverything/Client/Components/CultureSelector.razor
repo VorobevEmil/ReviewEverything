@@ -1,9 +1,11 @@
 ﻿@using System.Globalization
-<MudChip Size="Size.Small" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="ChangeCulture">@Culture.Name</MudChip>
+@using ReviewEverything.Client.Resources
+<MudChip Size="Size.Small" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="ChangeCulture">@Localizer[Culture.Name]</MudChip>
 
 @code {
 
     [Inject] public IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private IStringLocalizer<CultureSelector> Localizer { get; set; } = default!;
     private CultureInfo Culture
     {
         get => CultureInfo.CurrentCulture;

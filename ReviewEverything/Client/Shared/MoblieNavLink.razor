@@ -1,14 +1,13 @@
 ﻿@using System.Security.Claims
 @using ReviewEverything.Shared.Contracts.Responses
-@inject IStringLocalizer<SharedResource> Localizer
 
 <AuthorizeView Policy="Admin">
     <Authorized>
         <MudDivider />
-        <MudListItem Text="@Localizer["Control Panel"]">
+        <MudListItem Text="@Localizer["Панель управления"]">
             <NestedList>
-                <MudListItem Href="./admin/user-manager" OnClick="MainLayout.ChangeDrawerOpen">@Localizer["Users"]</MudListItem>
-                <MudListItem Href="./admin/category" OnClick="MainLayout.ChangeDrawerOpen">@Localizer["Categories"]</MudListItem>
+                <MudListItem Href="./admin/user-manager" OnClick="MainLayout.ChangeDrawerOpen">@Localizer["Пользователи"]</MudListItem>
+                <MudListItem Href="./admin/category" OnClick="MainLayout.ChangeDrawerOpen">@Localizer["Категории"]</MudListItem>
             </NestedList>
         </MudListItem>
     </Authorized>
@@ -16,10 +15,10 @@
 <MudDivider />
 <AuthorizeView>
     <Authorized>
-        <MudListItem Text="@Localizer["Account"]">
+        <MudListItem Text="@Localizer["Аккаунт"]">
             <NestedList>
-                <MudListItem Text="@Localizer["My page"]" OnClick="MainLayout.ChangeDrawerOpen" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
-                <MudListItem Text="@Localizer["Settings"]" OnClick="MainLayout.ChangeDrawerOpen" />
+                <MudListItem Text="@Localizer["Моя страница"]" OnClick="MainLayout.ChangeDrawerOpen" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
+                <MudListItem Text="@Localizer["Настройки"]" OnClick="MainLayout.ChangeDrawerOpen" />
             </NestedList>
         </MudListItem>
     </Authorized>
@@ -29,4 +28,6 @@
 @code
 {
     [CascadingParameter] private MainLayout MainLayout { get; set; } = default!;
+
+    [Inject] private IStringLocalizer<MainLayout> Localizer { get; set; } = default!;
 }

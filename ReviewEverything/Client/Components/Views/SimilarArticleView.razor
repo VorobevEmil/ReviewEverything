@@ -1,9 +1,8 @@
 ﻿@using ReviewEverything.Client.Helpers
 @using ReviewEverything.Client.Pages
-@inject IStringLocalizer<Article> Localizer
 
 <MudPaper Class="px-2 py-3">
-    <MudText Style="font-size:1.375rem;">@Localizer["Similar"]</MudText>
+    <MudText Style="font-size:1.375rem;">@Localizer["Похожее"]</MudText>
     @if (SimilarArticles is not null)
     {
         <MudBreakpointProvider>

@@ -1,9 +1,13 @@
 ﻿@page "/"
 @using ReviewEverything.Client.Components.ReviewsView
-@inject IStringLocalizer<ReviewsView> Localizer
+@using ReviewEverything.Client.Resources
 
-<PageTitle>@Localizer["All Reviews"]</PageTitle>
+<PageTitle>@SharedLocalizer["Все Обзоры"]</PageTitle>
 
 <div class="container">
     <ReviewsView />
 </div>
+
+@code {
+    private IStringLocalizer<ResourcesShared> SharedLocalizer { get; set; } = ResourcesShared.CreateStringLocalizer();
+}

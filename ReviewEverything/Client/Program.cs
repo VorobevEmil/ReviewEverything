@@ -29,12 +29,12 @@ builder.Services.AddAuthorizationCore(configure =>
     configure.AddPolicy("Admin", pb =>
     {
         pb.RequireAuthenticatedUser()
-            .RequireRole(new[] { "Admin" });
+            .RequireRole("Admin");
     });
 });
 
 
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddLocalization(opt => opt.ResourcesPath = "Resources");
 var host = builder.Build();
 await host.SetDefaultCulture();
 
