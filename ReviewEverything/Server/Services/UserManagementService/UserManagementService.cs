@@ -56,7 +56,7 @@ namespace ReviewEverything.Server.Services.UserManagementService
 
             _context.Users.Remove(user);
 
-            await _hubContext.Clients.User(userId).SendAsync("LogoutAccount", "Ваш аккаунт удален!", cancellationToken: token);
+            await _hubContext.Clients.User(userId).SendAsync("LogoutAccount", "Р’Р°С€ Р°РєРєР°СѓРЅС‚ СѓРґР°Р»РµРЅ!", cancellationToken: token);
             return await _context.SaveChangesAsync(cancellationToken: token) > 0;
         }
 
@@ -70,7 +70,7 @@ namespace ReviewEverything.Server.Services.UserManagementService
             user.Block = statusBlock;
 
             if (statusBlock)
-                await _hubContext.Clients.User(userId).SendAsync("LogoutAccount", "Ваш аккаунт заблокирован!", cancellationToken: token);
+                await _hubContext.Clients.User(userId).SendAsync("LogoutAccount", "Р’Р°С€ Р°РєРєР°СѓРЅС‚ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°РЅ!", cancellationToken: token);
             return await _context.SaveChangesAsync(cancellationToken: token) > 0;
         }
 
@@ -89,7 +89,7 @@ namespace ReviewEverything.Server.Services.UserManagementService
             else
                 await _userManager.RemoveFromRoleAsync(user, "Admin");
 
-            var message = statusRole ? "Вам выданы права администратора!" : "У вас отняты права администратора!";
+            var message = statusRole ? "Р’Р°Рј РІС‹РґР°РЅС‹ РїСЂР°РІР° Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°!" : "РЈ РІР°СЃ РѕС‚РЅСЏС‚С‹ РїСЂР°РІР° Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°!";
             await _hubContext.Clients.User(userId).SendAsync("LogoutAccount", message, cancellationToken: token);
         }
     }

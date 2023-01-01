@@ -46,9 +46,14 @@ namespace ReviewEverything.Server.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
-            if (await _userManager.FindByEmailAsync(model.Email) != null || await _userManager.FindByNameAsync(model.UserName) != null)
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
-                return Conflict("Пользователь уже существует в системе");
+                return Conflict("Пользователь с таким Email уже существует в системе");
+            }
+
+            if (await _userManager.FindByNameAsync(model.UserName) != null)
+            {
+                return Conflict("Пользователь с таким Именем пользователя уже существует в системе");
             }
 
             ApplicationUser applicationUser = new() { Email = model.Email, UserName = model.UserName, FullName = model.FullName };
@@ -57,11 +62,6 @@ namespace ReviewEverything.Server.Controllers
             if (result.Succeeded)
             {
                 return Ok("Пользователь успешно зарегистрирован");
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
             }
 
             return StatusCode(500, "Не удалось зарегистрировать пользователя, пожалуйста повторите попытку позже");

@@ -4,7 +4,6 @@ using MudBlazor;
 using System.Net.Http.Json;
 using System.Net;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using ReviewEverything.Client.Resources;
 using ReviewEverything.Shared.Models.Account;
 
@@ -17,12 +16,7 @@ namespace ReviewEverything.Client.Pages.Account
 
         private readonly SignUpModel _model = new();
         private bool _sendRequest = false;
-
-        protected override void OnInitialized()
-        {
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
-        }
-
+        
         private async Task OnValidSubmitAsync(EditContext context)
         {
             _sendRequest = true;
@@ -30,7 +24,7 @@ namespace ReviewEverything.Client.Pages.Account
             var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Account/SignUp", _model);
             if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
             {
-                NavigationManager.NavigateTo("/Account/SingIn");
+                NavigationManager.NavigateTo("/Account/sign-in");
             }
             else
             {

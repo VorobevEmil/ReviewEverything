@@ -7,7 +7,6 @@ using System.Net;
 using ReviewEverything.Client.Services.Authorization;
 using ReviewEverything.Client.Shared;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using ReviewEverything.Client.Resources;
 
 namespace ReviewEverything.Client.Pages.Account

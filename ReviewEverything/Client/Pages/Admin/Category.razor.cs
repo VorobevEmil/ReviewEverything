@@ -20,8 +20,6 @@ namespace ReviewEverything.Client.Pages.Admin
 
         protected override async Task OnInitializedAsync()
         {
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
-
             Categories = (await HttpClient.GetFromJsonAsync<List<CategoryResponse>>("api/Category"))!;
         }
 

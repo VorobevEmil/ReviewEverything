@@ -22,11 +22,6 @@ public partial class SignIn
     private readonly SignInModel _model = new();
     private bool _sendRequest = false;
 
-    protected override void OnInitialized()
-    {
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomEnd;
-    }
-
     private async Task OnValidSubmitAsync(EditContext context)
     {
         _sendRequest = true;

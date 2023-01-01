@@ -95,22 +95,25 @@ namespace ReviewEverything.Server.Controllers
                 return Conflict("Данное имя пользователя уже существует в системе");
             }
 
-            var userClaims = result.Principal.Claims.ToArray();
-            var providerKey = userClaims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
             ApplicationUser user = new()
             {
                 FullName = model.FullName,
                 UserName = model.UserName,
             };
 
-            await _userManager.CreateAsync(user);
+            var identityResult = await _userManager.CreateAsync(user);
+            if (identityResult.Succeeded)
+            {
+                var userClaims = result.Principal.Claims.ToArray();
+                var providerKey = userClaims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            var loginProvider = new UserLoginInfo(provider, providerKey, provider);
-            await _userManager.AddLoginAsync(user, loginProvider);
-            await _signInManager.SignInAsync(user, false, null);
+                var loginProvider = new UserLoginInfo(provider, providerKey, provider);
+                await _userManager.AddLoginAsync(user, loginProvider);
+                await _signInManager.SignInAsync(user, false, null);
+                return Ok();
+            }
 
-            return Ok();
+            return Conflict("Не удалось зарегистрировать пользователя, пожалуйста повторите попытку позже");
         }
     }
 }

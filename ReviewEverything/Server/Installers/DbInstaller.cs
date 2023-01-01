@@ -22,7 +22,15 @@ namespace ReviewEverything.Server.Installers
             builder.Services.AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(builder.Configuration["ConnectionStrings:PostgreSQL"]));
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+                {
+                    opt.Password.RequiredLength = 8;
+                    opt.SignIn.RequireConfirmedEmail = false;
+                    opt.Password.RequireUppercase = false;
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequireDigit = false;
+                    opt.Password.RequireLowercase = false;
+                })
                 .AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddScoped<IUserService, UserService>();
