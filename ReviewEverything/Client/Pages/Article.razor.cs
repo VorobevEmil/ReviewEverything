@@ -19,7 +19,7 @@ namespace ReviewEverything.Client.Pages
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         [Inject] private IStringLocalizer<Article> Localizer { get; set; } = default!;
         private IStringLocalizer<ResourcesShared> SharedLocalizer { get; set; } = ResourcesShared.CreateStringLocalizer();
-        private SimilarArticleView _similarArticle = default!;
+        private SimilarArticleView? _similarArticle;
         private ClaimsPrincipal User { get; set; } = default!;
         private string? _userId = default!;
         private ArticleReviewResponse ArticleReview { get; set; } = default!;

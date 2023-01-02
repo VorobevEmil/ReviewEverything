@@ -17,8 +17,8 @@
     <Authorized>
         <MudListItem Text="@Localizer["Аккаунт"]">
             <NestedList>
-                <MudListItem Text="@Localizer["Моя страница"]" OnClick="MainLayout.ChangeDrawerOpen" Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")" />
-                <MudListItem Text="@Localizer["Настройки"]" OnClick="MainLayout.ChangeDrawerOpen" />
+                <MudListItem Text="@Localizer["Моя страница"]" OnClick="() => MainLayout.NavigateMyPage(context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value)" />
+                @*<MudListItem Text="@Localizer["Настройки"]" OnClick="MainLayout.ChangeDrawerOpen" />*@
             </NestedList>
         </MudListItem>
     </Authorized>
@@ -28,6 +28,5 @@
 @code
 {
     [CascadingParameter] private MainLayout MainLayout { get; set; } = default!;
-
     [Inject] private IStringLocalizer<MainLayout> Localizer { get; set; } = default!;
 }

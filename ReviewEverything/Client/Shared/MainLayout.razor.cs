@@ -14,7 +14,7 @@ namespace ReviewEverything.Client.Shared
         [Inject] private LayoutService LayoutService { get; set; } = default!;
         [Inject] private HostAuthenticationStateProvider HostAuthenticationStateProvider { get; set; } = default!;
         [Inject] private IStringLocalizer<MainLayout> Localizer { get; set; } = default!;
-        private bool DrawerOpen { get; set; } = default!;
+        private bool DrawerOpen { get; set; }
         private MudThemeProvider _mudThemeProvider = default!;
         private LoginPartial _loginPartial = default!;
         private HubConnection _hubConnection = default!;
@@ -60,6 +60,13 @@ namespace ReviewEverything.Client.Shared
         {
             HostAuthenticationStateProvider.RefreshState();
             StateHasChanged();
+        }
+
+        public void NavigateMyPage(string userId)
+        {
+            NavigationManager.NavigateTo("");
+            NavigationManager.NavigateTo($"./user/{userId}");
+            ChangeDrawerOpen();
         }
     }
 }

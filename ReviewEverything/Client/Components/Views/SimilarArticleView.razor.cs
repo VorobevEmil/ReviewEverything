@@ -15,7 +15,11 @@ namespace ReviewEverything.Client.Components.Views
 
         protected override async Task OnInitializedAsync()
         {
-            SimilarArticles = await HttpClient.GetFromJsonAsync<List<SimilarArticleReviewResponse>>($"api/Review/GetSimilarArticles/{ReviewId}");
+            var httpResponseMessage = await HttpClient.GetAsync($"api/Review/GetSimilarArticles/{ReviewId}");
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                SimilarArticles = await httpResponseMessage.Content.ReadFromJsonAsync<List<SimilarArticleReviewResponse>>();
+            }
         }
 
         public void NavigateArticle(int id)

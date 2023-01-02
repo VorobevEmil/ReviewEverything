@@ -37,7 +37,7 @@ namespace ReviewEverything.Client.Helpers
 
         public async Task ShowErrorResponseMessage()
         {
-            await ShowMessageBoxAsync("Не удалось обработать запрос, повторите попытку позже", "Ок", null);
+            await ShowMessageBoxAsync("Не удалось обработать запрос, повторите попытку позже", "ОК", null);
             _navigationManager.NavigateTo("./");
         }
     }

@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Выбрать" xml:space="preserve">
+  <data name="Выберите изображения" xml:space="preserve">
     <value>Browse</value>
   </data>
   <data name="Добавить" xml:space="preserve">
@@ -144,7 +144,7 @@
   <data name="Оценка автора по 10-б шкале" xml:space="preserve">
     <value>The author's rating on a 10-point scale</value>
   </data>
-  <data name="Перетащите изображения" xml:space="preserve">
+  <data name="Перетащите изображения сюда" xml:space="preserve">
     <value>Drag and Drop images</value>
   </data>
   <data name="Подзаголовок" xml:space="preserve">

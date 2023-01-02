@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ReviewEverything.Shared.Contracts.Responses;
+using ReviewEverything.Shared.Models.Validation;
 
 namespace ReviewEverything.Shared.Contracts.Requests
 {
@@ -19,6 +20,7 @@ namespace ReviewEverything.Shared.Contracts.Requests
 
         public CompositionRequest? Composition { get; set; } = default!;
         public List<TagResponse> Tags { get; set; } = new();
+        [EnsureOneElement(ErrorMessage = "Загрузите обложку")]
         public List<CloudImageRequest> CloudImages { get; set; } = new();
     }
 }

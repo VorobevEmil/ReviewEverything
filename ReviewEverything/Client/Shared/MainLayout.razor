@@ -50,8 +50,8 @@
                                     <MudButton StartIcon="@Icons.Material.Filled.Person" Variant="Variant.Outlined" Color="Color.Inherit">@Localizer["Аккаунт"]</MudButton>
                                 </ActivatorContent>
                                 <ChildContent>
-                                    <MudMenuItem Href="@($"./user/{context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value}")">@Localizer["Моя страница"]</MudMenuItem>
-                                    <MudMenuItem>@Localizer["Настройки"]</MudMenuItem>
+                                    <MudMenuItem OnClick="() => NavigateMyPage(context.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value)">@Localizer["Моя страница"]</MudMenuItem>
+                                    @*<MudMenuItem>@Localizer["Настройки"]</MudMenuItem>*@
                                 </ChildContent>
                             </MudMenu>
                             <span class="mx-1"></span>

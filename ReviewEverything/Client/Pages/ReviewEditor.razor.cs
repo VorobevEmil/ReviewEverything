@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
@@ -5,8 +6,8 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Components.ReviewEditor;
+using ReviewEverything.Client.Helpers;
 using ReviewEverything.Shared.Contracts.Requests;
-using ReviewEverything.Shared.Contracts.Responses;
 
 namespace ReviewEverything.Client.Pages
 {
@@ -50,16 +51,6 @@ namespace ReviewEverything.Client.Pages
 
         private async Task OnValidSubmitAsync(EditContext context)
         {
-            if (_review.CloudImages.Count == default)
-            {
-                Snackbar.Add("Добавьте обложку для обзора", Severity.Error);
-            }
-
-            if (_review.CompositionId == default)
-            {
-                Snackbar.Add("Выберите произведение для обзора", Severity.Error);
-            }
-
             await _composition.CreateCompositionAsync();
             await _tags.CreateTagsAsync();
 
@@ -77,6 +68,14 @@ namespace ReviewEverything.Client.Pages
             else
             {
                 Snackbar.Add($"Не удалось {(Id != null ? "обновить" : "создать")} обзор", Severity.Error);
+            }
+        }
+
+        private void ShowErrorsMessageInMessageBox(EditContext context)
+        {
+            foreach (var errorMessage in context.GetValidationMessages())
+            {
+                Snackbar.Add(errorMessage, Severity.Warning);
             }
         }
     }

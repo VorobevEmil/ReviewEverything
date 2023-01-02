@@ -1,6 +1,10 @@
 ﻿@page "/article/{Id:int}"
 @using ReviewEverything.Client.Components.Views
 
+@{
+    #pragma warning disable
+}
+
 <PageTitle>
     @(ArticleReview is null ? SharedLocalizer["Загрузка..."] : ArticleReview.Title)
 </PageTitle>
