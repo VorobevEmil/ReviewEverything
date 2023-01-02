@@ -6,17 +6,20 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using ReviewEverything.Shared.Contracts.Requests;
 using Microsoft.Extensions.Localization;
+using ReviewEverything.Client.Components.Views;
 using ReviewEverything.Client.Resources;
+using ReviewEverything.Client.Helpers;
 
 namespace ReviewEverything.Client.Pages
 {
     public partial class Article
     {
         [Parameter] public int Id { get; set; }
+        [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         [Inject] private IStringLocalizer<Article> Localizer { get; set; } = default!;
         private IStringLocalizer<ResourcesShared> SharedLocalizer { get; set; } = ResourcesShared.CreateStringLocalizer();
-
+        private SimilarArticleView _similarArticle = default!;
         private ClaimsPrincipal User { get; set; } = default!;
         private string? _userId = default!;
         private ArticleReviewResponse ArticleReview { get; set; } = default!;
@@ -42,6 +45,10 @@ namespace ReviewEverything.Client.Pages
             {
                 ArticleReview = (await httpResponseMessage.Content.ReadFromJsonAsync<ArticleReviewResponse>())!;
                 GetUserRating();
+            }
+            else
+            {
+                await DisplayHelper.ShowErrorResponseMessage();
             }
         }
 

@@ -21,7 +21,7 @@
                 <MudTextField FullWidth="true" @bind-Value="_model.RePassword" For="@(() => _model.RePassword)" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Подтвердите Пароль"]" InputType="InputType.Password"></MudTextField>
             </div>
 
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="my-5" FullWidth="true" Color="Color.Dark">@Localizer["Создать аккаунт"]</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="my-5" FullWidth="true" Color="Color.Primary">@Localizer["Создать аккаунт"]</MudButton>
 
             <MudOverlay Visible="_sendRequest" DarkBackground="true" Absolute="true">
                 <MudProgressCircular Color="Color.Secondary" Indeterminate="true"/>

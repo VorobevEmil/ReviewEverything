@@ -22,7 +22,7 @@ namespace ReviewEverything.Client.Theme
 
         private static readonly LayoutProperties LandingPageLayoutProperties = new()
         {
-            DefaultBorderRadius = "6px"
+            DefaultBorderRadius = "6px",
         };
         private static readonly Typography LandingPageTypography = new()
         {
@@ -82,17 +82,19 @@ namespace ReviewEverything.Client.Theme
         };
         private static readonly Palette LandingPageLightPalette = new()
         {
-            AppbarText = "#424242",
-            AppbarBackground = "#f6f8f7",
+            AppbarText = "#41495a",
+            AppbarBackground = "#ffffff",
             BackgroundGrey = "#F9FAFC",
-            Surface = "#f6f8f7ff",
+            Surface = "#ffffff",
             Background = "#F9FAFC",
+            TextPrimary = "#181c25",
             TextSecondary = "#425466",
             Dark = "#110E2D",
             DarkLighten = "#1A1643",
             GrayDefault = "#4B5563",
             GrayLight = "#9CA3AF",
             GrayLighter = "#adbdccff",
+
         };
         private static readonly PaletteDark LandingPageDarkPalette = new()
         {

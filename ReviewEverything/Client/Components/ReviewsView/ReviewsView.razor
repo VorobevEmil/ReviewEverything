@@ -43,7 +43,7 @@
                                         }
                                     </div>
                                     <MudText Style="font-size: 12px;">@review.CreationDate.CalculateRelativeTime()</MudText>
-                                    <MudText Class="mt-1" Style="font-weight: bold; font-size: 14px;">@review.Title</MudText>
+                                    <MudText Class="mt-1" Style="font-weight: 500; font-size: 14px;">@review.Title</MudText>
                                 </div>
                             </div>
                             <div class="d-flex my-2" style="align-items: center;">
@@ -88,7 +88,7 @@
                                             </div>
                                         }
                                     </div>
-                                    <MudText Style="font-weight: bold; font-size: 16px;">@review.Title</MudText>
+                                    <MudText Style="font-weight: 500; font-size: 16px;">@review.Title</MudText>
                                     <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() - @review.Subtitle</MudText>
                                     <div class="d-flex mt-1" style="align-items: center; flex-wrap: wrap;">
                                         <div class="d-flex">
@@ -131,9 +131,9 @@
         }
         else if (Reviews != null && Reviews.Count == default)
         {
-            <MudPaper Class="my-2 px-4 py-5 text-center">
+            <div class="my-2 px-4 py-5 text-center">
                 <MudText>@Localizer["Обзоров ещё не было создано"]</MudText>
-            </MudPaper>
+            </div>
         }
         else
         {

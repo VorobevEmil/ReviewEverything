@@ -50,8 +50,18 @@ namespace ReviewEverything.Client.Pages
 
         private async Task OnValidSubmitAsync(EditContext context)
         {
+            if (_review.CloudImages.Count == default)
+            {
+                Snackbar.Add("Добавьте обложку для обзора", Severity.Error);
+            }
+
+            if (_review.CompositionId == default)
+            {
+                Snackbar.Add("Выберите произведение для обзора", Severity.Error);
+            }
+
             await _composition.CreateCompositionAsync();
-            await CreateTagsAsync();
+            await _tags.CreateTagsAsync();
 
             HttpResponseMessage httpMessageResponse;
             if (Id != null)
@@ -67,26 +77,6 @@ namespace ReviewEverything.Client.Pages
             else
             {
                 Snackbar.Add($"Не удалось {(Id != null ? "обновить" : "создать")} обзор", Severity.Error);
-            }
-        }
-
-        private async Task CreateTagsAsync()
-        {
-            foreach (var tag in _tags.CreateTags)
-            {
-                var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Tag", tag);
-
-
-                if (httpResponseMessage.StatusCode == HttpStatusCode.Created)
-                {
-                    var responseTag = (await httpResponseMessage.Content.ReadFromJsonAsync<TagResponse>())!;
-                    _review.Tags[_review.Tags.FindIndex(x => x.Title == tag.Title)] = responseTag;
-                }
-                else
-                {
-                    _review.Tags.RemoveAll(x => x.Title == tag.Title);
-                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
-                }
             }
         }
     }

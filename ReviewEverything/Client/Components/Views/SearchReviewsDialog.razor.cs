@@ -24,7 +24,7 @@ namespace ReviewEverything.Client.Components.Views
             return (await HttpClient.GetFromJsonAsync<IEnumerable<ReviewSearchResponse>>($"api/Review/Search/{search}"))!;
         }
 
-        private async Task OnSearchResult(ReviewSearchResponse? entry)
+        private async Task OnSearchResult(ReviewSearchResponse entry)
         {
             NavigationManager.NavigateTo($"/redirect-page");
             NavigationManager.NavigateTo($"/Article/{entry.Id}");

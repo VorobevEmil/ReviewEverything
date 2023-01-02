@@ -15,7 +15,7 @@
                 <MudTextField FullWidth="true" @bind-Value="_model.Password" For="@(() => _model.Password)" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Пароль"]" InputType="InputType.Password"></MudTextField>
             </div>
 
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="mt-5" FullWidth="true" Color="Color.Dark">@Localizer["Войти"]</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="mt-5" FullWidth="true" Color="Color.Primary">@Localizer["Войти"]</MudButton>
             <MudText Class="my-3" Style="font-size: 12px;">@Localizer["Нет учетной записи?"] <MudLink Style="font-size: 12px;" Href="./account/sign-up">@Localizer["Создать аккаунт"]</MudLink></MudText>
 
             <MudOverlay Visible="_sendRequest" DarkBackground="true" Absolute="true">

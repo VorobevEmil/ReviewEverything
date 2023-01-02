@@ -11,7 +11,7 @@ namespace ReviewEverything.Client.Components.Views
         [Parameter] public int ReviewId { get; set; }
         [Inject] private IStringLocalizer<Article> Localizer { get; set; } = default!;
 
-        private List<SimilarArticleReviewResponse>? SimilarArticles { get; set; } = default!;
+        public List<SimilarArticleReviewResponse>? SimilarArticles { get; private set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {

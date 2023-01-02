@@ -29,7 +29,6 @@ namespace ReviewEverything.Client.Components.Views
 
         protected override async Task OnInitializedAsync()
         {
-
             Comments = await GetCommentsAsync();
             User = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
             await ConfigureHubConnectionAsync();

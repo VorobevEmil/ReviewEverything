@@ -123,10 +123,19 @@
   <data name="Да" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Не удалось обработать запрос, повторите попытку позже" xml:space="preserve">
+    <value>The request could not be processed, please try again later</value>
+  </data>
+  <data name="Ок" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="Отмена" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="Удаление не может быть отменено!" xml:space="preserve">
     <value>Deleting can not be undone!</value>
+  </data>
+  <data name="Удалить" xml:space="preserve">
+    <value>Delete</value>
   </data>
 </root>

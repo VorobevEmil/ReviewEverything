@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
+using ReviewEverything.Client.Helpers;
 using ReviewEverything.Client.Resources;
 using ReviewEverything.Shared.Contracts.Responses;
 
@@ -11,6 +12,7 @@ namespace ReviewEverything.Client.Pages
     public partial class User
     {
         [Parameter] public string Id { get; set; } = default!;
+        [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         private IStringLocalizer<ResourcesShared> SharedLocalizer { get; set; } = ResourcesShared.CreateStringLocalizer();
 
@@ -24,6 +26,11 @@ namespace ReviewEverything.Client.Pages
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 UserResponse = (await httpResponseMessage.Content.ReadFromJsonAsync<UserResponse>())!;
+            }
+            else
+            {
+                await DisplayHelper.ShowErrorResponseMessage();
+                return;
             }
 
             var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;

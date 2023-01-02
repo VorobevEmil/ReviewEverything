@@ -108,9 +108,9 @@
         }
     </MudPaper>
     <div class="mt-2 container-similar-review">
-        <SimilarArticleView ReviewId="Id" />
+        <SimilarArticleView ReviewId="Id" @ref="_similarArticle" />
     </div>
-    <div class="mt-2 container-comment">
+    <div class="@($"mt-2 {(_similarArticle is null || _similarArticle.SimilarArticles is null || (_similarArticle.SimilarArticles is not null && _similarArticle.SimilarArticles.Count != default) ? "container-comment" : null)}")">
         <ArticleComments Id="Id" />
     </div>
 </div>

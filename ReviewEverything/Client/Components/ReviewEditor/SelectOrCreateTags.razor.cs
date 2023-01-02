@@ -57,5 +57,25 @@ namespace ReviewEverything.Client.Components.ReviewEditor
                 Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
             }
         }
+
+        public async Task CreateTagsAsync()
+        {
+            foreach (var tag in CreateTags)
+            {
+                var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Tag", tag);
+
+
+                if (httpResponseMessage.StatusCode == HttpStatusCode.Created)
+                {
+                    var responseTag = (await httpResponseMessage.Content.ReadFromJsonAsync<TagResponse>())!;
+                    Review.Tags[Review.Tags.FindIndex(x => x.Title == tag.Title)] = responseTag;
+                }
+                else
+                {
+                    Review.Tags.RemoveAll(x => x.Title == tag.Title);
+                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
+                }
+            }
+        }
     }
 }

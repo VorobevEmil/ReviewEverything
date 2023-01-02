@@ -1,9 +1,10 @@
 ﻿@using ReviewEverything.Client.Helpers
 @using ReviewEverything.Client.Pages
 
-<MudPaper Class="px-2 py-3">
-    @if (SimilarArticles is not null)
-    {
+@if (SimilarArticles is not null && SimilarArticles.Count != default)
+{
+    <MudPaper Class="px-2 py-3">
+        <MudText Style="font-size: 21px;">@Localizer["Похожее"]</MudText>
         <MudBreakpointProvider>
             @foreach (var similarArticle in SimilarArticles)
             {
@@ -34,7 +35,7 @@
                         </div>
                     </MudHidden>
                     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                        <MudImage Style="width:100%;" Src="@similarArticle.CloudImage.Url" Alt="@similarArticle.CloudImage.Title" Elevation="25" Class="rounded-lg" />
+                        <MudImage Style="width: 100%;" Src="@similarArticle.CloudImage.Url" Alt="@similarArticle.CloudImage.Title" Elevation="25" Class="rounded-lg" />
                         <MudText Style="font-size: 0.9375rem;" Class="mt-1">@similarArticle.Title</MudText>
                         <div class="d-flex align-center">
                             <MudIcon Style="height: 16px; width: 16px;" Icon="@Icons.Filled.Comment" />
@@ -45,13 +46,16 @@
                 <MudDivider Light="true" Class="my-3" />
             }
         </MudBreakpointProvider>
-    }
-    else
-    {
+    </MudPaper>
+}
+else if (SimilarArticles is null)
+{
+    <MudPaper Class="px-2 py-3">
+        <MudText Style="font-size: 21px;">@Localizer["Похожее"]</MudText>
         @for (int i = 0; i < 3; i++)
         {
             <MudSkeleton Height="200px" Style="margin: -30px 0;" Animation="Animation.Wave" />
             <MudDivider Light="true" Class="my-3" />
         }
-    }
-</MudPaper>
+    </MudPaper>
+}
