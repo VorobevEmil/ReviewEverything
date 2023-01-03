@@ -53,7 +53,11 @@ namespace ReviewEverything.Client.Pages
         {
             await _composition.CreateCompositionAsync();
             await _tags.CreateTagsAsync();
+            await CreateOrUpdateReview();
+        }
 
+        private async Task CreateOrUpdateReview()
+        {
             HttpResponseMessage httpMessageResponse;
             if (Id != null)
                 httpMessageResponse = await HttpClient.PutAsJsonAsync($"api/Review/{Id}", _review);
@@ -73,6 +77,7 @@ namespace ReviewEverything.Client.Pages
 
         private void ShowErrorsMessageInMessageBox(EditContext context)
         {
+            Snackbar.Clear();
             foreach (var errorMessage in context.GetValidationMessages())
             {
                 Snackbar.Add(errorMessage, Severity.Warning);
