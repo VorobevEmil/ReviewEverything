@@ -17,9 +17,10 @@ namespace ReviewEverything.Client.Pages
         [Inject] private IStringLocalizer<ReviewEditor> Localizer { get; set; } = default!;
         [Parameter] public int? Id { get; set; }
 
-        private ReviewRequest _review = null!;
-        private SelectOrCreateComposition _composition = null!;
-        private SelectOrCreateTags _tags = null!;
+        private ReviewRequest _review = default!;
+        private SelectOrCreateComposition _composition = default!;
+        private SelectOrCreateTags _tags = default!;
+        private ImageEditor _imageEditor = default!;
         protected override async Task OnInitializedAsync()
         {
             await GetReviewAsync();
@@ -27,7 +28,7 @@ namespace ReviewEverything.Client.Pages
 
         private async Task GetReviewAsync()
         {
-            if (Id != null)
+            if (Id is not null)
             {
                 var httpResponseMessage = await HttpClient.GetAsync($"api/Review/Edit/{Id}");
                 if (httpResponseMessage.StatusCode == HttpStatusCode.OK)

@@ -94,11 +94,6 @@
                 </MudHidden>
             </MudBreakpointProvider>
             <MudDivider Class="mt-2" />
-            <style>
-                img {
-                    max-width: 100%;
-                }
-            </style>
             <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
             <LikeUsersView Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
         }

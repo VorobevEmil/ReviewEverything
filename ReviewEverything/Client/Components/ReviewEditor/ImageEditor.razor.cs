@@ -1,7 +1,9 @@
-﻿using System.Net.Http.Json;
+﻿using System.Linq;
+using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
+using MudBlazor;
 using ReviewEverything.Shared.Contracts.Requests;
 using ReviewEverything.Shared.Models;
 
@@ -10,52 +12,132 @@ namespace ReviewEverything.Client.Components.ReviewEditor
     public partial class ImageEditor
     {
         [Parameter] public List<CloudImageRequest> CloudImages { get; set; } = default!;
+        [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private IStringLocalizer<Pages.ReviewEditor> Localizer { get; set; } = default!;
 
-        private static readonly string _defaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mud-width-full mud-height-full z-10";
-        private string _dragClass = _defaultDragClass;
-        
-        private async Task OnInputFileChanged(InputFileChangeEventArgs e)
+        private Dictionary<CloudImageRequest, CancellationTokenSource> SendImagesDictionary { get; set; } = new();
+        private static readonly string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mud-width-full mud-height-full z-10";
+        private string _dragClass = DefaultDragClass;
+
+        private async Task OnInputFileChangedAsync(InputFileChangeEventArgs e)
         {
             ClearDragClass();
+
+            List<Task> uploadTasks = new List<Task>();
             var files = e.GetMultipleFiles();
             foreach (var file in files)
             {
-                var buffers = new byte[file.Size];
-                await file.OpenReadStream(20971520L).ReadAsync(buffers);
-
-                FileData fileData = new()
+                if (CheckFileContentTypeContainsImage(file))
                 {
-                    FileName = file.Name,
-                    Data = buffers
-                };
-
-                var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/CloudImage", fileData);
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    CloudImages.Add(new CloudImageRequest()
-                    {
-                        Title = file.Name,
-                        Url = await httpResponseMessage.Content.ReadAsStringAsync()
-                    });
+                    Snackbar.Add($"Добавляемый файл {file.Name} должен быть изображением", Severity.Warning);
+                    continue;
                 }
 
+                if (CheckImageContainsInCloudImages(file.Name))
+                {
+                    Snackbar.Add($"Добавляемое изображение {file.Name} уже содержится в списке", Severity.Warning);
+                    continue;
+                }
+
+                uploadTasks.Add(UploadImageAsync(file));
+            }
+
+            await Task.WhenAll(uploadTasks);
+        }
+
+        private bool CheckFileContentTypeContainsImage(IBrowserFile file)
+            => file.ContentType.Contains("Image");
+
+        private bool CheckImageContainsInCloudImages(string fileName)
+            => CloudImages.Any(x => x.Title == fileName);
+
+        private async Task UploadImageAsync(IBrowserFile file)
+        {
+            var fileData = await ReadFileAsync(file);
+            if (fileData is not null)
+                await SendImageOnCloudAsync(fileData);
+        }
+
+        private async Task<FileData?> ReadFileAsync(IBrowserFile file)
+        {
+            //max allowed size 10 mb
+            var maxAllowedSize = 1024 * 1024 * 10;
+            if (file.Size > maxAllowedSize)
+            {
+                Snackbar.Add("Максимальный загружаемого изображения 10 мб", Severity.Warning);
+                return null;
+            }
+
+            var buffers = new byte[file.Size];
+
+            var readAsync = await file.OpenReadStream(maxAllowedSize).ReadAsync(buffers);
+            return new()
+            {
+                FileName = file.Name,
+                Data = buffers,
+                ContentType = file.ContentType
+            };
+        }
+
+        private async Task SendImageOnCloudAsync(FileData fileData)
+        {
+
+            var cloudImageRequest = AddCloudImageRequestInCloudImages(fileData);
+            StateHasChanged();
+            var token = CreateCancellationToken(cloudImageRequest);
+            var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/CloudImage", fileData, cancellationToken: token);
+            if (!token.IsCancellationRequested)
+            {
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    cloudImageRequest.Url = await httpResponseMessage.Content.ReadAsStringAsync(token);
+                }
+                else
+                {
+                    CloudImages.Remove(cloudImageRequest);
+                    Snackbar.Add($"Не удалось загрузить изображение {fileData.FileName}", Severity.Error);
+                }
                 StateHasChanged();
             }
         }
+
+        private CloudImageRequest AddCloudImageRequestInCloudImages(FileData fileData)
+        {
+            var cloudImageRequest = new CloudImageRequest()
+            {
+                Title = fileData.FileName,
+            };
+            CloudImages.Add(cloudImageRequest);
+            return cloudImageRequest;
+        }
+
+        private CancellationToken CreateCancellationToken(CloudImageRequest cloudImageRequest)
+        {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            SendImagesDictionary[cloudImageRequest] = cancellationTokenSource;
+            return cancellationTokenSource.Token;
+        }
+
         private void ClearDragClass()
         {
-            _dragClass = _defaultDragClass;
+            _dragClass = DefaultDragClass;
+        }
+        private void SetDragClass()
+        {
+            _dragClass = $"{DefaultDragClass} mud-border-primary";
         }
 
         private void RemoveCloudImage(CloudImageRequest cloudImage)
         {
+            if (SendImagesDictionary.ContainsKey(cloudImage))
+            {
+                SendImagesDictionary[cloudImage].Cancel();
+                SendImagesDictionary.Remove(cloudImage);
+            }
+
             CloudImages.Remove(cloudImage);
+            StateHasChanged();
         }
 
-        private void SetDragClass()
-        {
-            _dragClass = $"{_defaultDragClass} mud-border-primary";
-        }
     }
 }

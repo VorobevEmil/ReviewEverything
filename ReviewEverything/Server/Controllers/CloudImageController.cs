@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using ReviewEverything.Server.Services.CloudImageService;
 using ReviewEverything.Shared.Models;
 
@@ -18,8 +19,17 @@ namespace ReviewEverything.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> SendImageOnCloud(FileData fileData, CancellationToken token)
         {
-            return Ok(await _service.SendImageOnCloudAsync(fileData, token));
+            try
+            {
+                if (!fileData.ContentType.Contains("image"))
+                    return BadRequest("Загруженный файл должен быть изображением");
+
+                return Ok(await _service.SendImageOnCloudAsync(fileData, token));
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
-
 }

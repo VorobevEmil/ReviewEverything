@@ -117,6 +117,9 @@ a, .btn-link {
         display: table;
         width: 100%;
     }
+    img[alt=review-image] {
+        max-width: 100%;
+    }
 }
 
 @media (min-width: 1000px) {
@@ -138,6 +141,10 @@ a, .btn-link {
     .filter-options {
         display: flex;
         width: fit-content;
+    }
+
+    img[alt=review-image] {
+        max-width: 70%;
     }
 }
 

@@ -28,8 +28,13 @@ namespace ReviewEverything.Server.Services.CloudImageService
                 Transformation = new Transformation().Height(300)
             };
             var uploadResult = await _cloudinary.UploadAsync(uploadParams, cancellationToken: token);
-
+            
             return uploadResult.Url.AbsoluteUri;
+        }
+
+        public async Task RemoveImageOnCloudAsync(string publicId)
+        {
+            var delResult = await _cloudinary.DeleteResourcesAsync(publicId);
         }
     }
 }

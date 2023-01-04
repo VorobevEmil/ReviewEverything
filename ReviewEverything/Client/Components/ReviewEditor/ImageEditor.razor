@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-md-6 col-sm-12">
-        <MudFileUpload T="IReadOnlyList<IBrowserFile>" OnFilesChanged="OnInputFileChanged" Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
+        <MudFileUpload T="IReadOnlyList<IBrowserFile>" Accept="image/*" OnFilesChanged="OnInputFileChangedAsync" Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
                        @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
             <ButtonTemplate>
                 <MudPaper Height="200px" Outlined="true" Class="@_dragClass" Style="display: flex; justify-content: center; align-items: center;">
@@ -16,10 +16,17 @@
         </MudFileUpload>
     </div>
     <div class="col-md-6 col-sm-12">
-        <MudPaper Height="200px" Outlined="true" Class="@_defaultDragClass" Style="margin-top: 6px; overflow-y: auto">
+        <MudPaper Height="200px" Outlined="true" Class="@DefaultDragClass" Style="margin-top: 6px; overflow-y: auto">
             @foreach (var cloudImage in CloudImages)
             {
-                <MudChip Color="Color.Default" Size="Size.Small" OnClose="() => RemoveCloudImage(cloudImage)">@(cloudImage.Title.Length > 30 ? string.Concat(cloudImage.Title.Take(20)) + "..." + string.Concat(cloudImage.Title.Skip(cloudImage.Title.Length - 5)) : cloudImage.Title)</MudChip>
+                <MudChip Color="Color.Default" Size="Size.Small" OnClose="() => RemoveCloudImage(cloudImage)">
+                    @if (cloudImage.Url is null)
+                    {
+                        <MudProgressCircular Style="width:16px; height: 16px; margin-right: 6px;" Indeterminate="true" />
+                    }
+
+                    @(cloudImage.Title.Length > 30 ? string.Concat(cloudImage.Title.Take(20)) + "..." + string.Concat(cloudImage.Title.Skip(cloudImage.Title.Length - 5)) : cloudImage.Title)
+                </MudChip>
             }
         </MudPaper>
     </div>
