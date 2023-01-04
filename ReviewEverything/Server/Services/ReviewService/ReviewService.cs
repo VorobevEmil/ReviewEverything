@@ -34,7 +34,7 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .FirstOrDefaultAsync(review => review.Id == id);
         }
 
-        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
+        public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? filterByCompositionId, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
         {
             var reviews = GetIncludesReview()
                 .Include(x => x.Comments)
@@ -44,6 +44,7 @@ namespace ReviewEverything.Server.Services.ReviewService
             reviews = GetReviewsByCategoryId(reviews, categoryId);
             reviews = GetReviewsByTags(reviews, tags);
             reviews = FilterReviewsByAuthorScore(reviews, filterByAuthorScore);
+            reviews = FilterReviewsByCompositionId(reviews, filterByCompositionId);
             reviews = SortReviewsByProperty(reviews, sortByProperty);
 
             return await reviews
@@ -79,6 +80,14 @@ namespace ReviewEverything.Server.Services.ReviewService
                     .Where(x => _context.Tags
                         .Where(tag => tags.Contains(tag.Id))
                         .All(tag => x.Tags.Contains(tag)));
+        }
+
+        private IQueryable<Review> FilterReviewsByCompositionId(IQueryable<Review> reviews, int? compositionId)
+        {
+            if (compositionId == null)
+                return reviews;
+            return reviews
+                .Where(x => x.CompositionId == compositionId);
         }
 
         private IQueryable<Review> FilterReviewsByAuthorScore(IQueryable<Review> reviews, int? authorScore)

@@ -2,7 +2,7 @@
 @using ReviewEverything.Client.Components.Views
 
 @{
-    #pragma warning disable
+#pragma warning disable
 }
 
 <PageTitle>
@@ -35,14 +35,14 @@
                 <span style="font-size: 18px;">@Localizer["Оценка автора:"] @ArticleReview.AuthorScore/10</span>
             </div>
             <MudText Style="font-size: 24px;" Underline="Underline.Always" Color="Color.Default">@ArticleReview.Composition</MudText>
-            <MudText Style="font-size: 2.125em;" Class="mt-1">@ArticleReview.Title</MudText>
-            <MudText Style="font-size: 1.75em;" Class="mt-1">@ArticleReview.Subtitle</MudText>
+            <MudText Style="font-size: 1.75em;" Class="mt-1">@ArticleReview.Title</MudText>
+            <MudText Style="font-size: 1.25em;" Class="mt-1">@ArticleReview.Subtitle</MudText>
 
             <MudCarousel ShowArrows="true" Style="height: 300px;" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
                 @foreach (var cloudImage in ArticleReview.CloudImages)
                 {
                     <MudCarouselItem Transition="Transition.Slide" Style="text-align: center;">
-                        <MudImage ObjectFit="ObjectFit.Cover" Style="height: 300px;" Src="@cloudImage.Url" Alt="@cloudImage.Title" Elevation="25" Class="rounded-lg" />
+                        <MudImage ObjectFit="ObjectFit.Contain" Style="height: 300px; width: 100%;" Src="@cloudImage.Url" Alt="@cloudImage.Title" Elevation="25" Class="rounded-lg" />
                     </MudCarouselItem>
                 }
             </MudCarousel>
@@ -94,6 +94,19 @@
                 </MudHidden>
             </MudBreakpointProvider>
             <MudDivider Class="mt-2" />
+
+            <style>
+                blockquote {
+                    margin: 0;
+                }
+
+                    blockquote p {
+                        padding: 15px;
+                        background: var(--mud-palette-background-grey);
+                        border-radius: 5px;
+                    }
+            </style>
+
             <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
             <LikeUsersView Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
         }

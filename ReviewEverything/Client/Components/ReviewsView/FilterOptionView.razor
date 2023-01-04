@@ -1,7 +1,13 @@
-﻿@inject IStringLocalizer<ReviewsView> Localizer
+﻿@using ReviewEverything.Shared.Contracts.Responses
+@inject IStringLocalizer<ReviewsView> Localizer
 
 <div class="my-2 options">
     <div class="filter-options">
+        <MudAutocomplete T="CompositionResponse" SearchFunc="@SearchCompositionAsync" ToStringFunc="@(e => e.Title)"
+                         Value="_selectedComposition" ValueChanged="SelectCompositionAsync" SelectValueOnTab="true"
+                         Placeholder="@Localizer["Произведение"]"  Clearable="true" OnClearButtonClick="ClearCompositionSearchAsync"
+                         Variant="Variant.Outlined" Margin="Margin.Dense" InputMode="InputMode.search" />
+        <span class="mx-1"></span>
         <MudSelect T="SortReviewByProperty" Value="_sortByProperty" ValueChanged="ChangeSortByProperty" Style="width: min-content;" Variant="Variant.Outlined" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
             <MudSelectItem Value="SortReviewByProperty.Latest">@Localizer["Сортировать по последним"]</MudSelectItem>
             <MudSelectItem Value="SortReviewByProperty.Oldest">@Localizer["Сортировать по старым"]</MudSelectItem>

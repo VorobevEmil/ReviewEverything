@@ -20,7 +20,6 @@ namespace ReviewEverything.Client.Pages
         private ReviewRequest _review = default!;
         private SelectOrCreateComposition _composition = default!;
         private SelectOrCreateTags _tags = default!;
-        private ImageEditor _imageEditor = default!;
         protected override async Task OnInitializedAsync()
         {
             await GetReviewAsync();
@@ -50,11 +49,18 @@ namespace ReviewEverything.Client.Pages
             }
         }
 
-        private async Task OnValidSubmitAsync(EditContext context)
+        private async Task CheckValidSubmitAsync(EditContext context)
         {
-            await _composition.CreateCompositionAsync();
-            await _tags.CreateTagsAsync();
-            await CreateOrUpdateReview();
+            if (context.Validate())
+            {
+                await _composition.CreateCompositionAsync();
+                await _tags.CreateTagsAsync();
+                await CreateOrUpdateReview();
+            }
+            else
+            {
+                ShowErrorsMessageInMessageBox(context);
+            }
         }
 
         private async Task CreateOrUpdateReview()

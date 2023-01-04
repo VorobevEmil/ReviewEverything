@@ -2,7 +2,7 @@
 @using ReviewEverything.Client.Components.Views
 
 @{
-    #pragma warning disable
+#pragma warning disable
 }
 <div class="mt-5">
     <div class="tags-view">
@@ -14,7 +14,11 @@
             <MudButton Class="mt-3" Color="Color.Primary" Variant="Variant.Outlined" OnClick="() => NavigateToReviewEditor()">@Localizer["Создать обзор"]</MudButton>
         }
         <CategoriesComponent GetReviewsFromApi="InitializationReviewsAsync" @ref="_categories" />
-        <FilterOptionView GetReviewsFromApi="InitializationReviewsAsync" @ref="_filterOption" />
+
+        <FilterOptionView GetReviewsFromApi="InitializationReviewsAsync" 
+                          UrlCategoryId="@(_categories is not null ? _categories.GetCategoryParameterUrl() : null)" 
+                          UserId="@UserId"
+                          @ref="_filterOption" />
         @if (Reviews != null && Reviews.Count != default)
         {
             foreach (var review in Reviews)

@@ -24,7 +24,7 @@ namespace ReviewEverything.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? categoryId, string? userId, string? idTags, CancellationToken token)
+        public async Task<ActionResult<List<ReviewResponse>>> GetAll(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? filterByCompositionId,  int? categoryId, string? userId, string? idTags, CancellationToken token)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace ReviewEverything.Server.Controllers
                     tags = new List<int>() { int.Parse(idTags) };
                 }
 
-                var reviews = await _service.GetReviewsAsync(page, pageSize, sortByProperty, filterByAuthorScore, categoryId, userId, tags, token);
+                var reviews = await _service.GetReviewsAsync(page, pageSize, sortByProperty, filterByAuthorScore, filterByCompositionId, categoryId, userId, tags, token);
                 return Ok(_mapper.Map<List<ReviewResponse>>(reviews));
             }
             catch

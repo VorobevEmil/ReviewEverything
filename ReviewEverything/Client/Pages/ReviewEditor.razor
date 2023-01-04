@@ -14,7 +14,7 @@
     <MudPaper Class="px-4 py-5">
         @if (_review != null)
         {
-            <EditForm Model="@_review" OnInvalidSubmit="ShowErrorsMessageInMessageBox" OnValidSubmit="OnValidSubmitAsync">
+            <EditForm Model="@_review">
                 <DataAnnotationsValidator />
                 <ImageEditor CloudImages="_review.CloudImages" />
                 <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название"]" @bind-Value="_review.Title" />
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="mt-5 text-end">
-                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" ButtonType="ButtonType.Submit">@Localizer["Сохранить"]</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="() => CheckValidSubmitAsync(context)">@Localizer["Сохранить"]</MudButton>
                 </div>
             </EditForm>
         }

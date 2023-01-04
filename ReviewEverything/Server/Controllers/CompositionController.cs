@@ -22,11 +22,11 @@ public class CompositionController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<CompositionResponse>>> GetAll(string? search)
+    public async Task<ActionResult<List<CompositionResponse>>> GetAll(string? search, int? categoryId, string? userId)
     {
         try
         {
-            var compositions = await _service.GetCompositionsAsync(search);
+            var compositions = await _service.GetCompositionsAsync(search, categoryId, userId);
             return Ok(_mapper.Map<List<CompositionResponse>>(compositions));
         }
         catch
