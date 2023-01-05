@@ -15,12 +15,12 @@ namespace ReviewEverything.Server.Controllers
         {
             try
             {
-                using var browserFetcher = new BrowserFetcher();
+                using var browserFetcher = new BrowserFetcher(new BrowserFetcherOptions());
                 await browserFetcher.DownloadAsync();
                 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
                 {
                     Headless = true,
-                    IgnoredDefaultArgs = new[] { "--disable-extensions" }
+                    IgnoredDefaultArgs = new[] { "--disable-extensions", "--no-sandbox", "--disable-setuid-sandbox" }
                 });
                 await using var page = await browser.NewPageAsync();
                 await page.EmulateMediaTypeAsync(MediaType.Screen);
@@ -45,7 +45,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"{ex.Message} \n {HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
+                return BadRequest($"{ex.Message}");
             }
         }
     }
