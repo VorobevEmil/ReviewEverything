@@ -23,7 +23,8 @@ namespace ReviewEverything.Server.Controllers
                 });
                 await using var page = await browser.NewPageAsync();
                 await page.EmulateMediaTypeAsync(MediaType.Screen);
-                await page.GoToAsync($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
+                Console.WriteLine($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
+                await page.GoToAsync($"https://{HttpContext.Request.Host}/article/{articleId}");
                 await page.WaitForSelectorAsync("#Need_Authorize", new WaitForSelectorOptions() { Timeout = 300000 });
                 await page.EvaluateExpressionAsync(
                     "var article = document.getElementById('Article');" +
@@ -35,7 +36,6 @@ namespace ReviewEverything.Server.Controllers
                 await Task.Delay(400);
                 var pdfContent = await page.PdfDataAsync();
 
-                Console.WriteLine($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
                 return new FileData()
                 {
                     Data = pdfContent,
