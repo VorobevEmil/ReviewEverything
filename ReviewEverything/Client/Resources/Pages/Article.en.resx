@@ -135,6 +135,9 @@
   <data name="Комментарии" xml:space="preserve">
     <value>Comments</value>
   </data>
+  <data name="Не удалось преобразовать в PDF" xml:space="preserve">
+    <value>Could not convert to PDF</value>
+  </data>
   <data name="Отправить" xml:space="preserve">
     <value>Send</value>
   </data>

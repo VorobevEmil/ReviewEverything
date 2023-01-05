@@ -15,27 +15,8 @@ namespace ReviewEverything.Client.Components.Views
         [Parameter] public int Id { get; set; }
         [Parameter] public List<string> LikeUsers { get; set; } = default!;
         private ClaimsPrincipal User { get; set; } = default!;
-        private Breakpoint _breakpoint = default!;
 
         private bool _userLike = default!;
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                var subscriptionResult = await BreakpointListener.Subscribe((breakpoint) =>
-                {
-                    _breakpoint = breakpoint;
-                    InvokeAsync(StateHasChanged);
-                }, new ResizeOptions
-                {
-                    NotifyOnBreakpointOnly = true,
-                });
-
-                _breakpoint = subscriptionResult.Breakpoint;
-                StateHasChanged();
-            }
-        }
 
         protected override async Task OnInitializedAsync()
         {

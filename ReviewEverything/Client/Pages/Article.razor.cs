@@ -6,15 +6,20 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using ReviewEverything.Shared.Contracts.Requests;
 using Microsoft.Extensions.Localization;
+using Microsoft.JSInterop;
+using MudBlazor;
 using ReviewEverything.Client.Components.Views;
 using ReviewEverything.Client.Resources;
 using ReviewEverything.Client.Helpers;
+using ReviewEverything.Shared.Models;
 
 namespace ReviewEverything.Client.Pages
 {
     public partial class Article
     {
         [Parameter] public int Id { get; set; }
+        [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+        [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private DisplayHelper DisplayHelper { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
         [Inject] private IStringLocalizer<Article> Localizer { get; set; } = default!;
@@ -25,6 +30,7 @@ namespace ReviewEverything.Client.Pages
         private ArticleReviewResponse ArticleReview { get; set; } = default!;
 
         private int _userRatingComposition = default!;
+        private bool _convertedToPdf = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -101,6 +107,22 @@ namespace ReviewEverything.Client.Pages
             {
                 if (userScore != null) ArticleReview.UserScores.Remove(userScore);
             }
+        }
+
+        private async Task ConvertToPDFAsync()
+        {
+            _convertedToPdf = true;
+            var httpMessageResponse = await HttpClient.GetAsync($"api/PdfConverter/{Id}");
+            if (httpMessageResponse.IsSuccessStatusCode)
+            {
+                var fileData = (await httpMessageResponse.Content.ReadFromJsonAsync<FileData>())!;
+                await JSRuntime.InvokeVoidAsync("download", fileData.Data, fileData.FileName, fileData.ContentType);
+            }
+            else
+            {
+                Snackbar.Add(Localizer["Не удалось преобразовать в PDF"], Severity.Error);
+            }
+            _convertedToPdf = false;
         }
     }
 }

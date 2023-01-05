@@ -10,7 +10,7 @@
 </PageTitle>
 
 <div class="container mt-5 mb-3">
-    <MudPaper Class="px-5 py-3">
+    <MudPaper Class="px-5 py-3" id="Article">
         @if (ArticleReview != null)
         {
             <div class="mb-1 d-flex" style="align-items: center;">
@@ -25,7 +25,7 @@
                         <MudRating Size="Size.Large" SelectedValue="_userRatingComposition" SelectedValueChanged="SetUserRatingAsync" />
                     </Authorized>
                     <NotAuthorized>
-                        <MudText>@Localizer["Для того, чтобы оценить произведение необходима авторизация"]</MudText>
+                        <MudText id="Need_Authorize">@Localizer["Для того, чтобы оценить произведение необходима авторизация"]</MudText>
                     </NotAuthorized>
                 </AuthorizeView>
             </div>
@@ -108,7 +108,22 @@
             </style>
 
             <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
-            <LikeUsersView Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
+            <div class="d-flex justify-content-between" style="align-items: center">
+                <LikeUsersView Id="ArticleReview.Id" LikeUsers="ArticleReview.LikeUsers" />
+                <div id="Convert">
+                    <MudButton Disabled="_convertedToPdf" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="ConvertToPDFAsync">
+                        @if (_convertedToPdf)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+                            <MudText Class="mx-1">Processing</MudText>
+                        }
+                        else
+                        {
+                            <span class="mud-button-label">Convert to PDF</span>
+                        }
+                    </MudButton>
+                </div>
+            </div>
         }
         else
         {

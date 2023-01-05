@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
@@ -6,7 +5,6 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using ReviewEverything.Client.Components.ReviewEditor;
-using ReviewEverything.Client.Helpers;
 using ReviewEverything.Shared.Contracts.Requests;
 
 namespace ReviewEverything.Client.Pages

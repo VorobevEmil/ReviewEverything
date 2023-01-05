@@ -3,8 +3,20 @@
 
 @if (User != null)
 {
-    <div class="mt-2 d-flex" style="align-items: center;">
-        <MudCheckBox Size="(_breakpoint is Breakpoint.Xs ? Size.Small : Size.Medium)" Dense="true" ReadOnly="!User.Identity!.IsAuthenticated" T="bool" Checked="_userLike" CheckedChanged="SetUserLikeAsync" Color="Color.Secondary" UnCheckedColor="Color.Default" CheckedIcon="@Icons.Material.Filled.Favorite" UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" />
-        <MudText Style="@(_breakpoint is Breakpoint.Xs ? "font-size: 11px;" : null)" Class="mx-1">@LikeUsers.Count()</MudText>
+    <style>
+        @@media(max-width: 1000px) {
+            .mud-icon-size-medium {
+                font-size: 1.25rem;
+            }
+
+            .like-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <div class="d-flex" style="align-items: center;">
+        <MudCheckBox Dense="true" ReadOnly="!User.Identity!.IsAuthenticated" T="bool" Checked="_userLike" CheckedChanged="SetUserLikeAsync" Color="Color.Secondary" UnCheckedColor="Color.Default" CheckedIcon="@Icons.Material.Filled.Favorite" UncheckedIcon="@Icons.Material.Filled.FavoriteBorder" />
+        <MudText Class="like-text">@LikeUsers.Count()</MudText>
     </div>
 }
