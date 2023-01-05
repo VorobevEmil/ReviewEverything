@@ -20,7 +20,8 @@ namespace ReviewEverything.Server.Controllers
                 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
                 {
                     Headless = true,
-                    IgnoredDefaultArgs = new[] { "--disable-extensions", "--no-sandbox", "--disable-setuid-sandbox" }
+                    Args = new []{ "--no-sandbox", "--disable-setuid-sandbox" },
+                    IgnoredDefaultArgs = new[] { "--disable-extensions" }
                 });
                 await using var page = await browser.NewPageAsync();
                 await page.EmulateMediaTypeAsync(MediaType.Screen);
