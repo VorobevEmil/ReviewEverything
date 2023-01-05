@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ReviewEverything.Shared.Contracts.Responses;
-using ReviewEverything.Shared.Models.Validation;
+using ReviewEverything.Shared.Models.CustomValidationAttribute;
 
 namespace ReviewEverything.Shared.Contracts.Requests
 {
@@ -8,7 +8,6 @@ namespace ReviewEverything.Shared.Contracts.Requests
     {
         [Required]
         public string Title { get; set; } = default!;
-        [Required]
         public string Subtitle { get; set; } = default!;
         [Required]
         public string Body { get; set; } = default!;

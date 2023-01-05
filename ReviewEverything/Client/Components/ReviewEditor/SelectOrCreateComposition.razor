@@ -8,7 +8,7 @@
         <MudAutocomplete T="CompositionResponse" SearchFunc="@SearchCompositionAsync" ToStringFunc="@(e => e.Title)"
                      Value="_selectedComposition" ValueChanged="SelectComposition" SelectValueOnTab="true"
                      Adornment="Adornment.Start" AdornmentColor="Color.Default" AdornmentIcon="@Icons.Material.Filled.Reviews"
-                     Placeholder="@Localizer["Произведение"]" 
+                     Placeholder="@Localizer["Произведение*"]" 
                      Variant="Variant.Outlined" Margin="Margin.Dense" InputMode="InputMode.search" />
         <span class="mx-1"></span>
         <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SetPropertyForCreateComposition">@Localizer["Добавить"]</MudButton>
@@ -19,14 +19,14 @@ else
     <MudPaper Class="mt-3 px-2 py-3">
         @if (Categories != null)
         {
-            <MudSelect @bind-Value="Review.Composition.CategoryId" Label="@Localizer["Категория"]" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-3" AnchorOrigin="Origin.BottomCenter">
+            <MudSelect @bind-Value="Review.Composition.CategoryId" Label="@Localizer["Категория*"]" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-3" AnchorOrigin="Origin.BottomCenter">
                 @foreach (var category in Categories!)
                 {
                     <MudSelectItem Value="category.Id">@category.Title</MudSelectItem>
                 }
             </MudSelect>
         }
-        <MudTextField Class="mt-2" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название произведения"]" @bind-Value="Review.Composition.Title"/>
+        <MudTextField Class="mt-2" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название произведения*"]" @bind-Value="Review.Composition.Title"/>
         <MudButton Class="mt-2" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SetPropertyForSelectComposition">@Localizer["Отмена"]</MudButton>
     </MudPaper>
 }

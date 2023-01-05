@@ -19,5 +19,12 @@ namespace ReviewEverything.Server.Services.UserService
                 .Include(x => x.LikeReviews)
                 .FirstOrDefaultAsync(user => user.Id == id);
         }
+
+        public async Task<bool> EditAboutMeAsync(string userId, string aboutMe)
+        {
+            var user = await _context.Users.FirstAsync(x => x.Id == userId);
+            user.AboutMe = aboutMe;
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

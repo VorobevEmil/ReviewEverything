@@ -1,18 +1,20 @@
 ﻿@page "/user/{id}"
 @using ReviewEverything.Client.Components.ReviewsView
 
-<PageTitle>@(UserResponse is null ? SharedLocalizer["Загрузка..."] : UserResponse.FullName)</PageTitle>
+<PageTitle>
+    @(UserResponse is null ? SharedLocalizer["Загрузка..."] : UserResponse.FullName)
+</PageTitle>
 
 <div class="container mt-5">
     <MudPaper Class="px-4 py-5">
         <div class="row">
             <div class="col-sm-12 col-md-3" style="display: flex; align-items: center; flex-direction: column;">
-                @if (UserResponse != null)
+                @if (UserResponse is not null)
                 {
                     <MudAvatar Style="height: 200px; width: 200px; font-size: 10rem;" Variant="Variant.Outlined" Color="Color.Inherit">@UserResponse.FullName[0]</MudAvatar>
                     <MudText Class="mt-2" Style="word-break: break-all; font-size: 2rem; font-weight: 500">@UserResponse.UserName</MudText>
                     <div class="d-flex">
-                        <MudIcon Color="Color.Secondary" Icon="@Icons.Filled.Favorite"/>
+                        <MudIcon Color="Color.Secondary" Icon="@Icons.Filled.Favorite" />
                         <MudText Class="mx-1">@UserResponse.Likes</MudText>
                     </div>
                 }
@@ -25,11 +27,33 @@
             <div class="col-sm-12 col-md-9">
                 @if (UserResponse != null)
                 {
-                    <MudText Style="word-break: break-word; font-size: 3rem;">@UserResponse.FullName</MudText>
+                    <MudText Style="word-break: break-word; font-size: 2em;">@UserResponse.FullName</MudText>
+                    @if (!string.IsNullOrEmpty(UserResponse.AboutMe) || _userId == UserResponse.Id)
+                    {
+                        <div class="mt-2 d-flex justify-content-between">
+                            <MudText Style="font-size: 1.75em">@Localizer["Обо мне"]</MudText>
+                            @if (_userId == UserResponse.Id)
+                            {
+                                <MudIconButton Size="Size.Small" Color="Color.Inherit" Icon="@Icons.Filled.Edit" OnClick="SetValueFieldEditAboutMe" />
+                            }
+                        </div>
+                        @if (_editAboutMe is null)
+                        {
+                            <MudText Style="font-size: 18px">@UserResponse.AboutMe</MudText>
+                        }
+                        else
+                        {
+                            <MudTextField @bind-Value="_editAboutMe" Lines="5" Placeholder="@Localizer["Обо мне"]" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                            <MudChip Size="Size.Small" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="() => _editAboutMe = null">@Localizer["Отмена"]</MudChip>
+                            <MudChip Size="Size.Small" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="SaveAboutMeAsync">@Localizer["Сохранить"]</MudChip>
+                        }
+                    }
                 }
                 else
                 {
-                    <MudSkeleton Width="300px" Height="80px" />
+                    <MudSkeleton Width="300px" Height="50px" Style="margin:-10px 0" />
+                    <MudSkeleton Width="150px" Height="50px" Style="margin:-10px 0" />
+                    <MudSkeleton Height="300px" Style="margin:-45px 0" />
                 }
             </div>
         </div>

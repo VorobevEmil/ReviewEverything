@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Services.UserService;
 using ReviewEverything.Shared.Contracts.Responses;
@@ -28,6 +30,22 @@ namespace ReviewEverything.Server.Controllers
                     return NotFound();
 
                 return Ok(_mapper.Map<UserResponse>(user));
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditAboutMe([FromBody] string aboutMe)
+        {
+            try
+            {
+                var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var result = await _service.EditAboutMeAsync(userId, aboutMe);
+                return result ? Ok() : BadRequest();
             }
             catch
             {

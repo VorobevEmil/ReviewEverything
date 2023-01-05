@@ -17,9 +17,9 @@
             <EditForm Model="@_review">
                 <DataAnnotationsValidator />
                 <ImageEditor CloudImages="_review.CloudImages" />
-                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название"]" @bind-Value="_review.Title" />
+                <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Название*"]" @bind-Value="_review.Title" />
                 <MudTextField Class="mt-3" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Подзаголовок"]" @bind-Value="_review.Subtitle" />
-                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Оценка автора по 10-б шкале"]" @bind-Value="_review.AuthorScore" />
+                <MudNumericField Class="mt-3" Min="1" Max="10" Margin="Margin.Dense" Variant="Variant.Outlined" Placeholder="@Localizer["Оценка автора по 10-б шкале*"]" @bind-Value="_review.AuthorScore" />
 
                 <SelectOrCreateComposition Review="_review" @ref="_composition" />
                 <SelectOrCreateTags Review="_review" @ref="_tags" />

@@ -13,6 +13,8 @@ namespace ReviewEverything.Server.Common.MappingProfiles.Response
                     opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FullName, opt =>
                     opt.MapFrom(src => src.FullName))
+                .ForMember(dest => dest.AboutMe, opt =>
+                    opt.MapFrom(src => src.AboutMe))
                 .ForMember(dest => dest.UserName, opt =>
                     opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Likes, opt =>

@@ -10,7 +10,7 @@ namespace ReviewEverything.Shared.Models.Account
 
         [Required]
         [Display(Name = "Имя Пользователя")]
-        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Имя Пользователя может содерать только латинские буквы")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Имя пользователя может содержать Латинский алфавит, а также цифры")]
         public string UserName { get; set; } = default!;
     }
 }

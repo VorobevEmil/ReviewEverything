@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
+
 #pragma warning disable
-namespace ReviewEverything.Shared.Models.Validation
+namespace ReviewEverything.Shared.Models.CustomValidationAttribute
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class EnsureOneElementAttribute : ValidationAttribute

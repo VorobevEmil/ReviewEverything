@@ -93,7 +93,7 @@
                                         }
                                     </div>
                                     <MudText Style="font-weight: 500; font-size: 16px;">@review.Title</MudText>
-                                    <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() - @review.Subtitle</MudText>
+                                    <MudText Class="mt-1" Style="font-size: 14px;">@review.CreationDate.CalculateRelativeTime() @(!string.IsNullOrEmpty(review.Subtitle) ? $"- {review.Subtitle}" : null)</MudText>
                                     <div class="d-flex mt-1" style="align-items: center; flex-wrap: wrap;">
                                         <div class="d-flex">
                                             <MudIcon Style="height: 14px; width: 14px;" Icon="@Icons.Filled.PushPin" />

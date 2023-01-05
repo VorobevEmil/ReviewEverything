@@ -117,55 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Выберите изображения" xml:space="preserve">
-    <value>Browse</value>
-  </data>
-  <data name="Добавить" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="или" xml:space="preserve">
-    <value>or</value>
-  </data>
-  <data name="Категория*" xml:space="preserve">
-    <value>Category*</value>
-  </data>
-  <data name="Название произведения*" xml:space="preserve">
-    <value>Title composition*</value>
-  </data>
-  <data name="Название*" xml:space="preserve">
-    <value>Title*</value>
-  </data>
-  <data name="обзор" xml:space="preserve">
-    <value>review</value>
+  <data name="Обо мне" xml:space="preserve">
+    <value>About me</value>
   </data>
   <data name="Отмена" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Оценка автора по 10-б шкале*" xml:space="preserve">
-    <value>The author's rating on a 10-point scale*</value>
-  </data>
-  <data name="Перетащите изображения сюда" xml:space="preserve">
-    <value>Drag and Drop images</value>
-  </data>
-  <data name="Подзаголовок" xml:space="preserve">
-    <value>Subtitle</value>
-  </data>
-  <data name="Произведение*" xml:space="preserve">
-    <value>Composition*</value>
-  </data>
   <data name="Редактировать" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="Создать" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="Создать тег" xml:space="preserve">
-    <value>Create tag</value>
-  </data>
   <data name="Сохранить" xml:space="preserve">
     <value>Save</value>
-  </data>
-  <data name="Теги" xml:space="preserve">
-    <value>Tags</value>
   </data>
 </root>
