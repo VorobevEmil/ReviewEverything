@@ -19,7 +19,8 @@ namespace ReviewEverything.Server.Controllers
                 await browserFetcher.DownloadAsync();
                 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
                 {
-                    Headless = true
+                    Headless = true,
+                    IgnoredDefaultArgs = new[] { "--disable-extensions" }
                 });
                 await using var page = await browser.NewPageAsync();
                 await page.EmulateMediaTypeAsync(MediaType.Screen);
