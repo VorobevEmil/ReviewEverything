@@ -23,8 +23,7 @@ namespace ReviewEverything.Server.Controllers
                 });
                 await using var page = await browser.NewPageAsync();
                 await page.EmulateMediaTypeAsync(MediaType.Screen);
-                Console.WriteLine($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
-                await page.GoToAsync($"https://{HttpContext.Request.Host}/article/{articleId}");
+                await page.GoToAsync($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
                 await page.WaitForSelectorAsync("#Need_Authorize", new WaitForSelectorOptions() { Timeout = 300000 });
                 await page.EvaluateExpressionAsync(
                     "var article = document.getElementById('Article');" +
@@ -43,9 +42,9 @@ namespace ReviewEverything.Server.Controllers
                     FileName = $"Article_{articleId}.pdf"
                 };
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest($"{ex.Message} \n {HttpContext.Request.Scheme}://{HttpContext.Request.Host}/article/{articleId}");
             }
         }
     }
