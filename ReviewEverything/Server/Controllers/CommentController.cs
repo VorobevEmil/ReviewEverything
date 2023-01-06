@@ -37,7 +37,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения сообщении произошла внутренняя ошибка сервера");
             }
         }
 
@@ -45,15 +45,27 @@ namespace ReviewEverything.Server.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CommentRequest request)
         {
-            var comment = _mapper.Map<Comment>(request);
-            comment.UserId = User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
-            comment.CreationDate = DateTime.UtcNow;
+            try
+            {
+                var comment = _mapper.Map<Comment>(request);
+                comment.UserId = User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+                comment.CreationDate = DateTime.UtcNow;
 
-            var result = await _service.CreateCommentAsync(comment);
-            var commentResponse = _mapper.Map<CommentResponse>(comment);
+                var result = await _service.CreateCommentAsync(comment);
+                if (result)
+                {
+                    var commentResponse = _mapper.Map<CommentResponse>(comment);
 
-            await _hubContext.Clients.Group(comment.ReviewId.ToString()).SendAsync("ReceiveComment", commentResponse);
-            return Ok();
+                    await _hubContext.Clients.Group(comment.ReviewId.ToString()).SendAsync("ReceiveComment", commentResponse);
+                    return Ok("Комментарии под обзором успешно создан");
+                }
+
+                return BadRequest("Не удалось создать комментарии, повторите попытку позже");
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания комментария произошла внутренняя ошибка сервера");
+            }
         }
     }
 }

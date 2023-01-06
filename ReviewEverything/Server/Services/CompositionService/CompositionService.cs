@@ -64,24 +64,5 @@ namespace ReviewEverything.Server.Services.CompositionService
 
             return created > 0;
         }
-
-        public async Task<bool> UpdateCompositionAsync(Composition composition)
-        {
-            _context.Compositions.Update(composition);
-            var updated = await _context.SaveChangesAsync();
-            return updated > 0;
-        }
-
-        public async Task<bool> DeleteCompositionAsync(int id)
-        {
-            var composition = await GetCompositionByIdAsync(id);
-            if (composition == null)
-                return false;
-
-            _context.Compositions.Remove(composition);
-            var deleted = await _context.SaveChangesAsync();
-
-            return deleted > 0;
-        }
     }
 }

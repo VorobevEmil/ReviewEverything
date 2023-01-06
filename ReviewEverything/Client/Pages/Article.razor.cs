@@ -97,7 +97,8 @@ namespace ReviewEverything.Client.Pages
                 }
                 userScore.Score = _userRatingComposition;
             }
-            else _userRatingComposition = 0;
+            else 
+                _userRatingComposition = 0;
         }
 
         private async Task DeleteUserRatingAsync(UserScoreResponse? userScore)

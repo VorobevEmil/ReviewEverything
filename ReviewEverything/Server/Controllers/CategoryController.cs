@@ -31,7 +31,7 @@ public class CategoryController : ControllerBase
         }
         catch
         {
-            return BadRequest();
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время получении категории произошла внутренняя ошибка сервера");
         }
     }
 
@@ -43,14 +43,14 @@ public class CategoryController : ControllerBase
             var category = await _service.GetCategoryByIdAsync(id);
             if (category == null)
             {
-                return NotFound();
+                return NotFound("Категория не найдена");
             }
 
             return Ok(_mapper.Map<CategoryResponse>(category));
         }
         catch
         {
-            return BadRequest();
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время поиска категории произошла внутренняя ошибка сервера");
         }
     }
 
@@ -58,35 +58,56 @@ public class CategoryController : ControllerBase
     [Authorize("Admin")]
     public async Task<IActionResult> Create([FromBody] CategoryRequest request)
     {
-        var category = _mapper.Map<Category>(request);
+        try
+        {
+            var category = _mapper.Map<Category>(request);
 
-        var result = await _service.CreateCategoryAsync(category);
+            var result = await _service.CreateCategoryAsync(category);
 
-        return Created(Url.Action($"GetById", new { id = category.Id })!, _mapper.Map<CategoryResponse>(category));
+            return Created(Url.Action($"GetById", new { id = category.Id })!, _mapper.Map<CategoryResponse>(category));
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpPut("{categoryId}")]
     [Authorize("Admin")]
     public async Task<IActionResult> Update([FromRoute] int categoryId, [FromBody] CategoryRequest request)
     {
-        var category = _mapper.Map<Category>(request);
-        category.Id = categoryId;
+        try
+        {
+            var category = _mapper.Map<Category>(request);
+            category.Id = categoryId;
 
-        var updated = await _service.UpdateCategoryAsync(category);
-        if (updated)
-            return Ok(category);
+            var updated = await _service.UpdateCategoryAsync(category);
+            if (updated)
+                return Ok(category);
 
-        return NotFound();
+            return NotFound("Категория не найдена");
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время обновления категории произошла внутренняя ошибка сервера");
+        }
     }
 
     [HttpDelete("{categoryId}")]
     [Authorize("Admin")]
     public async Task<IActionResult> Delete([FromRoute] int categoryId)
     {
-        var deleted = await _service.DeleteCategoryAsync(categoryId);
-        if (deleted)
-            return NoContent();
+        try
+        {
+            var deleted = await _service.DeleteCategoryAsync(categoryId);
+            if (deleted)
+                return NoContent();
 
-        return NotFound();
+            return NotFound("Категория не найдена");
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время удаления категории произошла внутренняя ошибка сервера");
+        }
     }
 }

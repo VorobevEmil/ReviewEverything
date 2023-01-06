@@ -31,7 +31,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения тегов произошла внутренняя ошибка сервера");
             }
         }
 
@@ -50,7 +50,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения тега произошла внутренняя ошибка сервера");
             }
         }
 
@@ -63,11 +63,11 @@ namespace ReviewEverything.Server.Controllers
                 if (existsTag)
                     return Ok("Данный тег уже существует");
 
-                return NotFound();
+                return NotFound("Тег не найден");
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время проверки на существование тега по названию произошла внутренняя ошибка сервера");
             }
         }
 
@@ -75,14 +75,21 @@ namespace ReviewEverything.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TagRequest request)
         {
-            var tag = _mapper.Map<Tag>(request);
+            try
+            {
+                var tag = _mapper.Map<Tag>(request);
 
-            var result = await _service.CreateTagAsync(tag);
+                var result = await _service.CreateTagAsync(tag);
 
-            if (!result)
-                return Conflict("Данный тег уже существует");
+                if (!result)
+                    return Conflict("Данный тег уже существует");
 
-            return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
+                return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания тега произошла внутренняя ошибка сервера");
+            }
         }
     }
 }

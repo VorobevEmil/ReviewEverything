@@ -142,10 +142,6 @@ a, .btn-link {
         display: flex;
         width: fit-content;
     }
-
-    img[alt=review-image] {
-        max-width: 70%;
-    }
 }
 
 @media (min-width: 960px) {

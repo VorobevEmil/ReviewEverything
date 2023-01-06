@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Models;
@@ -31,7 +32,7 @@ public class CompositionController : ControllerBase
         }
         catch
         {
-            return BadRequest();
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время получении произведений произошла внутренняя ошибка сервера");
         }
     }
 
@@ -50,7 +51,7 @@ public class CompositionController : ControllerBase
         }
         catch
         {
-            return BadRequest();
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения произведения произошла внутренняя ошибка сервера");
         }
     }
 
@@ -58,35 +59,20 @@ public class CompositionController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Create([FromBody] CompositionRequest request)
     {
-        var composition = _mapper.Map<Composition>(request);
+        try
+        {
+            var composition = _mapper.Map<Composition>(request);
 
-        var result = await _service.CreateCompositionAsync(composition);
+            var result = await _service.CreateCompositionAsync(composition);
+            if (result)
+            return Created(Url.Action($"GetById", new { id = composition.Id })!, _mapper.Map<CompositionResponse>(composition));
 
-        return Created(Url.Action($"GetById", new { id = composition.Id })!, _mapper.Map<CompositionResponse>(composition));
-    }
+            return BadRequest("Не удалось создать произведение, повторите попытку позже");
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания произведения произошла внутренняя ошибка сервера");
 
-    [HttpPut("{compositionId}")]
-    [Authorize("Admin")]
-    public async Task<IActionResult> Update([FromRoute] int compositionId, [FromBody] CompositionRequest request)
-    {
-        var composition = _mapper.Map<Composition>(request);
-        composition.Id = compositionId;
-
-        var updated = await _service.UpdateCompositionAsync(composition);
-        if (updated)
-            return Ok(composition);
-
-        return NotFound();
-    }
-
-    [HttpDelete("{compositionId}")]
-    [Authorize("Admin")]
-    public async Task<IActionResult> Delete([FromRoute] int compositionId)
-    {
-        var deleted = await _service.DeleteCompositionAsync(compositionId);
-        if (deleted)
-            return NoContent();
-
-        return NotFound();
+        }
     }
 }

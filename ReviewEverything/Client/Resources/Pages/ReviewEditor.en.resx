@@ -123,6 +123,9 @@
   <data name="Добавить" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Идет сохранение" xml:space="preserve">
+    <value>Saving is underway</value>
+  </data>
   <data name="или" xml:space="preserve">
     <value>or</value>
   </data>

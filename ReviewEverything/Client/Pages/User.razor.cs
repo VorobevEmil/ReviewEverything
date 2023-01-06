@@ -87,7 +87,7 @@ namespace ReviewEverything.Client.Pages
             }
             else
             {
-                Snackbar.Add("Не удалось изменить поле \"Обо мне\", попробуйте изменить позже", Severity.Error);
+                Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
             }
         }
     }

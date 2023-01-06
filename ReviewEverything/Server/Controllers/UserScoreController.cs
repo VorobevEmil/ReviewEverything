@@ -28,11 +28,11 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 await _service.CreateOrUpdateScopeAsync(_mapper.Map<UserScore>(request));
-                return Ok();
+                return Ok("Пользовательский рейтинг изменен");
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время изменения пользовательского рейтинга произошла внутренняя ошибка сервера");
             }
         }
 
@@ -49,7 +49,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время удаления пользовательского рейтинга произошла внутренняя ошибка сервера");
             }
         }
     }

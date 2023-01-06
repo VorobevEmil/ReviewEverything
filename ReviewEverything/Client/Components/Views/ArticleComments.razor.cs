@@ -87,7 +87,7 @@ namespace ReviewEverything.Client.Components.Views
                 var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Comment", newComment);
                 if (!httpResponseMessage.IsSuccessStatusCode)
                 {
-                    Snackbar.Add("Не удалось отправить комментарии", Severity.Error);
+                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
                 }
 
                 _bodyComment = default!;

@@ -129,6 +129,9 @@
   <data name="Название Категории" xml:space="preserve">
     <value>Category Title</value>
   </data>
+  <data name="Название категории должно не менее 3 символов" xml:space="preserve">
+    <value>The category name must be at least 3 characters long</value>
+  </data>
   <data name="Отмена" xml:space="preserve">
     <value>Cancel</value>
   </data>

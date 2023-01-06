@@ -27,13 +27,13 @@ namespace ReviewEverything.Server.Controllers
             {
                 var user = await _service.GetUserByIdAsync(id);
                 if (user == null)
-                    return NotFound();
+                    return NotFound("Пользователь не найден");
 
                 return Ok(_mapper.Map<UserResponse>(user));
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время поиска пользователя по Id произошла внутренняя ошибка сервера");
             }
         }
 
@@ -45,11 +45,11 @@ namespace ReviewEverything.Server.Controllers
             {
                 var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 var result = await _service.EditAboutMeAsync(userId, aboutMe);
-                return result ? Ok() : BadRequest();
+                return result ? Ok() : BadRequest("Не удалось обновить поле \"Обо мне\"");
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время обновления поля \"Обо мне\" произошла внутренняя ошибка сервера");
             }
         }
     }

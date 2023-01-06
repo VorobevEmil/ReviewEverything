@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using ReviewEverything.Server.Services.CloudImageService;
 using ReviewEverything.Shared.Models;
 
@@ -22,14 +21,26 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 if (!fileData.ContentType.Contains("image"))
-                    return BadRequest("Загруженный файл должен быть изображением");
+                    return BadRequest($"Загруженный файл {fileData.FileName} не является изображением");
+
+                if (fileData.Data.Length > GetMaxAllowedSize())
+                    return BadRequest(
+                        $"У изображения {fileData.FileName} превышен максимальный размер. Максимальный размер файла составляет {GetMaxAllowedSize() / 1024 / 1024} МБ");
 
                 return Ok(await _service.SendImageOnCloudAsync(fileData, token));
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Во время загрузки изображения {fileData.FileName} произошла внутренняя ошибка сервера");
             }
+        }
+
+        [HttpGet("GetMaxAllowedSize")]
+        public int GetMaxAllowedSize()
+        {
+            //max allowed size 10 mb
+            var maxAllowedSize = 1024 * 1024 * 10;
+            return maxAllowedSize;
         }
     }
 }

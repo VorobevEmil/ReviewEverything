@@ -11,9 +11,12 @@ namespace ReviewEverything.Client.Pages
 {
     public partial class ReviewEditor
     {
+        [Parameter] public int? Id { get; set; }
+
         [Inject] private ISnackbar Snackbar { get; set; } = default!;
         [Inject] private IStringLocalizer<ReviewEditor> Localizer { get; set; } = default!;
-        [Parameter] public int? Id { get; set; }
+
+        private bool _savingReview = default!;
 
         private ReviewRequest _review = default!;
         private SelectOrCreateComposition _composition = default!;
@@ -32,13 +35,9 @@ namespace ReviewEverything.Client.Pages
                 {
                     _review = (await httpResponseMessage.Content.ReadFromJsonAsync<ReviewRequest>())!;
                 }
-                else if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                {
-                    Snackbar.Add("Обзор был не найден", Severity.Error);
-                }
                 else
                 {
-                    Snackbar.Add("Не удалось загрузить обзор", Severity.Error);
+                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
                 }
             }
             else
@@ -51,9 +50,16 @@ namespace ReviewEverything.Client.Pages
         {
             if (context.Validate())
             {
+                _savingReview = true;
+
                 await _composition.CreateCompositionAsync();
                 await _tags.CreateTagsAsync();
-                await CreateOrUpdateReview();
+                if (Id == default)
+                    await CreateReviewAsync();
+                else
+                    await UpdateReviewAsync();
+
+                _savingReview = false;
             }
             else
             {
@@ -61,22 +67,26 @@ namespace ReviewEverything.Client.Pages
             }
         }
 
-        private async Task CreateOrUpdateReview()
+        private async Task CreateReviewAsync()
         {
-            HttpResponseMessage httpMessageResponse;
-            if (Id != null)
-                httpMessageResponse = await HttpClient.PutAsJsonAsync($"api/Review/{Id}", _review);
-            else
-                httpMessageResponse = await HttpClient.PostAsJsonAsync("api/Review", _review);
+            var httpMessageResponse = await HttpClient.PostAsJsonAsync("api/Review", _review);
 
-            if (httpMessageResponse.StatusCode is HttpStatusCode.OK or HttpStatusCode.Created)
+            await ShowResultRequestAsync(httpMessageResponse);
+        }
+
+        private async Task UpdateReviewAsync()
+        {
+            var httpMessageResponse = await HttpClient.PutAsJsonAsync($"api/Review/{Id}", _review);
+
+            await ShowResultRequestAsync(httpMessageResponse);
+        }
+
+        private async Task ShowResultRequestAsync(HttpResponseMessage httpMessageResponse)
+        {
+            Snackbar.Add(await httpMessageResponse.Content.ReadAsStringAsync(), httpMessageResponse.StatusCode == HttpStatusCode.OK ? Severity.Success : Severity.Error);
+            if (httpMessageResponse.StatusCode == HttpStatusCode.OK)
             {
-                Snackbar.Add($"Обзор успешно {(Id != null ? "обновлен" : "создан")}", Severity.Success);
                 NavigationManager.NavigateTo("./");
-            }
-            else
-            {
-                Snackbar.Add($"Не удалось {(Id != null ? "обновить" : "создать")} обзор", Severity.Error);
             }
         }
 

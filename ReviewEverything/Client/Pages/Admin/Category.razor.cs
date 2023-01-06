@@ -30,17 +30,10 @@ namespace ReviewEverything.Client.Pages.Admin
             bool? result = await MessageBox.Show();
             if (result == true && CheckMinSymbolsCategoryTitle())
             {
-                HttpResponseMessage httpResponseMessage;
                 if (categoryId == default)
-                {
-                    httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Category", CategoryRequest);
-                }
+                    await CreateCategoryAsync();
                 else
-                {
-                    httpResponseMessage = await HttpClient.PutAsJsonAsync($"api/Category/{categoryId}", CategoryRequest);
-                }
-
-                await CheckStatusCodeCreateOrEditCategoryResponseAsync(httpResponseMessage);
+                    await UpdateCategoryAsync(categoryId);
             }
 
             CategoryRequest.Title = string.Empty;
@@ -50,31 +43,33 @@ namespace ReviewEverything.Client.Pages.Admin
         {
             if (CategoryRequest.Title.Length <= 3)
             {
-                Snackbar.Add("Название категории должно не менее 3 символов", Severity.Warning);
+                Snackbar.Add(Localizer["Название категории должно не менее 3 символов"], Severity.Warning);
                 return false;
             }
 
             return true;
         }
 
-        private async Task CheckStatusCodeCreateOrEditCategoryResponseAsync(HttpResponseMessage httpResponseMessage)
+        private async Task CreateCategoryAsync()
         {
-            switch (httpResponseMessage.StatusCode)
+            var httpResponseMessage = await HttpClient.PostAsJsonAsync("api/Category", CategoryRequest);
+            if (httpResponseMessage.StatusCode == HttpStatusCode.Created)
+                Categories.Add((await httpResponseMessage.Content.ReadFromJsonAsync<CategoryResponse>())!);
+            else
+                Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
+        }
+
+        private async Task UpdateCategoryAsync(int categoryId)
+        {
+            var httpResponseMessage = await HttpClient.PutAsJsonAsync($"api/Category/{categoryId}", CategoryRequest);
+            if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
             {
-                case HttpStatusCode.Created:
-                    Categories.Add((await httpResponseMessage.Content.ReadFromJsonAsync<CategoryResponse>())!);
-                    break;
-                case HttpStatusCode.OK:
-                    var category = (await httpResponseMessage.Content.ReadFromJsonAsync<CategoryResponse>())!;
-                    Categories[Categories.FindIndex(x => x.Id == category.Id)] = category;
-                    break;
-                case HttpStatusCode.NotFound:
-                    Snackbar.Add("Категория не найдена", Severity.Error);
-                    break;
-                default:
-                    Snackbar.Add("Во время сохранения произошла ошибка", Severity.Error);
-                    break;
+                var category = (await httpResponseMessage.Content.ReadFromJsonAsync<CategoryResponse>())!;
+                Categories[Categories.FindIndex(x => x.Id == category.Id)] = category;
             }
+            else
+                Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
+
         }
 
         private async Task DeleteCategoryAsync(int categoryId)
@@ -84,18 +79,11 @@ namespace ReviewEverything.Client.Pages.Admin
 
             var httpResponseMessage = await HttpClient.DeleteAsync($"api/Category/{categoryId}");
 
-            switch (httpResponseMessage.StatusCode)
-            {
-                case HttpStatusCode.NoContent:
-                    Categories.RemoveAll(category => category.Id == categoryId);
-                    break;
-                case HttpStatusCode.NotFound:
-                    Snackbar.Add("Категория не найдена", Severity.Error);
-                    break;
-                default:
-                    Snackbar.Add("Во время удаления произошла ошибка", Severity.Error);
-                    break;
-            }
+            if (httpResponseMessage.StatusCode == HttpStatusCode.NoContent)
+                Categories.RemoveAll(category => category.Id == categoryId);
+            else
+                Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(), Severity.Error);
+
         }
     }
 }

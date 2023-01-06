@@ -51,7 +51,17 @@
                 </div>
 
                 <div class="mt-5 text-end">
-                    <MudButton Variant="Variant.Outlined" Color="Color.Inherit" OnClick="() => CheckValidSubmitAsync(context)">@Localizer["Сохранить"]</MudButton>
+                    <MudButton Disabled="@_savingReview" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="() => CheckValidSubmitAsync(context)">
+                        @if (_savingReview)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                            <MudText Class="mx-1">@Localizer["Идет сохранение"]</MudText>
+                        }
+                        else
+                        {
+                            <span class="mud-button-label">@Localizer["Сохранить"]</span>
+                        }
+                    </MudButton>
                 </div>
             </EditForm>
         }

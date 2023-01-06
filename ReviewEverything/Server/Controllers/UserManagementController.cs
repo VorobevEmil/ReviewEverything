@@ -38,9 +38,9 @@ namespace ReviewEverything.Server.Controllers
 
                 return Ok(new UserCountResponse(result.count, users));
             }
-            catch (Exception)
+            catch
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения всех пользователей произошла внутренняя ошибка сервера");
             }
         }
 
@@ -50,11 +50,12 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var result = await _service.RefreshStatusBlockAsync(userId, statusBlock, token: token);
-                return result ? Ok() : NotFound("Пользователь не найден");
+                return result ? Ok("Статус блокировки пользователя изменен") : NotFound("Пользователь не найден");
             }
             catch (Exception)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время блокировки пользователя произошла внутренняя ошибка сервера");
+
             }
         }
 
@@ -64,11 +65,11 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 await _service.ChangeUserRoleAsync(userId, statusRole, token: token);
-                return Ok();
+                return Ok("Роль пользователя изменена");
             }
             catch (Exception)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время изменения роли пользователя произошла внутренняя ошибка сервера");
             }
         }
 
@@ -76,11 +77,18 @@ namespace ReviewEverything.Server.Controllers
         [HttpDelete("{userId}")]
         public async Task<IActionResult> Delete([FromRoute] string userId, CancellationToken token)
         {
-            var deleted = await _service.DeleteUserAsync(userId, token);
-            if (deleted)
-                return NoContent();
+            try
+            {
+                var deleted = await _service.DeleteUserAsync(userId, token);
+                if (deleted)
+                    return NoContent();
 
-            return NotFound("Пользователь не найден");
+                return NotFound("Пользователь не найден");
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Во время удаления пользователя произошла внутренняя ошибка сервера");
+            }
         }
     }
 }

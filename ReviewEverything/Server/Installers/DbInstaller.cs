@@ -6,6 +6,7 @@ using ReviewEverything.Server.Services.CategoryService;
 using ReviewEverything.Server.Services.CloudImageService;
 using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Server.Services.CompositionService;
+using ReviewEverything.Server.Services.PdfConvertService;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Server.Services.TagService;
 using ReviewEverything.Server.Services.UserLikeService;
@@ -43,6 +44,7 @@ namespace ReviewEverything.Server.Installers
             builder.Services.AddScoped<IUserLikeService, UserLikeService>();
             builder.Services.AddScoped<IUserManagementService, UserManagementService>();
             builder.Services.AddScoped<ICloudImageService, CloudImageService>();
+            builder.Services.AddScoped<IPdfConvertService, PdfConvertService>();
         }
     }
 }

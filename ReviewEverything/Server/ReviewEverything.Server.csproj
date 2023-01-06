@@ -32,6 +32,7 @@
   <ItemGroup>
     <Folder Include="Options\" />
     <Folder Include="Services\CommentService\" />
+    <Folder Include="Services\PdfConvertService\" />
     <Folder Include="Services\UserLikeService\" />
     <Folder Include="Services\UserScoreService\" />
   </ItemGroup>

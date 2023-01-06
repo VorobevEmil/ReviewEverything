@@ -105,6 +105,18 @@
                         background: var(--mud-palette-background-grey);
                         border-radius: 5px;
                     }
+
+                @@media (min-width: 1000px) {
+                    img {
+                        max-width: 70%;
+                    }
+                }
+
+                @@media (max-width: 1000px) {
+                    img {
+                        max-width: 100%;
+                    }
+                }
             </style>
 
             <MudText Class="mt-4">@((MarkupString)Markdig.Markdown.ToHtml(ArticleReview.Body))</MudText>
@@ -114,7 +126,7 @@
                     <MudButton Disabled="_convertedToPdf" Variant="Variant.Outlined" Color="Color.Inherit" OnClick="ConvertToPDFAsync">
                         @if (_convertedToPdf)
                         {
-                            <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" />
                             <MudText Class="mx-1">Processing</MudText>
                         }
                         else

@@ -29,7 +29,7 @@ namespace ReviewEverything.Client.Components.ReviewEditor
             {
                 if (CheckFileContentTypeContainsImage(file))
                 {
-                    Snackbar.Add($"Добавляемый файл {file.Name} должен быть изображением", Severity.Warning);
+                    Snackbar.Add($"Добавляемый файл {file.Name} не является изображением", Severity.Warning);
                     continue;
                 }
 
@@ -60,11 +60,10 @@ namespace ReviewEverything.Client.Components.ReviewEditor
 
         private async Task<FileData?> ReadFileAsync(IBrowserFile file)
         {
-            //max allowed size 10 mb
-            var maxAllowedSize = 1024 * 1024 * 10;
+            var maxAllowedSize = await HttpClient.GetFromJsonAsync<int>("api/CloudImage/GetMaxAllowedSize");
             if (file.Size > maxAllowedSize)
             {
-                Snackbar.Add("Максимальный загружаемого изображения 10 мб", Severity.Warning);
+                Snackbar.Add($"У изображения {file.Name} превышен максимальный размер. Максимальный размер файла составляет {maxAllowedSize / 1024 / 1024} МБ", Severity.Warning);
                 return null;
             }
 
@@ -95,7 +94,7 @@ namespace ReviewEverything.Client.Components.ReviewEditor
                 else
                 {
                     CloudImages.Remove(cloudImageRequest);
-                    Snackbar.Add($"Не удалось загрузить изображение {fileData.FileName}", Severity.Error);
+                    Snackbar.Add(await httpResponseMessage.Content.ReadAsStringAsync(token), Severity.Error);
                 }
                 StateHasChanged();
             }
