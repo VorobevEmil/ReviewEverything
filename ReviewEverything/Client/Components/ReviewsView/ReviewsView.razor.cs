@@ -51,6 +51,7 @@ namespace ReviewEverything.Client.Components.ReviewsView
         private async Task<List<ReviewResponse>> GetReviewsFromApiAsync()
         {
             _loadingReviews = true;
+            StateHasChanged();
             
             var httpResponseMessage = await HttpClient.GetAsync($"api/Review?{GetParametersForReviewRequest()}", _cancellationTokenSource.Token);
             _loadingReviews = false;

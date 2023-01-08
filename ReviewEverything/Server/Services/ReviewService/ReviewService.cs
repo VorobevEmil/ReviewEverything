@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Shared.Models.Enums;
@@ -28,10 +30,15 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .AsQueryable();
         }
 
-        public async Task<Review?> GetReviewByIdAsync(int id)
+        public async Task<Review> GetReviewByIdAsync(int id)
         {
-            return await GetIncludesReview()
+            var review = await GetIncludesReview()
                 .FirstOrDefaultAsync(review => review.Id == id);
+
+            if (review == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Обзор не найден");
+
+            return review;
         }
 
         public async Task<List<Review>> GetReviewsAsync(int page, int pageSize, SortReviewByProperty sortByProperty, int? filterByAuthorScore, int? filterByCompositionId, int? categoryId, string? userId, List<int>? tags, CancellationToken token)
@@ -115,44 +122,60 @@ namespace ReviewEverything.Server.Services.ReviewService
             var tags = review.Tags;
             review.Tags = null!;
             await _context.Reviews.AddAsync(review);
-            await _context.SaveChangesAsync();
+            var createdReview = await _context.SaveChangesAsync() > 0;
             review.Tags = tags;
             await _context.SaveChangesAsync();
 
-            var created = await _context.SaveChangesAsync();
-
-            return created > 0;
+            return createdReview;
         }
 
-        public async Task<bool> UpdateReviewAsync(Review review)
+        public async Task<bool> UpdateReviewAsync(Review updateReview)
         {
-            var updateReview = await GetReviewByIdAsync(review.Id);
-            if (updateReview == null)
-                return false;
+            var oldReview = await GetReviewByIdAsync(updateReview.Id);
+            if (oldReview == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Обзор для обновления не найден");
 
-            updateReview.UpdateDate = DateTime.UtcNow;
-            updateReview.Title = review.Title;
-            updateReview.Subtitle = review.Subtitle;
-            updateReview.Body = review.Body;
-            updateReview.CompositionId = review.CompositionId;
-
-            var newTags = review.Tags.Where(x => !updateReview.Tags.Select(x => x.Id).Contains(x.Id)).ToList();
-            updateReview.Tags.RemoveAll(x => !review.Tags.Select(x => x.Id).Contains(x.Id));
-            updateReview.Tags.AddRange(newTags);
-
-            var newImages = review.CloudImages.Where(x => !updateReview.CloudImages.Select(x => x.Id).Contains(x.Id)).ToList();
-            updateReview.CloudImages.RemoveAll(x => !review.CloudImages.Select(x => x.Id).Contains(x.Id));
-            updateReview.CloudImages.AddRange(newImages);
-            _context.Reviews.Update(updateReview);
+            UpdatePropertyOldReview(oldReview, updateReview);
+            AddNewAndRemoveOldTags(oldReview, updateReview);
+            AddNewAndRemoveOldImages(oldReview, updateReview);
             var updated = await _context.SaveChangesAsync();
             return updated > 0;
+        }
+
+        private void UpdatePropertyOldReview(Review oldReview, Review updateReview)
+        {
+            oldReview.UpdateDate = DateTime.UtcNow;
+            oldReview.Title = updateReview.Title;
+            oldReview.Subtitle = updateReview.Subtitle;
+            oldReview.Body = updateReview.Body;
+            oldReview.CompositionId = updateReview.CompositionId;
+        }
+
+        private void AddNewAndRemoveOldTags(Review oldReview, Review updateReview)
+        {
+            var newTags = updateReview.Tags
+                .Where(x => !oldReview.Tags
+                    .Select(x => x.Id)
+                    .Contains(x.Id))
+                .ToList();
+
+            oldReview.Tags.RemoveAll(x => !updateReview.Tags.Select(x => x.Id).Contains(x.Id));
+            oldReview.Tags.AddRange(newTags);
+        }
+
+        private void AddNewAndRemoveOldImages(Review oldReview, Review updateReview)
+        {
+            var newImages = updateReview.CloudImages.Where(x => !oldReview.CloudImages.Select(x => x.Id).Contains(x.Id)).ToList();
+            oldReview.CloudImages.RemoveAll(x => !updateReview.CloudImages.Select(x => x.Id).Contains(x.Id));
+            oldReview.CloudImages.AddRange(newImages);
+
         }
 
         public async Task<bool> DeleteReviewAsync(int id)
         {
             var review = await _context.Reviews.FirstOrDefaultAsync(x => x.Id == id);
             if (review == null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Обзор для удаления не найден");
 
             _context.Reviews.Remove(review);
             var deleted = await _context.SaveChangesAsync();
@@ -160,7 +183,7 @@ namespace ReviewEverything.Server.Services.ReviewService
             return deleted > 0;
         }
 
-        public async Task<List<Review>?> GetSimilarArticleAsync(int reviewId)
+        public async Task<List<Review>> GetSimilarArticleAsync(int reviewId)
         {
             var review = await _context.Reviews
                 .Include(x => x.Author)
@@ -172,7 +195,7 @@ namespace ReviewEverything.Server.Services.ReviewService
                 .ThenInclude(x => x.Comments)
                 .FirstOrDefaultAsync(x => x.Id == reviewId);
             if (review == null)
-                return null!;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Обзор по которому нужно искать другие похожие обзоры не найден");
             review.Composition.Reviews.Remove(review);
 
             return review.Composition.Reviews;

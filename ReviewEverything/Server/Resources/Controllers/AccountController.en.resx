@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,43 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Войти" xml:space="preserve">
-    <value>Log In</value>
+  <data name="Ваш аккаунт заблокирован" xml:space="preserve">
+    <value>Your account is blocked</value>
   </data>
-  <data name="ВОЙТИ В УЧЕТНУЮ ЗАПИСЬ" xml:space="preserve">
-    <value>LOG IN TO ACCOUNT</value>
+  <data name="Не удалось зарегистрировать пользователя, пожалуйста повторите попытку позже" xml:space="preserve">
+    <value>Failed to register the user, please try again later</value>
   </data>
-  <data name="или" xml:space="preserve">
-    <value>or</value>
+  <data name="Неправильный логин или пароль, пожалуйста проверьте правильность набора данных" xml:space="preserve">
+    <value>Incorrect login or password, please check the correctness of the data set</value>
   </data>
-  <data name="Имя Пользователя" xml:space="preserve">
-    <value>Username</value>
+  <data name="Пользователь вышел из системы" xml:space="preserve">
+    <value>The user is successfully logged in</value>
   </data>
-  <data name="Нет учетной записи?" xml:space="preserve">
-    <value>Not a member?</value>
+  <data name="Пользователь с таким Email уже существует в системе" xml:space="preserve">
+    <value>A user with this Email already exists in the system</value>
   </data>
-  <data name="Пароль" xml:space="preserve">
-    <value>Password</value>
+  <data name="Пользователь с таким именем пользователя уже существует в системе" xml:space="preserve">
+    <value>A user with this username already exists in the system</value>
   </data>
-  <data name="Подтвердите Пароль" xml:space="preserve">
-    <value>Verify Password</value>
+  <data name="Пользователь успешно авторизирован" xml:space="preserve">
+    <value>The user has been successfully registered</value>
   </data>
-  <data name="Полное Имя" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
-  <data name="Продолжить с Google" xml:space="preserve">
-    <value>Continue with Google</value>
-  </data>
-  <data name="Продолжить с Vk" xml:space="preserve">
-    <value>Continue with Vk</value>
-  </data>
-  <data name="Регистрация" xml:space="preserve">
-    <value>Register</value>
-  </data>
-  <data name="Создать аккаунт" xml:space="preserve">
-    <value>Create an account</value>
-  </data>
-  <data name="СОЗДАТЬ УЧЕТНУЮ ЗАПИСЬ" xml:space="preserve">
-    <value>CREATE AN ACCOUNT</value>
+  <data name="Пользователь успешно зарегистрирован" xml:space="preserve">
+    <value>The user logged out</value>
   </data>
 </root>

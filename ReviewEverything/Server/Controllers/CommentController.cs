@@ -5,6 +5,7 @@ using ReviewEverything.Shared.Contracts.Requests;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Localization;
 using ReviewEverything.Server.Hubs;
 using ReviewEverything.Server.Services.CommentService;
 using ReviewEverything.Shared.Contracts.Responses;
@@ -18,12 +19,14 @@ namespace ReviewEverything.Server.Controllers
         private readonly ICommentService _service;
         private readonly IMapper _mapper;
         private readonly IHubContext<CommentHub> _hubContext;
+        private readonly IStringLocalizer<CommentController> _localizer;
 
-        public CommentController(ICommentService service, IMapper mapper, IHubContext<CommentHub> hubContext)
+        public CommentController(ICommentService service, IMapper mapper, IHubContext<CommentHub> hubContext, IStringLocalizer<CommentController> localizer)
         {
             _service = service;
             _mapper = mapper;
             _hubContext = hubContext;
+            _localizer = localizer;
         }
 
         [HttpGet("GetByReviewId/{reviewId}")]
@@ -37,7 +40,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения сообщении произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -57,14 +60,14 @@ namespace ReviewEverything.Server.Controllers
                     var commentResponse = _mapper.Map<CommentResponse>(comment);
 
                     await _hubContext.Clients.Group(comment.ReviewId.ToString()).SendAsync("ReceiveComment", commentResponse);
-                    return Ok("Комментарии под обзором успешно создан");
+                    return Ok(_localizer["Комментарии под обзором успешно создан"].Value);
                 }
 
-                return BadRequest("Не удалось создать комментарии, повторите попытку позже");
+                return BadRequest(_localizer["Не удалось создать комментарии, повторите попытку позже"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания комментария произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

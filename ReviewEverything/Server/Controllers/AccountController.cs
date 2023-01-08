@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using ReviewEverything.Server.Models;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Server.Common.Exceptions;
+using ReviewEverything.Server.Services.AccountService;
 using ReviewEverything.Shared.Models.Account;
 
 namespace ReviewEverything.Server.Controllers
@@ -9,74 +11,70 @@ namespace ReviewEverything.Server.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAccountService _service;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(IAccountService service, IStringLocalizer<AccountController> localizer)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _service = service;
+            _localizer = localizer;
         }
 
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            return Ok("Пользователь вышел из системы");
+            await _service.LogoutAsync();
+            return Ok(_localizer["Пользователь вышел из системы"].Value);
         }
 
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(SignInModel model)
         {
-            var applicationUser = await _userManager.FindByEmailAsync(model.Email);
-            if (applicationUser != null)
+            try
             {
-                if (applicationUser.Block)
-                    return Conflict("Ваш аккаунт заблокирован");
-
-                var result = await _signInManager.PasswordSignInAsync(applicationUser, model.Password, false, false);
-                if (result.Succeeded)
-                {
-                    return Ok("Пользователь успешно авторизирован");
-                }
+                await _service.SignInAsync(model);
+                return Ok(_localizer["Пользователь успешно авторизирован"].Value);
             }
-            return Conflict("Неправильный логин или пароль, пожалуйста проверьте правильность набора данных");
+            catch (HttpStatusRequestException e) when(e.StatusCode == HttpStatusCode.Conflict)
+            {
+                return Conflict(_localizer[e.Message].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.BadRequest)
+            {
+                return BadRequest(_localizer[e.Message].Value);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
-            if (await _userManager.FindByEmailAsync(model.Email) != null)
+            try
             {
-                return Conflict("Пользователь с таким Email уже существует в системе");
+                await _service.SignUpAsync(model);
+                return Ok(_localizer["Пользователь успешно зарегистрирован"]);
             }
-
-            if (await _userManager.FindByNameAsync(model.UserName) != null)
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.Conflict)
             {
-                return Conflict("Пользователь с таким Именем пользователя уже существует в системе");
+                return Conflict(_localizer[e.Message].Value);
             }
-
-            ApplicationUser applicationUser = new() { Email = model.Email, UserName = model.UserName, FullName = model.FullName };
-
-            var result = await _userManager.CreateAsync(applicationUser, model.Password);
-            if (result.Succeeded)
+            catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.BadRequest)
             {
-                return Ok("Пользователь успешно зарегистрирован");
+                return BadRequest(_localizer[e.Message].Value);
             }
-
-            return StatusCode(500, "Не удалось зарегистрировать пользователя, пожалуйста повторите попытку позже");
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("GetCurrentUserData")]
         public ActionResult<UserInfo> GetCurrentUserData()
         {
-            UserInfo userInfo = new();
-            if (User.Identity!.IsAuthenticated)
-            {
-                userInfo.AuthenticationType = User.Identity!.AuthenticationType!;
-                userInfo.Claims = User.Claims.Select(t => new ApiClaim(t.Type, t.Value)).ToList();
-            }
-            return Ok(userInfo);
+            return Ok(_service.GetCurrentUserData(User));
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Services.UserLikeService;
+using System.Net;
+using Microsoft.Extensions.Localization;
 
 namespace ReviewEverything.Server.Controllers
 {
@@ -10,10 +13,12 @@ namespace ReviewEverything.Server.Controllers
     public class UserLikeController : ControllerBase
     {
         private readonly IUserLikeService _service;
+        private readonly IStringLocalizer<UserLikeController> _localizer;
 
-        public UserLikeController(IUserLikeService service)
+        public UserLikeController(IUserLikeService service, IStringLocalizer<UserLikeController> localizer)
         {
             _service = service;
+            _localizer = localizer;
         }
 
         [HttpPost]
@@ -24,11 +29,16 @@ namespace ReviewEverything.Server.Controllers
                 var setLike = await _service.AddLikeToUserAsync(reviewId);
                 if (setLike)
                     return Ok(setLike);
-                return NotFound("Обзор для добавления лайка не найден");
+
+                return BadRequest(_localizer["Не удалось поставить лайк"].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer["Обзор для добавления лайка не найден"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время добавления лайка на обзор произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
@@ -41,11 +51,16 @@ namespace ReviewEverything.Server.Controllers
                 var setLike = await _service.RemoveLikeFromUserAsync(reviewId);
                 if (setLike)
                     return Ok(setLike);
-                return NotFound("Обзор для удаления лайка не найден");
+
+                return BadRequest(_localizer["Не удалось удалить лайк"].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer["Обзор для удаления лайка не найден"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время добавления лайка на обзор произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

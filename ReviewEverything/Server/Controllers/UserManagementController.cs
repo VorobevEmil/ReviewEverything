@@ -1,6 +1,9 @@
+using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Services.UserManagementService;
 using ReviewEverything.Shared.Contracts.Responses;
 using ReviewEverything.Shared.Models.Enums;
@@ -14,11 +17,13 @@ namespace ReviewEverything.Server.Controllers
     {
         private readonly IUserManagementService _service;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<UserManagementController> _localizer;
 
-        public UserManagementController(IUserManagementService service, IMapper mapper)
+        public UserManagementController(IUserManagementService service, IMapper mapper, IStringLocalizer<UserManagementController> localizer)
         {
             _service = service;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -40,7 +45,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения всех пользователей произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -50,12 +55,18 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var result = await _service.RefreshStatusBlockAsync(userId, statusBlock, token: token);
-                return result ? Ok("Статус блокировки пользователя изменен") : NotFound("Пользователь не найден");
+                if (result)
+                    return Ok(_localizer["РЎС‚Р°С‚СѓСЃ Р±Р»РѕРєРёСЂРѕРІРєРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР·РјРµРЅРµРЅ"].Value);
+
+                return BadRequest(_localizer["РќРµ СѓРґР°Р»РѕСЃСЊ РёР·РјРµРЅРёС‚СЊ СЃС‚Р°С‚СѓСЃ Р±Р»РѕРєРёСЂРѕРІРєРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ"].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer["РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ"].Value);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время блокировки пользователя произошла внутренняя ошибка сервера");
-
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -65,11 +76,15 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 await _service.ChangeUserRoleAsync(userId, statusRole, token: token);
-                return Ok("Роль пользователя изменена");
+                return Ok(_localizer["Р РѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР·РјРµРЅРµРЅР°"].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer["РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ"].Value);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время изменения роли пользователя произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -83,11 +98,15 @@ namespace ReviewEverything.Server.Controllers
                 if (deleted)
                     return NoContent();
 
-                return NotFound("Пользователь не найден");
+                return BadRequest();
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer["РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время удаления пользователя произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

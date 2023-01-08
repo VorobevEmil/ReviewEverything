@@ -32,6 +32,7 @@ namespace ReviewEverything.Server.Installers
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
     }
 }

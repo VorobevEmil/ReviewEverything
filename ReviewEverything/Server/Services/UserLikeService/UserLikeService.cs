@@ -1,5 +1,7 @@
+using System.Net;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 
 namespace ReviewEverything.Server.Services.UserLikeService
@@ -21,7 +23,8 @@ namespace ReviewEverything.Server.Services.UserLikeService
                 .Include(x => x.LikeUsers)
                 .FirstOrDefaultAsync(x => x.Id == reviewId);
             if (review == null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
+
             if (review.LikeUsers.Any(x => x.Id == GetUserId()))
                 return true;
 
@@ -37,7 +40,7 @@ namespace ReviewEverything.Server.Services.UserLikeService
                 .Include(x => x.LikeUsers)
                 .FirstOrDefaultAsync(x => x.Id == reviewId);
             if (review == null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
 
             if (review.LikeUsers.All(x => x.Id != GetUserId()))
                 return true;

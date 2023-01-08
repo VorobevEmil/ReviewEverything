@@ -25,9 +25,9 @@ namespace ReviewEverything.Server.Controllers
             {
                 return Ok(await _service.ConvertArticleToPdfAsync(articleId));
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest($"{ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

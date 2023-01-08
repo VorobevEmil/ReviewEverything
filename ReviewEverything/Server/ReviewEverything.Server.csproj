@@ -30,11 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
     <Folder Include="Options\" />
+    <Folder Include="Resources\Controllers\" />
     <Folder Include="Services\CommentService\" />
     <Folder Include="Services\PdfConvertService\" />
     <Folder Include="Services\UserLikeService\" />
-    <Folder Include="Services\UserScoreService\" />
   </ItemGroup>
 
 

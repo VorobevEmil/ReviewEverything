@@ -1,6 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.TagService;
 using ReviewEverything.Shared.Contracts.Requests;
@@ -14,11 +17,13 @@ namespace ReviewEverything.Server.Controllers
     {
         private readonly ITagService _service;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<TagController> _localizer;
 
-        public TagController(ITagService service, IMapper mapper)
+        public TagController(ITagService service, IMapper mapper, IStringLocalizer<TagController> localizer)
         {
             _service = service;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -31,7 +36,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения тегов произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -41,16 +46,16 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var tag = await _service.GetTagByIdAsync(id);
-                if (tag == null)
-                {
-                    return NotFound();
-                }
 
                 return Ok(_mapper.Map<TagResponse>(tag));
             }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer[e.Message].Value);
+            }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения тега произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -63,11 +68,11 @@ namespace ReviewEverything.Server.Controllers
                 if (existsTag)
                     return Ok("Данный тег уже существует");
 
-                return NotFound("Тег не найден");
+                return NotFound(_localizer["Тег не найден"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время проверки на существование тега по названию произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -81,14 +86,18 @@ namespace ReviewEverything.Server.Controllers
 
                 var result = await _service.CreateTagAsync(tag);
 
-                if (!result)
-                    return Conflict("Данный тег уже существует");
+                if (result)
+                    return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
 
-                return Created(Url.Action($"GetById", new { id = tag.Id })!, _mapper.Map<TagResponse>(tag));
+                return BadRequest();
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.Conflict)
+            {
+                return Conflict(_localizer["Данный тег уже существует"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания тега произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

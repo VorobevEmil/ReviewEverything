@@ -1,7 +1,10 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.ReviewService;
 using ReviewEverything.Shared.Contracts.Requests;
@@ -15,11 +18,13 @@ namespace ReviewEverything.Server.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly IReviewService _service;
+        private readonly IStringLocalizer<ReviewController> _localizer;
         private readonly IMapper _mapper;
 
-        public ReviewController(IReviewService service, IMapper mapper)
+        public ReviewController(IReviewService service, IStringLocalizer<ReviewController> localizer, IMapper mapper)
         {
             _service = service;
+            _localizer = localizer;
             _mapper = mapper;
         }
 
@@ -43,7 +48,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения обзоров произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -57,7 +62,7 @@ namespace ReviewEverything.Server.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время поиска обзоров произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -68,16 +73,16 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var review = await _service.GetReviewByIdAsync(id);
-                if (review == null)
-                {
-                    return NotFound();
-                }
 
                 return Ok(_mapper.Map<ArticleReviewResponse>(review));
             }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer[e.Message]);
+            }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения обзора по id произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
@@ -88,16 +93,15 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var articles = await _service.GetSimilarArticleAsync(reviewId);
-                if (articles == null)
-                {
-                    return NotFound();
-                }
-
                 return Ok(_mapper.Map<List<SimilarArticleReviewResponse>>(articles));
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer[e.Message].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения похожих обзоров произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -108,16 +112,16 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var review = await _service.GetReviewByIdAsync(id);
-                if (review == null)
-                {
-                    return NotFound("Обзор для обновления не найден");
-                }
 
                 return Ok(_mapper.Map<ReviewRequest>(review));
             }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer[e.Message].Value);
+            }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения обзора для редакирования произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -131,12 +135,15 @@ namespace ReviewEverything.Server.Controllers
                 review.AuthorId = User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
                 review.CreationDate = DateTime.UtcNow;
 
-                var result = await _service.CreateReviewAsync(review);
-                return Ok("Обзор успешно создан");
+                var created = await _service.CreateReviewAsync(review);
+                if (created)
+                    return Ok(_localizer["Обзор успешно создан"].Value);
+
+                return BadRequest(_localizer["Не удалось создать обзор"].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания обзора произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -151,31 +158,39 @@ namespace ReviewEverything.Server.Controllers
 
                 var updated = await _service.UpdateReviewAsync(review);
                 if (updated)
-                    return Ok("Обзор успешно обновлен");
+                    return Ok(_localizer["Обзор успешно обновлен"].Value);
 
-                return NotFound("Обзор для обновления не найден");
+                return BadRequest(_localizer["Не удалось обновить обзор"].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer[e.Message].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время обновления обзора произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [Authorize("ChangingArticle")]
-        [HttpDelete("{reviewId}")]
-        public async Task<IActionResult> Delete([FromRoute] int reviewId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
-                var deleted = await _service.DeleteReviewAsync(reviewId);
+                var deleted = await _service.DeleteReviewAsync(id);
                 if (deleted)
                     return NoContent();
 
-                return NotFound("Обзор для удаления не найден");
+                return BadRequest(_localizer["Не удалось удалить обзор"].Value);
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer[e.Message].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время удаления обзора произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

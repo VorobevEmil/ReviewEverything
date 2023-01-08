@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Server.Services.CompositionService;
 using ReviewEverything.Shared.Contracts.Requests;
@@ -32,7 +33,7 @@ public class CompositionController : ControllerBase
         }
         catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Во время получении произведений произошла внутренняя ошибка сервера");
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 
@@ -42,16 +43,16 @@ public class CompositionController : ControllerBase
         try
         {
             var composition = await _service.GetCompositionByIdAsync(id);
-            if (composition == null)
-            {
-                return NotFound();
-            }
 
             return Ok(_mapper.Map<CompositionResponse>(composition));
         }
+        catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+        {
+            return NotFound();
+        }
         catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Во время получения произведения произошла внутренняя ошибка сервера");
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 
@@ -65,14 +66,13 @@ public class CompositionController : ControllerBase
 
             var result = await _service.CreateCompositionAsync(composition);
             if (result)
-            return Created(Url.Action($"GetById", new { id = composition.Id })!, _mapper.Map<CompositionResponse>(composition));
+                return Created(Url.Action($"GetById", new { id = composition.Id })!, _mapper.Map<CompositionResponse>(composition));
 
             return BadRequest("Не удалось создать произведение, повторите попытку позже");
         }
-        catch (Exception e)
+        catch
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Во время создания произведения произошла внутренняя ошибка сервера");
-
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

@@ -129,6 +129,9 @@
   <data name="Игры" xml:space="preserve">
     <value>Games</value>
   </data>
+  <data name="Книги" xml:space="preserve">
+    <value>Books</value>
+  </data>
   <data name="Мультфильмы" xml:space="preserve">
     <value>Cartoons</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Поиск" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Произведение" xml:space="preserve">
+    <value>Composition</value>
   </data>
   <data name="Сериалы" xml:space="preserve">
     <value>Serials</value>

@@ -1,7 +1,10 @@
+using System.Net;
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Services.UserService;
 using ReviewEverything.Shared.Contracts.Responses;
 
@@ -13,11 +16,13 @@ namespace ReviewEverything.Server.Controllers
     {
         private readonly IUserService _service;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<UserController> _localizer;
 
-        public UserController(IUserService service, IMapper mapper)
+        public UserController(IUserService service, IMapper mapper, IStringLocalizer<UserController> localizer)
         {
             _service = service;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         [HttpGet("{id}")]
@@ -26,14 +31,16 @@ namespace ReviewEverything.Server.Controllers
             try
             {
                 var user = await _service.GetUserByIdAsync(id);
-                if (user == null)
-                    return NotFound("Пользователь не найден");
 
                 return Ok(_mapper.Map<UserResponse>(user));
             }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound(_localizer["РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ"].Value);
+            }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время поиска пользователя по Id произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -45,11 +52,11 @@ namespace ReviewEverything.Server.Controllers
             {
                 var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 var result = await _service.EditAboutMeAsync(userId, aboutMe);
-                return result ? Ok() : BadRequest("Не удалось обновить поле \"Обо мне\"");
+                return result ? Ok() : BadRequest(_localizer["РќРµ СѓРґР°Р»РѕСЃСЊ РѕР±РЅРѕРІРёС‚СЊ РїРѕР»Рµ \"РћР±Рѕ РјРЅРµ\""].Value);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Во время обновления поля \"Обо мне\" произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

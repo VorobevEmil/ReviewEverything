@@ -1,4 +1,6 @@
+using System.Net;
 using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
@@ -15,9 +17,14 @@ namespace ReviewEverything.Server.Services.UserService
 
         public async Task<ApplicationUser?> GetUserByIdAsync(string id)
         {
-            return await _context.Users
+            var user = await _context.Users
                 .Include(x => x.LikeReviews)
                 .FirstOrDefaultAsync(user => user.Id == id);
+
+            if (user == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
+
+            return user;
         }
 
         public async Task<bool> EditAboutMeAsync(string userId, string aboutMe)

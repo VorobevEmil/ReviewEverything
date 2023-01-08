@@ -1,5 +1,7 @@
+using System.Net;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
@@ -38,9 +40,7 @@ namespace ReviewEverything.Server.Services.UserScoreService
             var userId = _contextAccessor.HttpContext!.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var scope = await _context.UserScores.FirstOrDefaultAsync(x => x.CompositionId == compositionId && x.UserId == userId);
             if (scope == null)
-            {
-                return false;
-            }
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Произведение не найдено");
             _context.UserScores.Remove(scope);
 
             return await _context.SaveChangesAsync() > 0;

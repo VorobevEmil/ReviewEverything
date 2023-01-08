@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
@@ -54,7 +56,12 @@ namespace ReviewEverything.Server.Services.CompositionService
 
         public async Task<Composition?> GetCompositionByIdAsync(int id)
         {
-            return await _context.Compositions.FirstOrDefaultAsync(composition => composition.Id == id);
+            var composition = await _context.Compositions.FirstOrDefaultAsync(composition => composition.Id == id);
+
+            if (composition == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
+
+            return composition;
         }
 
         public async Task<bool> CreateCompositionAsync(Composition composition)

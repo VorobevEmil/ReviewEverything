@@ -1,4 +1,7 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Services.CloudImageService;
 using ReviewEverything.Shared.Models;
 
@@ -9,38 +12,36 @@ namespace ReviewEverything.Server.Controllers
     public class CloudImageController : ControllerBase
     {
         private readonly ICloudImageService _service;
+        private readonly IStringLocalizer<CloudImageController> _localizer;
 
-        public CloudImageController(ICloudImageService service)
+        public CloudImageController(ICloudImageService service, IStringLocalizer<CloudImageController> localizer)
         {
             _service = service;
+            _localizer = localizer;
         }
 
         [HttpPost]
+        [RequestSizeLimit(15_000_000)]
         public async Task<ActionResult<string>> SendImageOnCloud(FileData fileData, CancellationToken token)
         {
             try
             {
-                if (!fileData.ContentType.Contains("image"))
-                    return BadRequest($"Загруженный файл {fileData.FileName} не является изображением");
-
-                if (fileData.Data.Length > GetMaxAllowedSize())
-                    return BadRequest(
-                        $"У изображения {fileData.FileName} превышен максимальный размер. Максимальный размер файла составляет {GetMaxAllowedSize() / 1024 / 1024} МБ");
-
                 return Ok(await _service.SendImageOnCloudAsync(fileData, token));
+            }
+            catch (HttpStatusRequestException e) when (e.StatusCode == HttpStatusCode.BadRequest)
+            {
+                return BadRequest($"{e.Message}");
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Во время загрузки изображения {fileData.FileName} произошла внутренняя ошибка сервера");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"{_localizer["Р’Рѕ РІСЂРµРјСЏ Р·Р°РіСЂСѓР·РєРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ"].Value} \"{fileData.FileName}\" {_localizer["РїСЂРѕРёР·РѕС€Р»Р° РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° СЃРµСЂРІРµСЂР°"].Value}");
             }
         }
 
         [HttpGet("GetMaxAllowedSize")]
         public int GetMaxAllowedSize()
         {
-            //max allowed size 10 mb
-            var maxAllowedSize = 1024 * 1024 * 10;
-            return maxAllowedSize;
+            return _service.GetMaxAllowedSize();
         }
     }
 }

@@ -16,24 +16,31 @@ namespace ReviewEverything.Server.Common.Policies
         }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PossibilityChangingArticleHandler requirement)
         {
-            if (context.User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Admin"))
+            try
             {
-                context.Succeed(requirement);
-            }
-            else
-            {
-                int reviewId = int.Parse(_httpContextAccessor.HttpContext!.GetRouteValue("id")!.ToString()!);
-
-                var userId = (await _service.GetReviewByIdAsync(reviewId))!.AuthorId;
-
-                if (userId == context.User.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value)
+                if (context.User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Admin"))
                 {
                     context.Succeed(requirement);
                 }
                 else
                 {
-                    context.Fail();
+                    int reviewId = int.Parse(_httpContextAccessor.HttpContext!.GetRouteValue("id")!.ToString()!);
+
+                    var userId = (await _service.GetReviewByIdAsync(reviewId))!.AuthorId;
+
+                    if (userId == context.User.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value)
+                    {
+                        context.Succeed(requirement);
+                    }
+                    else
+                    {
+                        context.Fail();
+                    }
                 }
+            }
+            catch
+            {
+                context.Fail();
             }
         }
     }

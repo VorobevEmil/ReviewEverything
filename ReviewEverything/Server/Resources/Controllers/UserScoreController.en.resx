@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Войти" xml:space="preserve">
-    <value>Log In</value>
+  <data name="Пользовательский рейтинг изменен" xml:space="preserve">
+    <value>User rating changed</value>
   </data>
-  <data name="ВОЙТИ В УЧЕТНУЮ ЗАПИСЬ" xml:space="preserve">
-    <value>LOG IN TO ACCOUNT</value>
-  </data>
-  <data name="или" xml:space="preserve">
-    <value>or</value>
-  </data>
-  <data name="Имя Пользователя" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="Нет учетной записи?" xml:space="preserve">
-    <value>Not a member?</value>
-  </data>
-  <data name="Пароль" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="Подтвердите Пароль" xml:space="preserve">
-    <value>Verify Password</value>
-  </data>
-  <data name="Полное Имя" xml:space="preserve">
-    <value>Full Name</value>
-  </data>
-  <data name="Продолжить с Google" xml:space="preserve">
-    <value>Continue with Google</value>
-  </data>
-  <data name="Продолжить с Vk" xml:space="preserve">
-    <value>Continue with Vk</value>
-  </data>
-  <data name="Регистрация" xml:space="preserve">
-    <value>Register</value>
-  </data>
-  <data name="Создать аккаунт" xml:space="preserve">
-    <value>Create an account</value>
-  </data>
-  <data name="СОЗДАТЬ УЧЕТНУЮ ЗАПИСЬ" xml:space="preserve">
-    <value>CREATE AN ACCOUNT</value>
+  <data name="Произведение не найдено" xml:space="preserve">
+    <value>Composition not found</value>
   </data>
 </root>

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
@@ -13,9 +15,13 @@ namespace ReviewEverything.Server.Services.TagService
             _context = context;
         }
 
-        public async Task<Tag?> GetTagByIdAsync(int id)
+        public async Task<Tag> GetTagByIdAsync(int id)
         {
-            return await _context.Tags.FirstOrDefaultAsync(tag => tag.Id == id);
+            var tag = await _context.Tags.FirstOrDefaultAsync(tag => tag.Id == id);
+            if (tag == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Тег не найден");
+
+            return tag;
         }
 
         public async Task<List<Tag>> GetTagsAsync(int page, int pageSize, string? search)
@@ -41,12 +47,10 @@ namespace ReviewEverything.Server.Services.TagService
             var existsTag = await _context.Tags
                 .FirstOrDefaultAsync(x => x.Title.ToLower() == tag.Title.ToLower());
             if (existsTag != null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.Conflict);
 
             await _context.Tags.AddAsync(tag);
-            var created = await _context.SaveChangesAsync();
-
-            return created > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> ExistTagByNameAsync(string title)

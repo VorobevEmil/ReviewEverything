@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
+using ReviewEverything.Server.Services.AccountService;
 using ReviewEverything.Server.Services.CategoryService;
 using ReviewEverything.Server.Services.CloudImageService;
 using ReviewEverything.Server.Services.CommentService;
@@ -34,6 +35,7 @@ namespace ReviewEverything.Server.Installers
                 })
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ICompositionService, CompositionService>();

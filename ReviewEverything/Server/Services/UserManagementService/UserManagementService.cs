@@ -1,6 +1,8 @@
+using System.Net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Hubs;
 using ReviewEverything.Server.Models;
@@ -44,7 +46,9 @@ namespace ReviewEverything.Server.Services.UserManagementService
         public async Task<bool> CheckUserContainsAdminRole(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return false;
+            if (user == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
+
             return await _userManager.IsInRoleAsync(user, "Admin");
         }
 
@@ -52,7 +56,7 @@ namespace ReviewEverything.Server.Services.UserManagementService
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken: token);
             if (user == null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
 
             _context.Users.Remove(user);
 
@@ -65,7 +69,7 @@ namespace ReviewEverything.Server.Services.UserManagementService
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken: token);
 
             if (user == null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
 
             user.Block = statusBlock;
 
@@ -78,7 +82,7 @@ namespace ReviewEverything.Server.Services.UserManagementService
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                throw new Exception();
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound);
 
             var isRoleInUser = await _userManager.IsInRoleAsync(user, "Admin");
             if ((statusRole && isRoleInUser) || (!statusRole && !isRoleInUser))

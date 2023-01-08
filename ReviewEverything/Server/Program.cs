@@ -1,4 +1,6 @@
+using System.Globalization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Localization;
 using ReviewEverything.Server.Hubs;
 using ReviewEverything.Server.Options;
 using ReviewEverything.Server.Installers;
@@ -32,6 +34,21 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseDeveloperExceptionPage();
+
+var supportedCultures = new[]
+{
+    new CultureInfo("en-US"),
+    new CultureInfo("en"),
+    new CultureInfo("ru-RU"),
+    new CultureInfo("ru"),
+};
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("ru-RU"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
@@ -48,6 +65,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
+
 app.MapHub<CommentHub>("/commentHub");
 app.MapHub<UserManagerHub>("/userManagerHub");
 

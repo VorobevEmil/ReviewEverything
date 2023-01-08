@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReviewEverything.Server.Models;
 using ReviewEverything.Shared.Models.Account;
 using System.Security.Claims;
+using Microsoft.Extensions.Localization;
 
 namespace ReviewEverything.Server.Controllers
 {
@@ -15,11 +16,13 @@ namespace ReviewEverything.Server.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IStringLocalizer<OAuthController> _localizer;
 
-        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public OAuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IStringLocalizer<OAuthController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _localizer = localizer;
         }
 
         [HttpPost("SignIn-Google")]
@@ -42,7 +45,7 @@ namespace ReviewEverything.Server.Controllers
             var result = await HttpContext.AuthenticateAsync(provider);
             if (!result.Succeeded)
             {
-                return Conflict($"Не удалось войти через поставщика");
+                return Conflict(_localizer["Не удалось войти через поставщика"].Value);
             }
 
             var userClaims = result.Principal.Claims.ToArray();
@@ -54,7 +57,6 @@ namespace ReviewEverything.Server.Controllers
                 if (!userProvider.Block)
                     await _signInManager.SignInAsync(userProvider, false, null);
                 return Redirect("/");
-
             }
 
             return Redirect($"/account/sign-up-provider/{provider}");
@@ -66,7 +68,7 @@ namespace ReviewEverything.Server.Controllers
             var result = await HttpContext.AuthenticateAsync(provider);
             if (!result.Succeeded)
             {
-                return Conflict($"Не удалось войти через поставщика");
+                return Conflict(_localizer["Не удалось войти через поставщика"].Value);
             }
 
             var userClaims = result.Principal.Claims.ToArray();
@@ -87,12 +89,12 @@ namespace ReviewEverything.Server.Controllers
             var result = await HttpContext.AuthenticateAsync(provider);
             if (!result.Succeeded)
             {
-                return Conflict($"Не удалось войти через поставщика");
+                return Conflict(_localizer["Не удалось войти через поставщика"].Value);
             }
 
             if (await _userManager.FindByNameAsync(model.UserName) != null)
             {
-                return Conflict("Данное имя пользователя уже существует в системе");
+                return Conflict(_localizer["Данное имя пользователя уже существует в системе"].Value);
             }
 
             ApplicationUser user = new()
@@ -110,10 +112,10 @@ namespace ReviewEverything.Server.Controllers
                 var loginProvider = new UserLoginInfo(provider, providerKey, provider);
                 await _userManager.AddLoginAsync(user, loginProvider);
                 await _signInManager.SignInAsync(user, false, null);
-                return Ok();
+                return Ok(_localizer["Пользователь успешно зарегистрирован"].Value);
             }
 
-            return Conflict("Не удалось зарегистрировать пользователя, пожалуйста повторите попытку позже");
+            return Conflict(_localizer["Не удалось зарегистрировать пользователя, пожалуйста повторите попытку позже"].Value);
         }
     }
 }

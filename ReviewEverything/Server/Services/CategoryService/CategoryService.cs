@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Server.Data;
 using ReviewEverything.Server.Models;
 
@@ -20,9 +22,13 @@ namespace ReviewEverything.Server.Services.CategoryService
                 .ToListAsync();
         }
 
-        public async Task<Category?> GetCategoryByIdAsync(int id)
+        public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            return await _context.Categories.FirstOrDefaultAsync(category => category.Id == id);
+            var category = await _context.Categories.FirstOrDefaultAsync(category => category.Id == id);
+            if (category == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Категория не найдена");
+
+            return category;
         }
 
         public async Task<bool> CreateCategoryAsync(Category category)
@@ -35,16 +41,19 @@ namespace ReviewEverything.Server.Services.CategoryService
 
         public async Task<bool> UpdateCategoryAsync(Category category)
         {
-            _context.Categories.Update(category);
+            var categoryOld = await _context.Categories.FirstOrDefaultAsync(x => x.Id == category.Id);
+            if (categoryOld == null)
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Категория для обновления не найдена");
+            categoryOld.Title = category.Title;
             var updated = await _context.SaveChangesAsync();
             return updated > 0;
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
         {
-            var category = await GetCategoryByIdAsync(id);
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
-                return false;
+                throw new HttpStatusRequestException(HttpStatusCode.NotFound, "Категория для удаления не найдена");
 
             _context.Categories.Remove(category);
             var deleted = await _context.SaveChangesAsync();

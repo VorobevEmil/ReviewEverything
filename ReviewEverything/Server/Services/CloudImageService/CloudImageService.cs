@@ -1,5 +1,7 @@
-﻿using CloudinaryDotNet.Actions;
+﻿using System.Net;
+using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
+using ReviewEverything.Server.Common.Exceptions;
 using ReviewEverything.Shared.Models;
 
 namespace ReviewEverything.Server.Services.CloudImageService
@@ -19,6 +21,8 @@ namespace ReviewEverything.Server.Services.CloudImageService
 
         public async Task<string> SendImageOnCloudAsync(FileData fileData, CancellationToken token)
         {
+            CheckImage(fileData);
+
             Stream stream = new MemoryStream(fileData.Data);
 
             var uploadParams = new ImageUploadParams()
@@ -32,9 +36,21 @@ namespace ReviewEverything.Server.Services.CloudImageService
             return uploadResult.Url.AbsoluteUri;
         }
 
-        public async Task RemoveImageOnCloudAsync(string publicId)
+        private void CheckImage(FileData fileData)
         {
-            var delResult = await _cloudinary.DeleteResourcesAsync(publicId);
+            if (!fileData.ContentType.Contains("image"))
+                throw new HttpStatusRequestException(HttpStatusCode.BadRequest,
+                    $"Загруженный файл \"{fileData.FileName}\" не является изображением");
+
+            if (fileData.Data.Length > GetMaxAllowedSize())
+                throw new HttpStatusRequestException(HttpStatusCode.BadRequest,
+                    $"У изображения \"{fileData.FileName}\" превышен максимальный размер. Максимальный размер файла составляет {GetMaxAllowedSize() / 1024 / 1024} МБ");
+        }
+
+        public int GetMaxAllowedSize()
+        {
+            var maxAllowedSize = 1024 * 1024 * 10;
+            return maxAllowedSize;
         }
     }
 }
