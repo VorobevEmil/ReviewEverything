@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
@@ -22,6 +23,7 @@ namespace ReviewEverything.Client.Shared
         {
             LayoutService.SetBaseTheme(CustomTheme.LandingPageTheme());
             await ConfigureHubConnectionAsync();
+            await CheckMyAccountAsync();
         }
 
         private async Task ConfigureHubConnectionAsync()
@@ -37,6 +39,15 @@ namespace ReviewEverything.Client.Shared
             });
 
             await _hubConnection.StartAsync();
+        }
+
+        private async Task CheckMyAccountAsync()
+        {
+            if (!(await HostAuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity!.IsAuthenticated)
+                return;
+
+            if (await HttpClient.GetFromJsonAsync<bool>("api/User/CheckAccount"))
+                await _loginPartial.LogoutAsync();
         }
 
 

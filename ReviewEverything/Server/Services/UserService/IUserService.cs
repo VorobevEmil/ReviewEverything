@@ -1,4 +1,5 @@
 using ReviewEverything.Server.Models;
+using System.Security.Claims;
 
 namespace ReviewEverything.Server.Services.UserService
 {
@@ -6,5 +7,6 @@ namespace ReviewEverything.Server.Services.UserService
     {
         Task<ApplicationUser?> GetUserByIdAsync(string id);
         Task<bool> EditAboutMeAsync(string userId, string aboutMe);
+        Task<bool> CheckAccountAsync(ClaimsPrincipal user);
     }
 }

@@ -59,5 +59,19 @@ namespace ReviewEverything.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [Authorize]
+        [HttpGet("CheckAccount")]
+        public async Task<ActionResult<bool>> CheckAccount()
+        {
+            try
+            {
+                return Ok(await _service.CheckAccountAsync(User));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
