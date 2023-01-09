@@ -30,7 +30,7 @@ public partial class SignIn
         if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
         {
             HostAuthenticationStateProvider.RefreshState();
-            Parent.RefreshState();
+            await Parent.RefreshStateAsync();
             NavigationManager.NavigateTo("/");
         }
         else

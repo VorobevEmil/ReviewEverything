@@ -10,7 +10,7 @@ namespace ReviewEverything.Client.Shared
         public async Task LogoutAsync()
         {
             await HttpClient.PostAsync("api/Account/Logout", null);
-            Parent.RefreshState();
+            await Parent.RefreshStateAsync();
             Parent.ChangeDrawerOpen();
         }
     }

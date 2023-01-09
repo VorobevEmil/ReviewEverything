@@ -40,7 +40,7 @@ namespace ReviewEverything.Client.Pages.Account
             if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
             {
                 HostAuthenticationStateProvider.RefreshState();
-                Parent.RefreshState();
+                await Parent.RefreshStateAsync();
                 NavigationManager.NavigateTo("/");
             }
             else
